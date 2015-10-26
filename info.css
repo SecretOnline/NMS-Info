@@ -47,7 +47,6 @@ header button {
   width: 60px;
   height: 60px;
   -webkit-tap-highlight-color: transparent;
-  outline: none;
   margin-left: -4px;
 }
 header button svg {

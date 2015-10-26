@@ -1,0 +1,20 @@
+{
+  "name": "NMS-Info",
+  "version": "0.0.0",
+  "authors": [
+    "secret_online <me+github@secretonline.co>"
+  ],
+  "description": "A collection of information about No Man's Sky",
+  "license": "MIT",
+  "homepage": "secretonline.github.io/NMS-Info",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.1.0"
+  }
+}
