@@ -1,0 +1,74 @@
+h1,
+h2,
+h3,
+h4,
+noscript {
+  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
+}
+body {
+  margin: 0;
+}
+.center {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+header {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: hidden;
+  height: 60px;
+  width: 100%;
+  background-color: #01385b;
+  color: white;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .3);
+  transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+header h1 {
+  max-height: 60px;
+  margin: 10px 20px;
+}
+header .button-container {
+  position: absolute;
+  height: 60px;
+  right: 0;
+  top: 0;
+  transition: right 0.3s ease-out;
+}
+header button {
+  padding: 0;
+  transition: background-color 0.2s ease-out;
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  width: 60px;
+  height: 60px;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  margin-left: -4px;
+}
+header button svg {
+  height: 24px;
+  width: 24px;
+  padding: 18px;
+  fill: white;
+  transition: fill 0.3s ease-out;
+}
+header button svg:hover {
+  background-color: rgba(255, 255, 255, .2);
+}
+header button svg:active {
+  background-color: rgba(255, 255, 255, .4);
+}
+.github svg path {
+  transform: scale(0.024);
+}
+main {
+  margin: 0 auto;
+  top: 0;
+  width: 53em;
+  padding-top: 60px;
+}
