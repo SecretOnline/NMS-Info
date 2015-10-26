@@ -8,14 +8,15 @@
     <meta property="og:title" content="NMS Information Collection" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://secretonline.github.io/NMS-Info" />
-    <meta property="og:image" content="http://secretonline.github.io/NMS-Info/preview.png" />
-    <meta property="image_src" content="http://secretonline.github.io/NMS-Info/preview.png" />
-    <link rel="icon" sizes="196x196" href="icon.png">
+    <meta property="og:image" content="http://secretonline.github.io/NMS-Info/res/preview.png" />
+    <meta property="image_src" content="http://secretonline.github.io/NMS-Info/res/preview.png" />
+    <link rel="icon" sizes="196x196" href="res/icon.png">
     <link rel="stylesheet" href="info.css">
     <link rel="import" href="bower_components/polymer/polymer.html">
     <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
     <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/paper-card/paper-card.html">
     <link rel="import" href="bower_components/iron-pages/iron-pages.html">
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="info.js" defer></script>
@@ -23,7 +24,7 @@
   <body>
     <paper-toolbar class="medium-tall">
       <div class="title">NMS Information Collection</div>
-      <paper-icon-button src="github.svg" class="github"></paper-icon-button>
+      <a href="https://github.com/SecretOnline/NMS-Info"><paper-icon-button src="res/github.svg" class="github"></paper-icon-button></a>
       <paper-tabs selected="{{selected}}" class="bottom fit">
         <paper-tab>Information</paper-tab>
         <paper-tab>Categories</paper-tab>
@@ -32,10 +33,13 @@
     <main>
       <iron-pages selected="{{selected}}">
         <div>
-          Page 1
+          todo: add information list
+          <div class="info-list">
+
+          </div>
         </div>
         <div>
-          Page 2
+          todo: add category list
         </div>
       </iron-pages>
     </main>
