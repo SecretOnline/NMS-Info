@@ -4,6 +4,9 @@
   var tabs = doc.querySelector('paper-tabs');
   var pages = doc.querySelector('iron-pages');
 
+  var info = [];
+  var categories = [];
+
   function httpGet(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function() {
@@ -32,6 +35,8 @@
           block: 'start',
         });
         collapseAllItems();
+        element.querySelector('.header-bg').style.backgroundColor = element.dataset.expColor;
+        element.querySelector('.card-title').style.color = element.dataset.expTextColor;
         element.classList.add('expanded');
       }
     } else if (typeof searchParams.cat !== 'undefined') {
@@ -47,18 +52,41 @@
   function getItems() {
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
-      var data = JSON.parse(response);
+      info = JSON.parse(response);
 
-      data.forEach(function(item, index) {
-        var card = doc.createElement('info-card');
-        card.heading = item.title;
-        card.dataset.id = index;
+      info.forEach(function(item, index) {
+        var category = categories[item.categories[0]];
+
+        // Create card element
+        var card = doc.createElement('div');
+        card.classList.add('info-card');
         card.id = "info-" + index;
+        // Store data values
+        card.dataset.id = index;
+        card.dataset.expColor = category.color;
+        card.dataset.expTextColor = category.textColor;
+
+        // Create header
+        var header = doc.createElement('div');
+        header.classList.add('header');
+        var headerBg = doc.createElement('div');
+        headerBg.classList.add('header-bg');
+        var headerTitle = doc.createElement('h3');
+        headerTitle.classList.add('card-title');
+        headerTitle.textContent = item.title;
+        header.appendChild(headerBg);
+        header.appendChild(headerTitle);
+        card.appendChild(header);
 
         card.addEventListener('click', function() {
-          if (!card.classList.contains('expanded')) {
+          if (card.classList.contains('expanded')) {
+            headerBg.style.backgroundColor = '#fff';
+            headerTitle.style.color = '#000';
+          } else {
+            headerBg.style.backgroundColor = card.dataset.expColor;
+            headerTitle.style.color = card.dataset.expTextColor;
             collapseAllItems();
-            history.replaceState(null, '', '?info="' + card.dataset.id + '"');
+            history.replaceState(null, '', '?info=' + card.dataset.id);
           }
           card.classList.toggle('expanded');
         });
@@ -82,9 +110,9 @@
   function getCategories() {
     httpGet('data/categories.json', function(response) {
       var cardList = doc.querySelector('.cat-list');
-      var data = JSON.parse(response);
+      categories = JSON.parse(response);
 
-      data.forEach(function(item, index) {
+      categories.forEach(function(item, index) {
         var card = doc.createElement('category-card');
         card.heading = item.title;
         card.dataset.id = index;
