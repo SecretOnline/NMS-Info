@@ -23,7 +23,7 @@
     var data = JSON.parse(response);
 
     data.forEach(function(item) {
-      var card = doc.createElement('paper-card');
+      var card = doc.createElement('info-card');
       card.heading = item.title;
 
       var content = doc.createElement('div');

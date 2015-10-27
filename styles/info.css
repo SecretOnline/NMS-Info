@@ -3,12 +3,14 @@ h2,
 h3,
 h4,
 noscript,
-paper-card .title,
+info-card .title-text,
 paper-tab .tab-content {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
 paper-toolbar .title {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif !important;
+  line-height: 50px !important;
+  font-size: 50px !important;
 }
 body {
   margin: 0;
@@ -24,9 +26,15 @@ main {
   width: 53em;
   padding-top: 60px;
 }
+paper-toolbar {
+  background-color: #01385b !important;
+}
 paper-toolbar paper-tab paper-ripple {
   color: #0267a7 !important;
 }
 paper-toolbar paper-tabs #selectionBar.paper-tabs {
   background-color: #0267a7 !important;
+}
+info-card.cat-default .header-bg {
+  background-color: #7fbc4a;
 }
