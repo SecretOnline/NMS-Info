@@ -1,0 +1,32 @@
+h1,
+h2,
+h3,
+h4,
+noscript,
+paper-card .title,
+paper-tab .tab-content {
+  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
+}
+paper-toolbar .title {
+  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif !important;
+}
+body {
+  margin: 0;
+}
+.center {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+main {
+  margin: 0 auto;
+  top: 0;
+  width: 53em;
+  padding-top: 60px;
+}
+paper-toolbar paper-tab paper-ripple {
+  color: #0267a7 !important;
+}
+paper-toolbar paper-tabs #selectionBar.paper-tabs {
+  background-color: #0267a7 !important;
+}
