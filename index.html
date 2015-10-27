@@ -20,11 +20,25 @@
     <script src="info.js" async></script>
   </head>
   <body>
-    <paper-toolbar class="medium-tall">
-      <div class="title">NMS Information Collection</div>
-      <span class="tab-info">tab 1</span><span class="tab-cat">tab 2</span>
-      <a href="https://github.com/SecretOnline/NMS-Info"><paper-icon-button src="res/github.svg" class="github"></paper-icon-button></a>
-    </paper-toolbar>
+    <header>
+      <h1 class="title">NMS Information Collection</h1>
+      <div class="button-container">
+        <a href="https://github.com/SecretOnline/NMS-Info">
+          <button type="button" class="github">
+            <img src="res/github.svg" alt="GitHub" />
+          </button>
+        </a>
+      </div>
+    </header>
+    <nav>
+      <ul>
+        <li class="tab-info"><span>Information</span></li>
+        <li class="tab-cat"><span>Categories</span></li>
+      </ul>
+      <div class="search-container">
+        SEARCH
+      </div>
+    </nav>
     <main>
       <div class="page-container">
         <div class="page-info">

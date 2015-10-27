@@ -5,6 +5,16 @@
   var categories = [];
 
   function initInfo() {
+    // do navbar scoll stuff
+    window.addEventListener("optimizedScroll", function() {
+      var nav = doc.querySelector('nav');
+      if (scrollY > 70) {
+        nav.classList.add('floating');
+      } else {
+        nav.classList.remove('floating');
+      }
+    });
+
     doc.querySelector('.tab-info').addEventListener('click', function() {
       changeTab(0);
     });
@@ -172,11 +182,33 @@
   }
 
   function collapseAllItems() {
-    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('info-card.expanded'));
+    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-card.expanded'));
     cardArray.forEach(function(item) {
       item.classList.remove('expanded');
     });
   }
+
+  // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
+  // For the following scroll event throtling.
+  // Yay for making things go slightly slower for performance!
+  (function() {
+    var throttle = function(type, name, obj) {
+      obj = obj || window;
+      var running = false;
+      var func = function() {
+        if (running) {
+          return;
+        }
+        running = true;
+        requestAnimationFrame(function() {
+          obj.dispatchEvent(new CustomEvent(name));
+          running = false;
+        });
+      };
+      obj.addEventListener(type, func);
+    };
+    throttle("scroll", "optimizedScroll");
+  })();
 
   if (doc.readyState !== 'loading')
     initInfo();
