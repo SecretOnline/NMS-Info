@@ -113,13 +113,29 @@
       categories = JSON.parse(response);
 
       categories.forEach(function(item, index) {
-        var card = doc.createElement('category-card');
-        card.heading = item.title;
-        card.dataset.id = index;
+        // Create card element
+        var card = doc.createElement('div');
+        card.classList.add('category-card');
         card.id = "cat-" + index;
-
-        card.style.color = item.textColor;
+        // Store data values
+        card.dataset.id = index;
         card.style.backgroundColor = item.color;
+
+        // Create header
+        var header = doc.createElement('div');
+        header.classList.add('header');
+        var headerBg = doc.createElement('div');
+        headerBg.classList.add('header-bg');
+
+        var title = doc.createElement('h3');
+        title.textContent = item.title;
+        title.style.color = item.textColor;
+        title.classList.add('card-title');
+        card.appendChild(title);
+
+        card.addEventListener('click', function() {
+          // Go to expanded view
+        });
 
         cardList.appendChild(card);
       });
