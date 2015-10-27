@@ -1,11 +1,37 @@
 (function(win, doc) {
   'use strict';
 
-  var tabs = doc.querySelector('paper-tabs');
-  var pages = doc.querySelector('iron-pages');
-
   var info = [];
   var categories = [];
+
+  function initInfo() {
+    doc.querySelector('.tab-info').addEventListener('click', function() {
+      changeTab(0);
+    });
+    doc.querySelector('.tab-cat').addEventListener('click', function() {
+      changeTab(1);
+    });
+
+    getCategories();
+  }
+
+  function changeTab(number) {
+    var pageContainer = doc.querySelector('.page-container');
+
+    if (number === 0) {
+      pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('search');
+      history.replaceState(null, '', '?');
+    } else if (number === 1) {
+      pageContainer.classList.add('cat');
+      pageContainer.classList.remove('search');
+      history.replaceState(null, '', '?cat');
+    } else if (numebr === 2) {
+      pageContainer.classList.add('search');
+      pageContainer.classList.remove('cat');
+      history.replaceState(null, '', '?search');
+    }
+  }
 
   function httpGet(url, callback) {
     var xhr = new XMLHttpRequest();
@@ -27,7 +53,7 @@
     }
 
     if (typeof searchParams.info !== 'undefined') {
-      tabs.select(0);
+
       if (searchParams.info !== '') {
         var element = doc.querySelector('#info-' + searchParams.info);
         element.scrollIntoView({
@@ -40,12 +66,12 @@
         element.classList.add('expanded');
       }
     } else if (typeof searchParams.cat !== 'undefined') {
-      tabs.select(1);
+      changeTab(1);
       if (searchParams.cat !== '') {
 
       }
     } else {
-      tabs.select(0); // Just go to default spot
+      changeTab(0); // Just go to default spot
     }
   }
 
@@ -82,6 +108,7 @@
           if (card.classList.contains('expanded')) {
             headerBg.style.backgroundColor = '#fff';
             headerTitle.style.color = '#000';
+            history.replaceState(null, '', '?');
           } else {
             headerBg.style.backgroundColor = card.dataset.expColor;
             headerTitle.style.color = card.dataset.expTextColor;
@@ -151,15 +178,11 @@
     });
   }
 
-  tabs.addEventListener('iron-select', function() {
-    pages.selected = tabs.selected;
-
-    if (pages.selected === 0) {
-      history.replaceState(null, '', '?');
-    } else if (pages.selected === 1) {
-      history.replaceState(null, '', '?cat');
-    }
-  });
-  getCategories();
+  if (doc.readyState !== 'loading')
+    initInfo();
+  else
+    win.addEventListener('load', function() {
+      initInfo();
+    });
 
 })(window, document);

@@ -15,6 +15,7 @@ paper-toolbar .title {
 }
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 .center {
   display: block;
@@ -35,6 +36,27 @@ paper-toolbar paper-tab paper-ripple {
 }
 paper-toolbar paper-tabs #selectionBar.paper-tabs {
   background-color: #0267a7 !important;
+}
+.page-container {
+  position: relative;
+  right: 0;
+  transition: right 0.5s;
+}
+.page-container.cat {
+  right: calc(100vw - (53em / 2));
+}
+.page-container.search {
+  right: calc((100vw - (53em / 2)) * 2);
+}
+.page-container > div {
+  position: absolute;
+  width: 53em;
+}
+.page-cat {
+  left: calc(100vw - (53em / 2));
+}
+.page-search {
+  left: calc((100vw - (53em / 2)) * 2);
 }
 .info-list .info-card,
 .cat-list .category-card {
@@ -81,7 +103,7 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   margin: 24px 16px;
 }
 .info-card .card-content {
-  padding: 0;
+  padding: 0 16px;
   height: 0;
   overflow-y: hidden;
   transition: height 0.5s, padding 0.5s;
