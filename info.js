@@ -38,10 +38,9 @@
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       history.replaceState(null, '', '?cat');
-    } else if (numebr === 2) {
+    } else if (number === 2) {
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
-      history.replaceState(null, '', '?search');
     }
   }
 
@@ -64,24 +63,29 @@
       }
     }
 
-    if (typeof searchParams.info !== 'undefined') {
-
-      if (searchParams.info !== '') {
-        var element = doc.querySelector('#info-' + searchParams.info);
-        element.scrollIntoView({
+    if (typeof searchParams.cat !== 'undefined') {
+      changeTab(1);
+      if (searchParams.cat !== '') {
+        categorySearch(searchParams.cat);
+      }
+    } else if (searchParams.info !== '') {
+      collapseAllItems();
+      var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
+      cardArray.forEach(function(element) {
+        element.classList.add('expanded');
+      });
+      if (typeof searchParams.cat !== 'undefined' || typeof searchParams.search !== 'undefined') {
+        cardArray[1].scrollIntoView({
           behavior: 'smooth',
           block: 'start',
         });
-        collapseAllItems();
-        element.querySelector('.header-bg').style.backgroundColor = element.dataset.expColor;
-        element.querySelector('.card-title').style.color = element.dataset.expTextColor;
-        element.classList.add('expanded');
+      } else {
+        cardArray[0].scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
       }
-    } else if (typeof searchParams.cat !== 'undefined') {
-      changeTab(1);
-      if (searchParams.cat !== '') {
-
-      }
+      scroll(scrollX, scrollY - 60);
     } else {
       changeTab(0); // Just go to default spot
     }
@@ -123,7 +127,7 @@
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('info-card');
-    card.id = "info-" + data.index;
+    card.classList.add("info-" + data.index);
     // Store data values
     card.dataset.id = data.index;
 
@@ -167,7 +171,7 @@
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('category-card');
-    card.id = "cat-" + data.index;
+    card.classList.add("cat-" + data.index);
     // Store data values
     card.dataset.id = data.index;
     card.style.backgroundColor = data.color;
@@ -193,7 +197,18 @@
 
   function categorySearch(id) {
     var category = categories[id];
+    var container = doc.querySelector('.search-list');
+    container.innerHTML = '';
 
+    info.forEach(function(item) {
+      if (item.categories.indexOf(id) > -1) {
+        var card = createInfoCard(item);
+        container.appendChild(card);
+      }
+    });
+
+    history.replaceState(null, '', '?cat=' + id);
+    changeTab(2);
   }
 
   function collapseAllItems() {
