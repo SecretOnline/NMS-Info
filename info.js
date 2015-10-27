@@ -19,9 +19,11 @@
 
     doc.querySelector('.tab-info').addEventListener('click', function() {
       changeTab(0);
+      scroll(0, 0);
     });
     doc.querySelector('.tab-cat').addEventListener('click', function() {
       changeTab(1);
+      scroll(0, 0);
     });
 
     getCategories();
