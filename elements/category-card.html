@@ -1,0 +1,81 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="category-card">
+  <template>
+    <style include="paper-material">
+    :host {
+      display: inline-block;
+      position: relative;
+      box-sizing: border-box;
+
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    /* IE 10 support for HTML5 hidden attr */
+    [hidden] {
+      display: none !important;
+    }
+
+    .container {
+      position: relative;
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit;
+      overflow: hidden;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .container .title-text {
+      padding: 16px;
+      font-size: 24px;
+      font-weight: bold;
+      bottom: 0px;
+      transition: color 0.5s;
+    }
+    </style>
+
+    <div class="container">
+      <div hidden$="[[!heading]]" class="title-text">[[heading]]</div>
+    </div>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'category-card',
+
+    properties: {
+      heading: {
+        type: String,
+        value: '',
+        observer: '_headingChanged'
+      },
+      elevation: {
+        type: Number,
+        value: 1,
+        reflectToAttribute: true
+      },
+      animatedShadow: {
+        type: Boolean,
+        value: true
+      },
+      animated: {
+        type: Boolean,
+        reflectToAttribute: true,
+        readOnly: true,
+        value: true
+      }
+    },
+
+    _headingChanged: function(heading) {
+      var label = this.getAttribute('aria-label');
+      this.setAttribute('aria-label', heading);
+    }
+  });
+</script>

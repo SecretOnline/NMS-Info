@@ -4,6 +4,7 @@ h3,
 h4,
 noscript,
 info-card .title-text,
+category-card .title-text,
 paper-tab .tab-content {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
@@ -38,6 +39,7 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
 info-card.cat-default .header-bg {
   background-color: #7fbc4a;
 }
-.info-list info-card {
+.info-list info-card,
+.cat-list category-card {
   margin-bottom: 10px;
 }
