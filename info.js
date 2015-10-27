@@ -26,6 +26,10 @@
       var card = doc.createElement('info-card');
       card.heading = item.title;
 
+      card.addEventListener('click', function() {
+        card.classList.toggle('expanded');
+      });
+
       var content = doc.createElement('div');
       content.classList.add('card-content');
       item.text.forEach(function(text) {

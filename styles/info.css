@@ -38,3 +38,6 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
 info-card.cat-default .header-bg {
   background-color: #7fbc4a;
 }
+.info-list info-card {
+  margin-bottom: 10px;
+}
