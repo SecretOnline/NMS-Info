@@ -6,6 +6,9 @@ header,
 nav {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
+.info-card {
+  font-family: 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
+}
 body {
   margin: 0;
   overflow-x: hidden;

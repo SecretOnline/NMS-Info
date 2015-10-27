@@ -13,6 +13,8 @@
       } else {
         nav.classList.remove('floating');
       }
+      if (scrollX > 0)
+        scroll(0, scrollY);
     });
 
     doc.querySelector('.tab-info').addEventListener('click', function() {
@@ -91,52 +93,8 @@
       info = JSON.parse(response);
 
       info.forEach(function(item, index) {
-        var category = categories[item.categories[0]];
-
-        // Create card element
-        var card = doc.createElement('div');
-        card.classList.add('info-card');
-        card.id = "info-" + index;
-        // Store data values
-        card.dataset.id = index;
-        card.dataset.expColor = category.color;
-        card.dataset.expTextColor = category.textColor;
-
-        // Create header
-        var header = doc.createElement('div');
-        header.classList.add('header');
-        var headerBg = doc.createElement('div');
-        headerBg.classList.add('header-bg');
-        var headerTitle = doc.createElement('h3');
-        headerTitle.classList.add('card-title');
-        headerTitle.textContent = item.title;
-        header.appendChild(headerBg);
-        header.appendChild(headerTitle);
-        card.appendChild(header);
-
-        card.addEventListener('click', function() {
-          if (card.classList.contains('expanded')) {
-            headerBg.style.backgroundColor = '#fff';
-            headerTitle.style.color = '#000';
-            history.replaceState(null, '', '?');
-          } else {
-            headerBg.style.backgroundColor = card.dataset.expColor;
-            headerTitle.style.color = card.dataset.expTextColor;
-            collapseAllItems();
-            history.replaceState(null, '', '?info=' + card.dataset.id);
-          }
-          card.classList.toggle('expanded');
-        });
-
-        var content = doc.createElement('div');
-        content.classList.add('card-content');
-        item.text.forEach(function(text) {
-          var t = doc.createElement('p');
-          t.textContent = text;
-          content.appendChild(t);
-        });
-        card.appendChild(content);
-
+        item.index = index;
+        var card = createInfoCard(item);
         cardList.appendChild(card);
       });
 
@@ -150,35 +108,92 @@
       categories = JSON.parse(response);
 
       categories.forEach(function(item, index) {
-        // Create card element
-        var card = doc.createElement('div');
-        card.classList.add('category-card');
-        card.id = "cat-" + index;
-        // Store data values
-        card.dataset.id = index;
-        card.style.backgroundColor = item.color;
-
-        // Create header
-        var header = doc.createElement('div');
-        header.classList.add('header');
-        var headerBg = doc.createElement('div');
-        headerBg.classList.add('header-bg');
-
-        var title = doc.createElement('h3');
-        title.textContent = item.title;
-        title.style.color = item.textColor;
-        title.classList.add('card-title');
-        card.appendChild(title);
-
-        card.addEventListener('click', function() {
-          // Go to expanded view
-        });
-
+        item.index = index;
+        var card = createCategoryCard(item);
         cardList.appendChild(card);
       });
 
       getItems();
     });
+  }
+
+  function createInfoCard(data) {
+    var category = categories[data.categories[0]];
+
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('info-card');
+    card.id = "info-" + data.index;
+    // Store data values
+    card.dataset.id = data.index;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = category.color;
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    headerTitle.textContent = data.title;
+    headerTitle.style.color = category.textColor;
+    header.appendChild(headerBg);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    card.addEventListener('click', function() {
+      if (card.classList.contains('expanded')) {
+        history.replaceState(null, '', '?');
+      } else {
+        collapseAllItems();
+        history.replaceState(null, '', '?info=' + card.dataset.id);
+      }
+      card.classList.toggle('expanded');
+    });
+
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    data.text.forEach(function(text) {
+      var t = doc.createElement('p');
+      t.textContent = text;
+      content.appendChild(t);
+    });
+    card.appendChild(content);
+
+    return card;
+  }
+
+  function createCategoryCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('category-card');
+    card.id = "cat-" + data.index;
+    // Store data values
+    card.dataset.id = data.index;
+    card.style.backgroundColor = data.color;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+
+    var title = doc.createElement('h3');
+    title.textContent = data.title;
+    title.style.color = data.textColor;
+    title.classList.add('card-title');
+    card.appendChild(title);
+
+    card.addEventListener('click', function() {
+      categorySearch(card.dataset.id);
+    });
+
+    return card;
+  }
+
+  function categorySearch(id) {
+    var category = categories[id];
+
   }
 
   function collapseAllItems() {
