@@ -238,7 +238,7 @@
       header.appendChild(cats);
     }
 
-    card.addEventListener('click', function() {
+    header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
         history.replaceState(null, '', '?');
       } else {
@@ -374,44 +374,92 @@
   }
 
   function generalSearch(query) {
-    query = query.toLowerCase();
     var title = doc.querySelector('.search-title');
     title.textContent = 'Search: ' + query;
     var container = doc.querySelector('.search-list');
     container.innerHTML = '';
+    var colOne = doc.createElement('div');
+    var colTwo = doc.createElement('div');
+    colOne.classList.add('card-half');
+    colTwo.classList.add('card-half');
+    container.appendChild(colOne);
+    container.appendChild(colTwo);
 
-    var titleTitle = doc.createElement('h3');
-    titleTitle.textContent = 'Title Match';
-    container.appendChild(titleTitle);
+    var scores = {};
 
     info.forEach(function(item) {
-      if (item.title.toLowerCase().indexOf(query) > -1) {
-        var card = createInfoCard(item);
-        container.appendChild(card);
-      }
+      var score = getSearchScore(query, item);
+      var card = createInfoCard(item);
+
+      if (!scores[score])
+        scores[score] = [];
+
+      scores[score].push(card);
     });
 
-    var textTitle = doc.createElement('h3');
-    textTitle.textContent = 'Text Match';
-    container.appendChild(textTitle);
+    console.log(scores);
 
-    info.forEach(function(item) {
-      var added = false;
-      item.text.forEach(function(text) {
-        if (added)
-          return;
+    var cardArr = [];
+    var values = Object.keys(scores);
+    values.sort(function(one, two) {
+      // Sort as integers, not strings
+      var a = parseInt(one);
+      var b = parseInt(two);
+      if (a < b)
+        return -1;
+      if (a > b)
+        return 1;
+      return 0;
+    });
+    console.log(values);
+    values.forEach(function(score) {
+      if (score > 0)
+        scores[score].forEach(function(card) {
+          cardArr.unshift(card);
+        });
+    });
 
-        if (text.toLowerCase().indexOf(query) > -1) {
-          var card = createInfoCard(item);
-          container.appendChild(card);
-          added = true;
-        }
-      });
+    cardArr.forEach(function(item, index) {
+      if (index % 2)
+        colTwo.appendChild(item);
+      else
+        colOne.appendChild(item);
     });
 
     history.replaceState(null, '', '?search=' + encodeURIComponent(query));
     changeTab(2);
     scroll(0, 0);
+  }
+
+  function getSearchScore(query, info) {
+    query = query.toLowerCase();
+    var score = 0;
+
+    var querySplit = query.split(/\W+/);
+    var lTitle = info.title.toLowerCase();
+
+    // Title contains
+    if (lTitle.indexOf(query) > -1)
+      score += 8;
+    // Title contains parts
+    querySplit.forEach(function(word) {
+      if (lTitle.indexOf(word) > -1)
+        score += 5;
+    });
+    info.text.forEach(function(text) {
+      var lText = text.toLowerCase();
+      // Text contains
+      if (lText.indexOf(query) > -1)
+        score += 2;
+      // Text contains parts
+      querySplit.forEach(function(word) {
+        if (lText.indexOf(word) > -1)
+          score += 1;
+      });
+    });
+
+    console.log(info.title + ' got ' + score);
+    return score;
   }
 
   function collapseAllItems() {
