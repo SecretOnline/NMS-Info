@@ -129,8 +129,14 @@
   function getItems() {
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
+      var colOne = doc.createElement('div');
+      var colTwo = doc.createElement('div');
+      colOne.classList.add('card-half');
+      colTwo.classList.add('card-half');
 
-      cardList.appendChild(createInfoCard(aboutCard));
+      colOne.appendChild(createInfoCard(aboutCard));
+      cardList.appendChild(colOne);
+      cardList.appendChild(colTwo);
 
       info = JSON.parse(response);
       var cardArr = [];
@@ -143,8 +149,11 @@
 
       cardArr = arrayRandomise(cardArr);
 
-      cardArr.forEach(function(item) {
-        cardList.appendChild(item);
+      cardArr.forEach(function(item, index) {
+        if (index % 2)
+          colOne.appendChild(item);
+        else
+          colTwo.appendChild(item);
       });
 
       handleSearchParams();
@@ -154,12 +163,23 @@
   function getCategories() {
     httpGet('data/categories.json', function(response) {
       var cardList = doc.querySelector('.cat-list');
+      var colOne = doc.createElement('div');
+      var colTwo = doc.createElement('div');
+      colOne.classList.add('card-half');
+      colTwo.classList.add('card-half');
+
+      cardList.appendChild(colOne);
+      cardList.appendChild(colTwo);
+
       categories = JSON.parse(response);
 
       categories.forEach(function(item, index) {
         item.index = index;
         var card = createCategoryCard(item);
-        cardList.appendChild(card);
+        if (index % 2)
+          colTwo.appendChild(card);
+        else
+          colOne.appendChild(card);
       });
 
       getItems();
@@ -324,12 +344,28 @@
     title.textContent = 'Category: ' + category.title;
     var container = doc.querySelector('.search-list');
     container.innerHTML = '';
+    var colOne = doc.createElement('div');
+    var colTwo = doc.createElement('div');
+    colOne.classList.add('card-half');
+    colTwo.classList.add('card-half');
+
+    container.appendChild(colOne);
+    container.appendChild(colTwo);
+
+    var cardArr = [];
 
     info.forEach(function(item) {
       if (item.categories.indexOf(id) > -1) {
         var card = createInfoCard(item);
-        container.appendChild(card);
+        cardArr.push(card);
       }
+    });
+
+    cardArr.forEach(function(item, index) {
+      if (index % 2)
+        colTwo.appendChild(item);
+      else
+        colOne.appendChild(item);
     });
 
     history.replaceState(null, '', '?cat=' + id);

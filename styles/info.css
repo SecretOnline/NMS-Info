@@ -212,13 +212,14 @@ main {
   text-decoration: none;
 }
 .info-card .card-content {
-  height: 0;
+  max-height: 0;
   overflow-y: hidden;
-  transition: height 0.5s, padding 0.5s;
+  transition: max-height 0.5s, padding 0.5s;
 }
 .info-card.expanded .card-content {
   padding: 16px 0;
-  height: auto;
+  /* Just has to be a big value, but not too big */
+  max-height: 1000px;
 }
 .info-card .card-content div:not(.separator) {
   padding: 0 16px;
@@ -257,9 +258,26 @@ main {
 .search-area .search-box {
   flex: 1;
   box-shadow: none;
-  transition: box-shadow 0.5s;
+  transition: box-shadow 0.5s, opacity 0.5s;
+}
+.search-area .search-box:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+.search-area .search-box:focus::-moz-placeholder {
+  opacity: 0;
+}
+.search-area .search-box:focus::-ms-input-placeholder {
+  opacity: 0;
 }
 .search-area .search-box:focus {
   outline: 0;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+@media all and (min-width: 920px) {
+  .card-half {
+    display: inline-block;
+    width: calc(50% - 10px);
+    padding: 0 5px;
+    vertical-align: top;
+  }
 }
