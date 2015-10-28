@@ -4,6 +4,22 @@
   var info = [];
   var categories = [];
 
+  var aboutCard = {
+    title: 'About this Repository',
+    index: -1,
+    text: [
+      'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
+      'It is an open source project, and source code can be found on GitHub',
+      'It was created by secret_online, but a full list of contributors can be found on GitHub',
+      'If something is missing, please tell someone, or fork this project and add it yourself'
+    ],
+    sources: [
+      'https://github.com/SecretOnline/NMS-Info',
+      'http://secretonline.co'
+    ],
+    categories: []
+  };
+
   function initInfo() {
     // do navbar scoll stuff
     window.addEventListener("optimizedScroll", function() {
@@ -113,6 +129,9 @@
   function getItems() {
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
+
+      cardList.appendChild(createInfoCard(aboutCard));
+
       info = JSON.parse(response);
       var cardArr = [];
 
@@ -148,7 +167,6 @@
   }
 
   function createInfoCard(data) {
-    var category = categories[data.categories[0]];
 
     // Create card element
     var card = doc.createElement('div');
@@ -156,16 +174,12 @@
     card.classList.add("info-" + data.index);
     // Store data values
     card.dataset.id = data.index;
-    if (category.darkText) {
-      card.classList.add('dark-text');
-    }
 
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
     var headerBg = doc.createElement('div');
     headerBg.classList.add('header-bg');
-    headerBg.style.backgroundColor = category.color;
     var headerTitle = doc.createElement('h3');
     headerTitle.classList.add('card-title');
     headerTitle.textContent = data.title;
@@ -174,6 +188,12 @@
     card.appendChild(header);
 
     if (data.categories.length) {
+      var category = categories[data.categories[0]];
+      if (category.darkText) {
+        card.classList.add('dark-text');
+      }
+      headerBg.style.backgroundColor = category.color;
+
       var cats = doc.createElement('div');
       cats.classList.add('categories');
 

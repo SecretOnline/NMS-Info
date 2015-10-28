@@ -9,6 +9,7 @@ nav {
 h4 {
   margin: 5px 0;
 }
+body,
 .info-card,
 .search-area input {
   font-family: 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
@@ -151,6 +152,7 @@ main {
   overflow: hidden;
 }
 .info-card .header .header-bg {
+  background-color: #01385b;
   width: 100%;
   pointer-events: none;
   height: 60px;
@@ -235,6 +237,7 @@ main {
 }
 .search-area input {
   margin: 5px;
+  padding: 5px;
   font-size: 1.1em;
   background-color: #fff;
   color: #000;
@@ -244,7 +247,7 @@ main {
 }
 .search-area .search-box {
   flex: 1;
-  box-shadow: 0;
+  box-shadow: none;
   transition: box-shadow 0.5s;
 }
 .search-area .search-box:focus {
