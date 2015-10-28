@@ -114,11 +114,18 @@
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
       info = JSON.parse(response);
+      var cardArr = [];
 
       info.forEach(function(item, index) {
         item.index = index;
         var card = createInfoCard(item);
-        cardList.appendChild(card);
+        cardArr.push(card);
+      });
+
+      cardArr = arrayRandomise(cardArr);
+
+      cardArr.forEach(function(item) {
+        cardList.appendChild(item);
       });
 
       handleSearchParams();
@@ -351,6 +358,17 @@
     cardArray.forEach(function(item) {
       item.classList.remove('expanded');
     });
+  }
+
+  function arrayRandomise(array) {
+    var newArr = [];
+
+    while (array.length > 0) {
+      var index = Math.floor(Math.random() * array.length);
+      newArr.push(array.splice(index, 1)[0]);
+    }
+
+    return newArr;
   }
 
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
