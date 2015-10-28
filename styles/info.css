@@ -177,12 +177,32 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   margin: 24px 16px;
 }
 .info-card .card-content {
-  padding: 0 16px;
   height: 0;
   overflow-y: hidden;
   transition: height 0.5s, padding 0.5s;
 }
 .info-card.expanded .card-content {
-  padding: 16px;
+  padding: 16px 0;
   height: auto;
+}
+.info-card .card-content div:not(.separator) {
+  padding: 0 16px;
+}
+.separator {
+  border-bottom: 2px solid #aaa;
+}
+.sources h4,
+.related h4 {
+  margin: 5px 0;
+}
+.sources ul,
+.related ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sources ul li,
+.related ul li {
+  display: inline-block;
+  padding-right: 4px;
 }

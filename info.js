@@ -159,12 +159,58 @@
 
     var content = doc.createElement('div');
     content.classList.add('card-content');
+    card.appendChild(content);
+
+    var information = doc.createElement('div');
+    information.classList.add('information');
     data.text.forEach(function(text) {
       var t = doc.createElement('p');
       t.textContent = text;
-      content.appendChild(t);
+      information.appendChild(t);
     });
-    card.appendChild(content);
+    content.appendChild(information);
+
+    if (data.sources.length || data.related.length) {
+      var separator = doc.createElement('div');
+      separator.classList.add('separator');
+      content.appendChild(separator);
+
+      if (data.sources.length) {
+        var sources = doc.createElement('div');
+        sources.classList.add('sources');
+        var sourceTitle = doc.createElement('h4');
+        sourceTitle.textContent = 'Sources';
+        sources.appendChild(sourceTitle);
+
+        var sourceList = doc.createElement('ul');
+        data.sources.forEach(function(source, sIndex) {
+          var sourceEl = doc.createElement('li');
+          sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
+          sourceList.appendChild(sourceEl);
+        });
+        sources.appendChild(sourceList);
+
+        content.appendChild(sources);
+      }
+
+      if (data.related.length) {
+        var related = doc.createElement('div');
+        related.classList.add('related');
+        var relatedTitle = doc.createElement('h4');
+        relatedTitle.textContent = 'Related';
+        related.appendChild(relatedTitle);
+
+        var relatedList = doc.createElement('ul');
+        data.related.forEach(function(rItem, rIndex) {
+          var itemEl = doc.createElement('li');
+          itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
+          relatedList.appendChild(itemEl);
+        });
+        related.appendChild(relatedList);
+
+        content.appendChild(related);
+      }
+    }
 
     return card;
   }
