@@ -119,10 +119,10 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   transition: right 0.5s;
 }
 .page-container.cat {
-  right: calc(100vw - (53em / 2));
+  right: calc(100vw - (50vw - (53em / 2)));
 }
 .page-container.search {
-  right: calc((100vw - (53em / 2)) * 2);
+  right: calc((100vw - (50vw - (53em / 2))) * 2);
 }
 .page-container > div {
   position: absolute;
@@ -130,10 +130,10 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   max-width: 53em;
 }
 .page-cat {
-  left: calc(100vw - (53em / 2));
+  left: calc(100vw - (50vw - (53em / 2)));
 }
 .page-search {
-  left: calc((100vw - (53em / 2)) * 2);
+  left: calc((100vw - (50vw - (53em / 2))) * 2);
 }
 .info-list .info-card,
 .cat-list .category-card {
