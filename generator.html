@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Generator</title>
+    <script type="text/javascript">
+    function generateJson() {
+      var obj = {};
+
+      obj.title = document.querySelector('.title').value;
+
+      var arr = document.querySelectorAll('.text input');
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj.text)
+          obj.text = [];
+        obj.text[i] = arr[i].value;
+      }
+
+      arr = document.querySelectorAll('.sources input');
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj.sources)
+          obj.sources = [];
+        obj.sources[i] = arr[i].value;
+      }
+
+      arr = document.querySelectorAll('.categories input');
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj.categories)
+          obj.categories = [];
+        obj.categories[i] = arr[i].value;
+      }
+
+      arr = document.querySelectorAll('.related input');
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj.related)
+          obj.related = [];
+        obj.related[i] = arr[i].value;
+      }
+
+      document.querySelector('.output').value = JSON.stringify(obj);
+    }
+    function addInput(parent){
+      'use strict';
+      var newEl = document.createElement('p');
+      newEl.classList.add('input');
+      newEl.innerHTML = '<input type="text">';
+      addRemoveButton(newEl);
+      parent.appendChild(newEl);
+    }
+    function addAddButton(parent){
+      var button = document.createElement('button')
+      button.type = 'button';
+      button.innerHTML = 'add';
+      button.classList.add('add');
+      button.addEventListener('click', function(){addInput(this.parentNode);});
+      parent.appendChild(button);
+    }
+    function addRemoveButton(parent){
+      var button = document.createElement('button')
+      button.type = 'button';
+      button.innerHTML = 'remove';
+      button.classList.add('remove');
+      button.addEventListener('click', function(){this.parentNode.parentNode.removeChild(this.parentNode);});
+      parent.appendChild(button);
+    }
+    window.addEventListener('DOMContentLoaded', function(){
+      'use strict';
+      var arr = document.querySelectorAll('.inputContainer');
+      for (var i = 0; i < arr.length; i++)
+        addAddButton(arr[i]);
+      document.querySelector('button.generate').addEventListener('click', generateJson);
+    });
+    </script>
+  </head>
+  <body>
+    <p>
+      This is a page to help with formatting the json <br>
+      It's here purely for convenience
+    </p>
+    <input type="text" name="" placeholder="title" class="title">
+    <p>
+      text
+    </p>
+    <div class="inputContainer text">
+
+    </div>
+    <p>
+      sources
+    </p>
+    <div class="inputContainer sources">
+
+    </div>
+    <p>
+      categories
+    </p>
+    <div class="inputContainer categories">
+
+    </div>
+    <p>
+      related - do not use yet
+    </p>
+    <div class="inputContainer related">
+
+    </div>
+    <button type="button" name="button" class="generate">generate</button>
+    <p>
+      output:
+    </p>
+    <textarea name="name" rows="8" cols="40" class="output"></textarea>
+  </body>
+</html>
