@@ -37,6 +37,9 @@
         obj.related[i] = arr[i].value;
       }
 
+      if (document.querySelector('.spoiler'))
+        obj.spoiler = true;
+
       document.querySelector('.output').value = JSON.stringify(obj);
     }
     function addInput(parent){
@@ -83,7 +86,7 @@
       <option value="6" label="Multiplayer">
       <option value="7" label="Crafting">
       <option value="8" label="News">
-      <option value="9" label="SPOILERS">
+      <option value="9" label="Economy">
     </datalist>
     <p>
       This is a page to help with formatting the json <br>
@@ -114,6 +117,9 @@
     <div class="inputContainer related">
 
     </div>
+    <p>
+      <input type="checkbox" class="spoiler"> spoiler
+    </p>
     <button type="button" name="button" class="generate">generate</button>
     <p>
       output:

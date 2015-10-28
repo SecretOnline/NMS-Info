@@ -175,6 +175,9 @@
     // Store data values
     card.dataset.id = data.index;
 
+    if (data.spoiler)
+      cad.classList.add('spoiler');
+
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
