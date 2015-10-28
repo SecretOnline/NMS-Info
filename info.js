@@ -82,8 +82,10 @@
         categorySearch(searchParams.cat);
       }
     } else if (typeof searchParams.search !== 'undefined') {
-      var query = decodeURIComponent(searchParams.search);
-      generalSearch(query);
+      if (searchParams.search) {
+        var query = decodeURIComponent(searchParams.search);
+        generalSearch(query);
+      }
       changeTab(2);
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
