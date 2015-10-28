@@ -172,10 +172,11 @@
       data.categories.forEach(function(cat) {
         var catEl = doc.createElement('li');
         catEl.textContent = categories[cat].title;
+        catEl.dataset.id = cat;
         catEl.style.color = category.textColor;
 
         catEl.addEventListener('click', function() {
-          categorySearch(cat);
+          categorySearch(catEl.dataset.id);
         });
 
         catList.appendChild(catEl);

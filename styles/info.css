@@ -188,13 +188,14 @@ main {
 }
 .info-card .categories li {
   color: #fff;
-  text-decoration: none;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .info-card.dark-text .categories li {
   color: #000;
 }
 .info-card .categories a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .info-card .card-content {
   height: 0;
@@ -223,4 +224,7 @@ main {
 .categories ul li {
   display: inline-block;
   padding-right: 4px;
+}
+.search-area {
+  margin-bottom: 10px;
 }
