@@ -43,7 +43,7 @@
       'use strict';
       var newEl = document.createElement('p');
       newEl.classList.add('input');
-      newEl.innerHTML = '<input type="text">';
+      newEl.innerHTML = '<input type="text"'+ (parent.classList.contains('categories') ? ' list="categories" ': '') +'>';
       addRemoveButton(newEl);
       parent.appendChild(newEl);
     }
@@ -73,6 +73,18 @@
     </script>
   </head>
   <body>
+    <datalist id="categories">
+      <option value="0" label="Universe">
+      <option value="1" label="Star Systems">
+      <option value="2" label="Planets">
+      <option value="3" label="Other Bodies">
+      <option value="4" label="Game Mechanics">
+      <option value="5" label="The Atlas">
+      <option value="6" label="Multiplayer">
+      <option value="7" label="Crafting">
+      <option value="8" label="News">
+      <option value="9" label="SPOILERS">
+    </datalist>
     <p>
       This is a page to help with formatting the json <br>
       It's here purely for convenience
