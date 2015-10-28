@@ -9,6 +9,7 @@ nav {
 h4 {
   margin: 5px 0;
 }
+body,
 .info-card,
 .search-area input {
   font-family: 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
@@ -151,10 +152,14 @@ main {
   overflow: hidden;
 }
 .info-card .header .header-bg {
+  background-color: #01385b;
   width: 100%;
   pointer-events: none;
   height: 60px;
   transition: height 0.5s, background-color 0.5s;
+}
+.info-card.spoiler .header .header-bg {
+  background-color: #e22;
 }
 .info-card.expanded .header .header-bg {
   height: 100px;
@@ -169,6 +174,9 @@ main {
 .info-card.dark-text .header .card-title,
 .category-card.dark-text .card-title {
   color: #000;
+}
+.category-card.dark-text.spoiler .card-title {
+  color: #fff;
 }
 .info-card .header .card-title {
   position: absolute;
@@ -196,6 +204,9 @@ main {
 }
 .info-card.dark-text .categories li {
   color: #000;
+}
+.info-card.dark-text.spoiler .categories li {
+  color: #fff;
 }
 .info-card .categories a:hover {
   text-decoration: none;
@@ -235,6 +246,7 @@ main {
 }
 .search-area input {
   margin: 5px;
+  padding: 5px;
   font-size: 1.1em;
   background-color: #fff;
   color: #000;
@@ -244,7 +256,7 @@ main {
 }
 .search-area .search-box {
   flex: 1;
-  box-shadow: 0;
+  box-shadow: none;
   transition: box-shadow 0.5s;
 }
 .search-area .search-box:focus {

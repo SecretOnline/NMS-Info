@@ -40,7 +40,8 @@
     "color": "#833883"
   },
   {
-    "title": "SPOILERS",
-    "color": "#E22"
+    "title": "Economy",
+    "color": "#F5CA2D",
+    "darkText": "true"
   }
 ]
