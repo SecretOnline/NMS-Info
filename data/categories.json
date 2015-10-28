@@ -43,5 +43,9 @@
     "title": "Economy",
     "color": "#F5CA2D",
     "darkText": "true"
+  },
+  {
+    "title": "Life",
+    "color": "#277B23"
   }
 ]
