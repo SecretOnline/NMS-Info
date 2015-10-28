@@ -132,6 +132,9 @@
     card.classList.add("info-" + data.index);
     // Store data values
     card.dataset.id = data.index;
+    if (category.darkText) {
+      card.classList.add('dark-text');
+    }
 
     // Create header
     var header = doc.createElement('div');
@@ -142,10 +145,25 @@
     var headerTitle = doc.createElement('h3');
     headerTitle.classList.add('card-title');
     headerTitle.textContent = data.title;
-    headerTitle.style.color = category.textColor;
     header.appendChild(headerBg);
     header.appendChild(headerTitle);
     card.appendChild(header);
+
+    if (data.categories.length) {
+      var cats = doc.createElement('div');
+      cats.classList.add('categories');
+
+      var catList = doc.createElement('ul');
+      data.categories.forEach(function(cat) {
+        var catEl = doc.createElement('li');
+        catEl.innerHTML = '<a href="?cat=' + cat + '">' + categories[cat].title + '</a>';
+        catEl.style.color = category.textColor;
+        catList.appendChild(catEl);
+      });
+      cats.appendChild(catList);
+
+      header.appendChild(cats);
+    }
 
     card.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {

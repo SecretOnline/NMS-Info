@@ -6,6 +6,9 @@ header,
 nav {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
+h4 {
+  margin: 5px 0;
+}
 .info-card {
   font-family: 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
@@ -166,6 +169,10 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   margin: 16px;
   font-size: 24px;
   font-weight: bold;
+  color: #fff;
+}
+.info-card.dark-text .header .card-title,
+.category-card.dark-text .card-title {
   color: #000;
 }
 .info-card .header .card-title {
@@ -175,6 +182,27 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
 }
 .info-card.expanded .header .card-title {
   margin: 24px 16px;
+}
+.info-card .categories {
+  padding: 5px 16px;
+  position: absolute;
+  top: -32px;
+  opacity: 0;
+  transition: top 0.5s, opacity 0.5s;
+}
+.info-card.expanded .categories {
+  opacity: 1;
+  top: 0;
+}
+.info-card .categories a {
+  color: #fff !important;
+  text-decoration: none;
+}
+.info-card.dark-text .categories a {
+  color: #000 !important;
+}
+.info-card .categories a:hover {
+  text-decoration: underline;
 }
 .info-card .card-content {
   height: 0;
@@ -191,18 +219,16 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
 .separator {
   border-bottom: 2px solid #aaa;
 }
-.sources h4,
-.related h4 {
-  margin: 5px 0;
-}
 .sources ul,
-.related ul {
+.related ul,
+.categories ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 .sources ul li,
-.related ul li {
+.related ul li,
+.categories ul li {
   display: inline-block;
   padding-right: 4px;
 }

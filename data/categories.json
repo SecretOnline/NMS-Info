@@ -1,52 +1,46 @@
 [
   {
     "title": "No Man's Sky Universe",
-    "color": "midnightblue",
-    "textColor": "#FFF"
+    "color": "midnightblue"
   },
   {
     "title": "Star Systems",
     "color": "#F7BF05",
-    "textColor": "#000"
+    "darkText": "true"
   },
   {
     "title": "Planets",
     "color": "#21C6C6",
-    "textColor": "#000"
+    "darkText": "true"
   },
   {
     "title": "Other Bodies",
     "color": "#85D14D",
-    "textColor": "#000"
+    "darkText": "true"
   },
   {
     "title": "Game Mechanics",
-    "color": "#2F5AA8",
-    "textColor": "#FFF"
+    "color": "#2F5AA8"
   },
   {
     "title": "The Atlas",
-    "color": "#921212",
-    "textColor": "#FFF"
+    "color": "#921212"
   },
   {
     "title": "Multiplayer",
     "color": "#7DBFB2",
-    "textColor": "#000"
+    "darkText": "true"
   },
   {
     "title": "Crafting",
-    "color": "#836B38",
-    "textColor": "#FFF"
+    "color": "#644619"
   },
   {
     "title": "News",
-    "color": "#833883",
-    "textColor": "#FFF"
+    "color": "#833883"
   },
   {
     "title": "SPOILERS",
-    "color": "#E22",
-    "textColor": "#FFF"
+    "color": "#E22"
   }
 ]
