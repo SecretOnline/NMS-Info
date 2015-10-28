@@ -37,7 +37,7 @@
         obj.related[i] = arr[i].value;
       }
 
-      if (document.querySelector('.spoiler'))
+      if (document.querySelector('.spoiler').value)
         obj.spoiler = true;
 
       document.querySelector('.output').value = JSON.stringify(obj);
