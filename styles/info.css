@@ -104,15 +104,6 @@ main {
   max-width: 53em;
   padding-top: 60px;
 }
-paper-toolbar {
-  background-color: #01385b !important;
-}
-paper-toolbar paper-tab paper-ripple {
-  color: #0267a7 !important;
-}
-paper-toolbar paper-tabs #selectionBar.paper-tabs {
-  background-color: #0267a7 !important;
-}
 .page-container {
   position: relative;
   right: 0;
@@ -125,8 +116,9 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   right: calc((100vw - (50vw - (53em / 2))) * 2);
 }
 .page-container > div {
+  margin: 0 5px;
   position: absolute;
-  width: 100%;
+  width: calc(100% - 10px);
   max-width: 53em;
 }
 .page-cat {
@@ -194,12 +186,12 @@ paper-toolbar paper-tabs #selectionBar.paper-tabs {
   opacity: 1;
   top: 0;
 }
-.info-card .categories a {
-  color: #fff !important;
+.info-card .categories li {
+  color: #fff;
   text-decoration: none;
 }
-.info-card.dark-text .categories a {
-  color: #000 !important;
+.info-card.dark-text .categories li {
+  color: #000;
 }
 .info-card .categories a:hover {
   text-decoration: underline;
