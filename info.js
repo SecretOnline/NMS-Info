@@ -297,6 +297,9 @@
     card.dataset.id = data.index;
     card.style.backgroundColor = data.color;
 
+    if (data.darkText)
+      card.classList.add('dark-text');
+
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
@@ -305,7 +308,6 @@
 
     var title = doc.createElement('h3');
     title.textContent = data.title;
-    title.style.color = data.textColor;
     title.classList.add('card-title');
     card.appendChild(title);
 
