@@ -149,14 +149,6 @@
   function getItems() {
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
-      var colOne = doc.createElement('div');
-      var colTwo = doc.createElement('div');
-      colOne.classList.add('card-half');
-      colTwo.classList.add('card-half');
-
-      colOne.appendChild(createInfoCard(aboutCard));
-      cardList.appendChild(colOne);
-      cardList.appendChild(colTwo);
 
       info = JSON.parse(response);
       var cardArr = [];
@@ -168,13 +160,9 @@
       });
 
       cardArr = arrayRandomise(cardArr);
+      cardArr.unshift(createInfoCard(aboutCard));
 
-      cardArr.forEach(function(item, index) {
-        if (index % 2)
-          colOne.appendChild(item);
-        else
-          colTwo.appendChild(item);
-      });
+      distributeItems(cardArr, cardList);
 
       handleSearchParams();
     });
@@ -193,14 +181,14 @@
 
       categories = JSON.parse(response);
 
+      var cardArr = [];
       categories.forEach(function(item, index) {
         item.index = index;
         var card = createCategoryCard(item);
-        if (index % 2)
-          colTwo.appendChild(card);
-        else
-          colOne.appendChild(card);
+        cardArr.push(card);
       });
+
+      distributeItems(cardArr, cardList);
 
       getItems();
     });
@@ -380,14 +368,6 @@
     var title = doc.querySelector('.search-title');
     title.textContent = 'Category: ' + category.title;
     var container = doc.querySelector('.search-list');
-    container.innerHTML = '';
-    var colOne = doc.createElement('div');
-    var colTwo = doc.createElement('div');
-    colOne.classList.add('card-half');
-    colTwo.classList.add('card-half');
-
-    container.appendChild(colOne);
-    container.appendChild(colTwo);
 
     var cardArr = [];
 
@@ -398,12 +378,7 @@
       }
     });
 
-    cardArr.forEach(function(item, index) {
-      if (index % 2)
-        colTwo.appendChild(item);
-      else
-        colOne.appendChild(item);
-    });
+    distributeItems(cardArr, container);
 
     history.replaceState(null, '', '?cat=' + id);
   }
@@ -412,13 +387,6 @@
     var title = doc.querySelector('.search-title');
     title.textContent = 'Search: ' + query;
     var container = doc.querySelector('.search-list');
-    container.innerHTML = '';
-    var colOne = doc.createElement('div');
-    var colTwo = doc.createElement('div');
-    colOne.classList.add('card-half');
-    colTwo.classList.add('card-half');
-    container.appendChild(colOne);
-    container.appendChild(colTwo);
 
     var scores = {};
 
@@ -451,12 +419,7 @@
         });
     });
 
-    cardArr.forEach(function(item, index) {
-      if (index % 2)
-        colTwo.appendChild(item);
-      else
-        colOne.appendChild(item);
-    });
+    distributeItems(cardArr, container);
 
     history.replaceState(null, '', '?search=' + encodeURIComponent(query));
     scroll(0, 0);
@@ -490,6 +453,32 @@
     });
 
     return score;
+  }
+
+  function distributeItems(array, container) {
+    var twoColThreshold = 920; // Should match class
+
+    container.innerHTML = '';
+    if (innerWidth >= twoColThreshold) {
+      container.innerHTML = '';
+      var colOne = doc.createElement('div');
+      var colTwo = doc.createElement('div');
+      colOne.classList.add('card-half');
+      colTwo.classList.add('card-half');
+      container.appendChild(colOne);
+      container.appendChild(colTwo);
+
+      array.forEach(function(item, index) {
+        if (index % 2)
+          colTwo.appendChild(item);
+        else
+          colOne.appendChild(item);
+      });
+    } else {
+      array.forEach(function(item) {
+        container.appendChild(item);
+      });
+    }
   }
 
   function collapseAllItems() {
