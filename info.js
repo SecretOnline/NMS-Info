@@ -3,6 +3,7 @@
 
   var info = [];
   var categories = [];
+  var resources = [];
 
   var aboutCard = {
     title: 'About this Repository',
@@ -60,6 +61,7 @@
     });
 
     getCategories();
+    getResources();
   }
 
   function changeTab(number) {
@@ -194,8 +196,36 @@
     });
   }
 
-  function createInfoCard(data) {
+  function getResources() {
+    httpGet('data/resources.json', function(response) {
+      var cardList = doc.querySelector('.elements-list');
 
+      resources = JSON.parse(response);
+
+      var cardArr = [];
+
+      resources.forEach(function(item, index) {
+        item.index = index;
+
+        if (item.makes) {
+          item.makes.forEach(function(compound) {
+            if (resources[compound]) {
+              if (!resources[compound].madeFrom)
+                resources[compound].madeFrom = [];
+              resources[compound].madeFrom.push(index);
+            }
+          });
+        }
+
+        var card = createResourceCard(item);
+        cardArr.push(card);
+      });
+
+      distributeItems(cardArr, cardList);
+    });
+  }
+
+  function createInfoCard(data) {
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('info-card');
@@ -277,7 +307,11 @@
   }
 
   function addCardInfo(card, data) {
+    if (typeof data === 'undefined')
+      data = aboutCard;
+
     var content = card.querySelector('.card-content');
+    content.innerHTML = '';
 
     var information = doc.createElement('div');
     information.classList.add('information');
@@ -363,6 +397,74 @@
     return card;
   }
 
+  function createResourceCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('element-card');
+    card.classList.add("element-" + data.index);
+    // Store data values
+    card.dataset.id = data.index;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerSymbol = doc.createElement('h3');
+    headerSymbol.classList.add('element-symbol');
+    if (data.symbol)
+      headerSymbol.textContent = data.symbol;
+    else
+      headerSymbol.textContent = '??';
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    if (data.name)
+      headerTitle.textContent = data.name;
+    else
+      headerTitle.textContent = '???';
+    header.appendChild(headerBg);
+    header.appendChild(headerSymbol);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    header.addEventListener('click', function() {
+      if (card.classList.contains('expanded')) {
+        history.replaceState(null, '', '?element');
+
+        // Clear content after 0.5 seconds
+        setTimeout(function() {
+          content.innerHTML = '';
+        }, 500);
+      } else {
+        collapseAllItems();
+        history.replaceState(null, '', '?element=' + card.dataset.id);
+
+        addResourceInfo(card, data);
+      }
+      card.classList.toggle('expanded');
+    });
+
+    return card;
+  }
+
+  function addResourceInfo(card, data) {
+    var content = card.querySelector('.card-content');
+    content.innerHTML = '';
+
+    var information = doc.createElement('div');
+    information.classList.add('information');
+    content.appendChild(information)
+    var description = doc.createElement('p');
+    description.classList.add('element-description');
+    description.textContent = data.description;
+    information.appendChild(description);
+  }
+
   function categorySearch(id) {
     var category = categories[id];
     var title = doc.querySelector('.search-title');
@@ -379,6 +481,7 @@
     });
 
     distributeItems(cardArr, container);
+    changeTab(2);
 
     history.replaceState(null, '', '?cat=' + id);
   }
