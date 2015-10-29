@@ -42,6 +42,42 @@
 
       document.querySelector('.output').value = JSON.stringify(obj);
     }
+    function parseJson() {
+      var arr = document.querySelectorAll('.inputContainer');
+      for (var i = 0; i < arr.length; i++){
+        arr[i].innerHTML = '';
+        addAddButton(arr[i]);
+      }
+
+      var obj = JSON.parse(document.querySelector('.output').value);
+
+      if (obj.title) {
+        document.querySelector('.title').value = obj.title;
+      }
+      if (obj.text) {
+        obj.text.forEach(function(item){
+          addInput(document.querySelector('.text')).querySelector('input').value = item;
+        });
+      }
+      if (obj.sources) {
+        obj.sources.forEach(function(item){
+          addInput(document.querySelector('.sources')).querySelector('input').value = item;
+        });
+      }
+      if (obj.categories) {
+        obj.categories.forEach(function(item){
+          addInput(document.querySelector('.categories')).querySelector('input').value = item;
+        });
+      }
+      if (obj.related) {
+        obj.related.forEach(function(item){
+          addInput(document.querySelector('.related')).querySelector('input').value = item;
+        });
+      }
+      if (obj.spoiler) {
+        document.querySelector('.spoiler').checked = true;
+      }
+    }
     function addInput(parent){
       'use strict';
       var newEl = document.createElement('p');
@@ -49,6 +85,7 @@
       newEl.innerHTML = '<input type="text"'+ (parent.classList.contains('categories') ? ' list="categories" ': '') +'>';
       addRemoveButton(newEl);
       parent.appendChild(newEl);
+      return newEl;
     }
     function addAddButton(parent){
       var button = document.createElement('button')
@@ -57,6 +94,7 @@
       button.classList.add('add');
       button.addEventListener('click', function(){addInput(this.parentNode);});
       parent.appendChild(button);
+      return button;
     }
     function addRemoveButton(parent){
       var button = document.createElement('button')
@@ -65,6 +103,7 @@
       button.classList.add('remove');
       button.addEventListener('click', function(){this.parentNode.parentNode.removeChild(this.parentNode);});
       parent.appendChild(button);
+      return button;
     }
     window.addEventListener('DOMContentLoaded', function(){
       'use strict';
@@ -72,6 +111,7 @@
       for (var i = 0; i < arr.length; i++)
         addAddButton(arr[i]);
       document.querySelector('button.generate').addEventListener('click', generateJson);
+      document.querySelector('button.parse').addEventListener('click', parseJson);
     });
     </script>
   </head>
@@ -87,6 +127,8 @@
       <option value="7" label="Crafting">
       <option value="8" label="News">
       <option value="9" label="Economy">
+      <option value="10" label="Life">
+      <option value="11" label="Miscelaneous">
     </datalist>
     <p>
       This is a page to help with formatting the json <br>
@@ -120,7 +162,8 @@
     <p>
       <input type="checkbox" class="spoiler"> spoiler
     </p>
-    <button type="button" name="button" class="generate">generate</button>
+    <button type="button" name="generate" class="generate">generate</button>
+    <button type="button" name="parse" class="parse">parse</button>
     <p>
       output:
     </p>

@@ -45,9 +45,13 @@
       changeTab(2);
       scroll(0, 0);
     });
+    doc.querySelector('.tab-elements').addEventListener('click', function() {
+      changeTab(3);
+      scroll(0, 0);
+    });
 
-    doc.querySelector('.search-button').addEventListener('click', function() {
-      var query = doc.querySelector('.search-box').value;
+    doc.querySelector('.info-search-button').addEventListener('click', function() {
+      var query = doc.querySelector('.info-search-box').value;
       generalSearch(query);
       changeTab(2);
       scroll(0, 0);
@@ -62,14 +66,22 @@
     if (number === 0) {
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
+      pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?');
     } else if (number === 1) {
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
+      pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?cat');
     } else if (number === 2) {
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('elements');
+    } else if (number === 3) {
+      pageContainer.classList.add('elements');
+      pageContainer.classList.remove('search');
+      pageContainer.classList.remove('cat');
+      history.replaceState(null, '', '?element');
     }
   }
 
@@ -108,6 +120,7 @@
       var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
       cardArray.forEach(function(element) {
         element.classList.add('expanded');
+        addCardInfo(element, info[element.dataset.id]);
       });
       if (typeof searchParams.cat !== 'undefined' || typeof searchParams.search !== 'undefined') {
         cardArray[1].scrollIntoView({
@@ -121,6 +134,8 @@
         });
       }
       scroll(scrollX, scrollY - 60);
+    } else if (typeof searchParams.element !== 'undefined') {
+      changeTab(3);
     } else {
       changeTab(0); // Just go to default spot
     }
@@ -210,6 +225,10 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
     if (data.categories.length) {
       var category = categories[data.categories[0]];
       if (category.darkText) {
@@ -241,16 +260,25 @@
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
         history.replaceState(null, '', '?');
+
+        // Clear content after 0.5 seconds
+        setTimeout(function() {
+          content.innerHTML = '';
+        }, 500);
       } else {
         collapseAllItems();
         history.replaceState(null, '', '?info=' + card.dataset.id);
+
+        addCardInfo(card, data);
       }
       card.classList.toggle('expanded');
     });
 
-    var content = doc.createElement('div');
-    content.classList.add('card-content');
-    card.appendChild(content);
+    return card;
+  }
+
+  function addCardInfo(card, data) {
+    var content = card.querySelector('.card-content');
 
     var information = doc.createElement('div');
     information.classList.add('information');
@@ -304,8 +332,6 @@
           content.appendChild(related);
         }
     }
-
-    return card;
   }
 
   function createCategoryCard(data) {
@@ -397,8 +423,6 @@
       scores[score].push(card);
     });
 
-    console.log(scores);
-
     var cardArr = [];
     var values = Object.keys(scores);
     values.sort(function(one, two) {
@@ -411,7 +435,6 @@
         return 1;
       return 0;
     });
-    console.log(values);
     values.forEach(function(score) {
       if (score > 0)
         scores[score].forEach(function(card) {
@@ -458,7 +481,6 @@
       });
     });
 
-    console.log(info.title + ' got ' + score);
     return score;
   }
 

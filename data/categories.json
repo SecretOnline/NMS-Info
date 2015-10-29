@@ -27,7 +27,7 @@
     "color": "#921212"
   },
   {
-    "title": "Multiplayer",
+    "title": "{UNUSED}",
     "color": "#7DBFB2",
     "darkText": "true"
   },
@@ -47,5 +47,9 @@
   {
     "title": "Life",
     "color": "#277B23"
+  },
+  {
+    "title": "Miscelaneous",
+    "color": "#ED870E"
   }
 ]
