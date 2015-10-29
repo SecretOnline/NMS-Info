@@ -14,7 +14,7 @@
     "darkText": "true"
   },
   {
-    "title": "Other Bodies",
+    "title": "Interactable Objects",
     "color": "#85D14D",
     "darkText": "true"
   },
@@ -43,5 +43,9 @@
     "title": "Economy",
     "color": "#F5CA2D",
     "darkText": "true"
+  },
+  {
+    "title": "Life",
+    "color": "#277B23"
   }
 ]
