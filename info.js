@@ -224,6 +224,10 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
     if (data.categories.length) {
       var category = categories[data.categories[0]];
       if (category.darkText) {
@@ -255,69 +259,71 @@
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
         history.replaceState(null, '', '?');
+
+        // Clear content after 0.5 seconds
+        setTimeout(function() {
+          content.innerHTML = '';
+        }, 500);
       } else {
         collapseAllItems();
         history.replaceState(null, '', '?info=' + card.dataset.id);
+
+        var information = doc.createElement('div');
+        information.classList.add('information');
+        data.text.forEach(function(text) {
+          var t = doc.createElement('p');
+          t.textContent = text;
+          information.appendChild(t);
+        });
+        content.appendChild(information);
+
+        if (data.sources || data.related) {
+          var separator = doc.createElement('div');
+          separator.classList.add('separator');
+          content.appendChild(separator);
+
+          if (data.sources)
+            if (data.sources.length) {
+              var sources = doc.createElement('div');
+              sources.classList.add('sources');
+              var sourceTitle = doc.createElement('h4');
+              sourceTitle.textContent = 'Sources';
+              sources.appendChild(sourceTitle);
+
+              var sourceList = doc.createElement('ul');
+              data.sources.forEach(function(source, sIndex) {
+                var sourceEl = doc.createElement('li');
+                sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
+                sourceList.appendChild(sourceEl);
+              });
+              sources.appendChild(sourceList);
+
+              content.appendChild(sources);
+            }
+
+          if (data.related)
+            if (data.related.length) {
+              var related = doc.createElement('div');
+              related.classList.add('related');
+              var relatedTitle = doc.createElement('h4');
+              relatedTitle.textContent = 'Related';
+              related.appendChild(relatedTitle);
+
+              var relatedList = doc.createElement('ul');
+              data.related.forEach(function(rItem, rIndex) {
+                var itemEl = doc.createElement('li');
+                itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
+                relatedList.appendChild(itemEl);
+              });
+              related.appendChild(relatedList);
+
+              content.appendChild(related);
+            }
+        }
+
       }
       card.classList.toggle('expanded');
     });
-
-    var content = doc.createElement('div');
-    content.classList.add('card-content');
-    card.appendChild(content);
-
-    var information = doc.createElement('div');
-    information.classList.add('information');
-    data.text.forEach(function(text) {
-      var t = doc.createElement('p');
-      t.textContent = text;
-      information.appendChild(t);
-    });
-    content.appendChild(information);
-
-    if (data.sources || data.related) {
-      var separator = doc.createElement('div');
-      separator.classList.add('separator');
-      content.appendChild(separator);
-
-      if (data.sources)
-        if (data.sources.length) {
-          var sources = doc.createElement('div');
-          sources.classList.add('sources');
-          var sourceTitle = doc.createElement('h4');
-          sourceTitle.textContent = 'Sources';
-          sources.appendChild(sourceTitle);
-
-          var sourceList = doc.createElement('ul');
-          data.sources.forEach(function(source, sIndex) {
-            var sourceEl = doc.createElement('li');
-            sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
-            sourceList.appendChild(sourceEl);
-          });
-          sources.appendChild(sourceList);
-
-          content.appendChild(sources);
-        }
-
-      if (data.related)
-        if (data.related.length) {
-          var related = doc.createElement('div');
-          related.classList.add('related');
-          var relatedTitle = doc.createElement('h4');
-          relatedTitle.textContent = 'Related';
-          related.appendChild(relatedTitle);
-
-          var relatedList = doc.createElement('ul');
-          data.related.forEach(function(rItem, rIndex) {
-            var itemEl = doc.createElement('li');
-            itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
-            relatedList.appendChild(itemEl);
-          });
-          related.appendChild(relatedList);
-
-          content.appendChild(related);
-        }
-    }
 
     return card;
   }
