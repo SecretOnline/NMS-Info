@@ -165,7 +165,7 @@
         // Expand the specified element
         var element = document.querySelector('.element-' + searchParams.element);
         element.classList.add('expanded');
-        addCardInfo(element, resources[element.dataset.id]);
+        addResourceInfo(element, resources[element.dataset.id]);
       }
     } else {
       changeTab(0); // Just go to default spot
@@ -577,7 +577,7 @@
             });
           } else
             elementEl.textContent = element;
-          elementList.appendChild(elementEl);
+          makesList.appendChild(elementEl);
         });
         makes.appendChild(makesList);
 
@@ -606,7 +606,7 @@
             });
           } else
             elementEl.textContent = element;
-          elementList.appendChild(elementEl);
+          madeFromList.appendChild(elementEl);
         });
         madeFrom.appendChild(madeFromList);
 

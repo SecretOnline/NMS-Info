@@ -91,6 +91,7 @@ nav li {
   display: inline-block;
   /* Workaround a small inline-block bug/feature */
   margin-left: -4px;
+  cursor: pointer;
 }
 nav li:hover {
   background-color: rgba(255, 255, 255, .2);
