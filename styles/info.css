@@ -1,12 +1,12 @@
 h1,
 h2,
 h3,
-h4,
 header,
 nav {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
 h4 {
+  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
   margin: 5px 0;
 }
 body,
@@ -51,7 +51,6 @@ header button {
   width: 70px;
   height: 70px;
   -webkit-tap-highlight-color: transparent;
-  outline: none;
   margin-left: -4px;
   cursor: pointer;
 }
@@ -167,12 +166,13 @@ main {
   transition: height 0.5s, background-color 0.5s;
 }
 .info-card.spoiler .header .header-bg {
-  background-color: #e22;
+  background-color: #e22 !important;
 }
 .info-card.expanded .header .header-bg {
   height: 100px;
 }
 .info-card .header .card-title,
+.element-card .header .card-title,
 .category-card .card-title {
   margin: 16px;
   font-size: 24px;

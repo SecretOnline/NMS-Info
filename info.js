@@ -35,32 +35,35 @@
 
     doc.querySelector('.tab-info').addEventListener('click', function() {
       changeTab(0);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-cat').addEventListener('click', function() {
       changeTab(1);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-search').addEventListener('click', function() {
       changeTab(2);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-elements').addEventListener('click', function() {
       changeTab(3);
-      scroll(0, 0);
     });
 
-    doc.querySelector('.info-search-button').addEventListener('click', function() {
+    function doInfoSearch() {
+      changeTab(2);
       var query = doc.querySelector('.info-search-box').value;
       generalSearch(query);
-      changeTab(2);
-      scroll(0, 0);
+    }
+
+    doc.querySelector('.info-search-button').addEventListener('click', doInfoSearch);
+    doc.querySelector('.info-search-box').addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        doInfoSearch();
+      }
     });
 
     getCategories();
   }
 
   function changeTab(number) {
+    scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
     if (number === 0) {
@@ -77,6 +80,7 @@
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
+      history.replaceState(null, '', '?search');
     } else if (number === 3) {
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
@@ -110,11 +114,12 @@
         categorySearch(searchParams.cat);
       }
     } else if (typeof searchParams.search !== 'undefined') {
+      changeTab(2);
       if (searchParams.search) {
         var query = decodeURIComponent(searchParams.search);
         generalSearch(query);
+        document.querySelector('.info-search-box').value = searchParams.search;
       }
-      changeTab(2);
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
@@ -259,7 +264,13 @@
 
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
-        history.replaceState(null, '', '?');
+        if (document.querySelector('.page-container').classList.contains('search'))
+          if (document.querySelector('.info-search-box').value)
+            history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
+          else
+            history.replaceState(null, '', '?search');
+        else
+          history.replaceState(null, '', '?');
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
@@ -395,8 +406,6 @@
     });
 
     history.replaceState(null, '', '?cat=' + id);
-    changeTab(2);
-    scroll(0, 0);
   }
 
   function generalSearch(query) {
@@ -450,7 +459,6 @@
     });
 
     history.replaceState(null, '', '?search=' + encodeURIComponent(query));
-    changeTab(2);
     scroll(0, 0);
   }
 
