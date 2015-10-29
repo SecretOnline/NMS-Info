@@ -120,6 +120,7 @@
       var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
       cardArray.forEach(function(element) {
         element.classList.add('expanded');
+        addCardInfo(element, info[element.dataset.id]);
       });
       if (typeof searchParams.cat !== 'undefined' || typeof searchParams.search !== 'undefined') {
         cardArray[1].scrollIntoView({
@@ -268,64 +269,69 @@
         collapseAllItems();
         history.replaceState(null, '', '?info=' + card.dataset.id);
 
-        var information = doc.createElement('div');
-        information.classList.add('information');
-        data.text.forEach(function(text) {
-          var t = doc.createElement('p');
-          t.textContent = text;
-          information.appendChild(t);
-        });
-        content.appendChild(information);
-
-        if (data.sources || data.related) {
-          var separator = doc.createElement('div');
-          separator.classList.add('separator');
-          content.appendChild(separator);
-
-          if (data.sources)
-            if (data.sources.length) {
-              var sources = doc.createElement('div');
-              sources.classList.add('sources');
-              var sourceTitle = doc.createElement('h4');
-              sourceTitle.textContent = 'Sources';
-              sources.appendChild(sourceTitle);
-
-              var sourceList = doc.createElement('ul');
-              data.sources.forEach(function(source, sIndex) {
-                var sourceEl = doc.createElement('li');
-                sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
-                sourceList.appendChild(sourceEl);
-              });
-              sources.appendChild(sourceList);
-
-              content.appendChild(sources);
-            }
-
-          if (data.related)
-            if (data.related.length) {
-              var related = doc.createElement('div');
-              related.classList.add('related');
-              var relatedTitle = doc.createElement('h4');
-              relatedTitle.textContent = 'Related';
-              related.appendChild(relatedTitle);
-
-              var relatedList = doc.createElement('ul');
-              data.related.forEach(function(rItem, rIndex) {
-                var itemEl = doc.createElement('li');
-                itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
-                relatedList.appendChild(itemEl);
-              });
-              related.appendChild(relatedList);
-
-              content.appendChild(related);
-            }
-        }
-
+        addCardInfo(card, data);
       }
       card.classList.toggle('expanded');
     });
 
     return card;
+  }
+
+  function addCardInfo(card, data) {
+    var content = card.querySelector('.card-content');
+
+    var information = doc.createElement('div');
+    information.classList.add('information');
+    data.text.forEach(function(text) {
+      var t = doc.createElement('p');
+      t.textContent = text;
+      information.appendChild(t);
+    });
+    content.appendChild(information);
+
+    if (data.sources || data.related) {
+      var separator = doc.createElement('div');
+      separator.classList.add('separator');
+      content.appendChild(separator);
+
+      if (data.sources)
+        if (data.sources.length) {
+          var sources = doc.createElement('div');
+          sources.classList.add('sources');
+          var sourceTitle = doc.createElement('h4');
+          sourceTitle.textContent = 'Sources';
+          sources.appendChild(sourceTitle);
+
+          var sourceList = doc.createElement('ul');
+          data.sources.forEach(function(source, sIndex) {
+            var sourceEl = doc.createElement('li');
+            sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
+            sourceList.appendChild(sourceEl);
+          });
+          sources.appendChild(sourceList);
+
+          content.appendChild(sources);
+        }
+
+      if (data.related)
+        if (data.related.length) {
+          var related = doc.createElement('div');
+          related.classList.add('related');
+          var relatedTitle = doc.createElement('h4');
+          relatedTitle.textContent = 'Related';
+          related.appendChild(relatedTitle);
+
+          var relatedList = doc.createElement('ul');
+          data.related.forEach(function(rItem, rIndex) {
+            var itemEl = doc.createElement('li');
+            itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
+            relatedList.appendChild(itemEl);
+          });
+          related.appendChild(relatedList);
+
+          content.appendChild(related);
+        }
+    }
   }
 
   function createCategoryCard(data) {
