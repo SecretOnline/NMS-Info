@@ -3,6 +3,7 @@
 
   var info = [];
   var categories = [];
+  var resources = [];
 
   var aboutCard = {
     title: 'About this Repository',
@@ -20,10 +21,14 @@
     categories: []
   };
 
+  /**
+   * Create everything that is needed for normal page function
+   */
   function initInfo() {
     // do navbar scoll stuff
     window.addEventListener("optimizedScroll", function() {
       var nav = doc.querySelector('nav');
+      // If the header is out of view
       if (scrollY > 70) {
         nav.classList.add('floating');
       } else {
@@ -33,51 +38,66 @@
         scroll(0, scrollY);
     });
 
+    // Add navigation event handlers
     doc.querySelector('.tab-info').addEventListener('click', function() {
       changeTab(0);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-cat').addEventListener('click', function() {
       changeTab(1);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-search').addEventListener('click', function() {
       changeTab(2);
-      scroll(0, 0);
     });
     doc.querySelector('.tab-elements').addEventListener('click', function() {
       changeTab(3);
-      scroll(0, 0);
     });
 
-    doc.querySelector('.info-search-button').addEventListener('click', function() {
+    function doInfoSearch() {
+      changeTab(2);
       var query = doc.querySelector('.info-search-box').value;
       generalSearch(query);
-      changeTab(2);
-      scroll(0, 0);
+    }
+    // Main search box event handlers
+    doc.querySelector('.info-search-button').addEventListener('click', doInfoSearch);
+    doc.querySelector('.info-search-box').addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        doInfoSearch();
+      }
     });
 
+    // Create cards for all the information
     getCategories();
+    getResources();
   }
 
+  /**
+   * Change which page is currently visible
+   * @param number Index of tab to switch to
+   */
   function changeTab(number) {
+    scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
     if (number === 0) {
+      // Go to main page
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?');
     } else if (number === 1) {
+      // Go to categories list
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?cat');
     } else if (number === 2) {
+      // Go to search
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
+      history.replaceState(null, '', '?search');
     } else if (number === 3) {
+      // Go to elements
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
@@ -85,6 +105,11 @@
     }
   }
 
+  /**
+   * Quick helper function to make an HTTP GET request and call a callback with the response
+   * @param url URL of the resource to request
+   * @param callback Callback function that takes a single parameter which hold the response of the request
+   */
   function httpGet(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function() {
@@ -94,9 +119,12 @@
     xhr.send();
   }
 
+  /**
+   * Look at the parameters in the url, and do things based on them
+   */
   function handleSearchParams() {
     var searchParams = {};
-    // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following code
+    // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following block of code
     if (location.search.length > 1) {
       for (var aItKey, nKeyId = 0, aCouples = location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
         aItKey = aCouples[nKeyId].split("=");
@@ -105,57 +133,56 @@
     }
 
     if (typeof searchParams.cat !== 'undefined') {
+      // Go to the categories page
       changeTab(1);
       if (searchParams.cat !== '') {
+        // Go to the search page, but fill it with all info in the specified category
         categorySearch(searchParams.cat);
       }
     } else if (typeof searchParams.search !== 'undefined') {
+      // Go to the search page
+      changeTab(2);
       if (searchParams.search) {
+        // Perform a search with the given parameter
         var query = decodeURIComponent(searchParams.search);
         generalSearch(query);
+        document.querySelector('.info-search-box').value = searchParams.search;
       }
-      changeTab(2);
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
+      // Expand all cards with this id
       cardArray.forEach(function(element) {
         element.classList.add('expanded');
         addCardInfo(element, info[element.dataset.id]);
       });
-      if (typeof searchParams.cat !== 'undefined' || typeof searchParams.search !== 'undefined') {
-        cardArray[1].scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      } else {
-        cardArray[0].scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
+      // Make sure card isn't hidden behind the floating navigation bar
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
+      // Go to the elements page
       changeTab(3);
+      if (searchParams.element) {
+        // Expand the specified element
+        var element = document.querySelector('.element-' + searchParams.element);
+        element.classList.add('expanded');
+        addResourceInfo(element, resources[element.dataset.id]);
+      }
     } else {
       changeTab(0); // Just go to default spot
     }
   }
 
+  /**
+   * Retrieve information, and add cards to page
+   */
   function getItems() {
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
-      var colOne = doc.createElement('div');
-      var colTwo = doc.createElement('div');
-      colOne.classList.add('card-half');
-      colTwo.classList.add('card-half');
-
-      colOne.appendChild(createInfoCard(aboutCard));
-      cardList.appendChild(colOne);
-      cardList.appendChild(colTwo);
 
       info = JSON.parse(response);
       var cardArr = [];
 
+      // Create cards for each of the pieces of information
       info.forEach(function(item, index) {
         item.index = index;
         var card = createInfoCard(item);
@@ -163,46 +190,80 @@
       });
 
       cardArr = arrayRandomise(cardArr);
+      // Add "about" card to the top of the list
+      cardArr.unshift(createInfoCard(aboutCard));
 
-      cardArr.forEach(function(item, index) {
-        if (index % 2)
-          colOne.appendChild(item);
-        else
-          colTwo.appendChild(item);
-      });
+      distributeItems(cardArr, cardList);
 
+      // Now that data is loaded, process the search parameters
       handleSearchParams();
     });
   }
 
+  /**
+   * Retrieve categories and create cards for them
+   */
   function getCategories() {
     httpGet('data/categories.json', function(response) {
       var cardList = doc.querySelector('.cat-list');
-      var colOne = doc.createElement('div');
-      var colTwo = doc.createElement('div');
-      colOne.classList.add('card-half');
-      colTwo.classList.add('card-half');
-
-      cardList.appendChild(colOne);
-      cardList.appendChild(colTwo);
 
       categories = JSON.parse(response);
 
+      // Create category cards for each of the categories
+      var cardArr = [];
       categories.forEach(function(item, index) {
         item.index = index;
         var card = createCategoryCard(item);
-        if (index % 2)
-          colTwo.appendChild(card);
-        else
-          colOne.appendChild(card);
+        cardArr.push(card);
       });
 
+      distributeItems(cardArr, cardList);
+
+      // Load in information, now that categories are loaded
       getItems();
     });
   }
 
-  function createInfoCard(data) {
+  /**
+   * Retrieve element list and create cards
+   */
+  function getResources() {
+    httpGet('data/resources.json', function(response) {
+      var cardList = doc.querySelector('.elements-list');
 
+      resources = JSON.parse(response);
+
+      var cardArr = [];
+
+      // Create element cards
+      resources.forEach(function(item, index) {
+        item.index = index;
+
+        // Add entry back to this item if thi one makes the other
+        if (item.makes) {
+          item.makes.forEach(function(compound) {
+            if (resources[compound]) {
+              if (!resources[compound].madeFrom)
+                resources[compound].madeFrom = [];
+              resources[compound].madeFrom.push(index);
+            }
+          });
+        }
+
+        var card = createResourceCard(item);
+        cardArr.push(card);
+      });
+
+      distributeItems(cardArr, cardList);
+    });
+  }
+
+  /**
+   * Create an information card with the given data
+   * @param data Object describing the piece of information
+   * @return Element to add to page
+   */
+  function createInfoCard(data) {
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('info-card');
@@ -225,10 +286,12 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    // Add empty content box
     var content = doc.createElement('div');
     content.classList.add('card-content');
     card.appendChild(content);
 
+    // Add category list
     if (data.categories.length) {
       var category = categories[data.categories[0]];
       if (category.darkText) {
@@ -239,6 +302,7 @@
       var cats = doc.createElement('div');
       cats.classList.add('categories');
 
+      // Add all specified categories to a list
       var catList = doc.createElement('ul');
       data.categories.forEach(function(cat) {
         var catEl = doc.createElement('li');
@@ -247,6 +311,7 @@
         catEl.style.color = category.textColor;
 
         catEl.addEventListener('click', function() {
+          // Perform a category search on the clicked category
           categorySearch(catEl.dataset.id);
         });
 
@@ -257,15 +322,25 @@
       header.appendChild(cats);
     }
 
+    // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
-        history.replaceState(null, '', '?');
+        // See whether we need to do anything special to the url
+        if (document.querySelector('.page-container').classList.contains('search'))
+        // Add search to the url
+          if (document.querySelector('.info-search-box').value)
+            history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
+          else
+            history.replaceState(null, '', '?search');
+        else
+          history.replaceState(null, '', '?');
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
           content.innerHTML = '';
         }, 500);
       } else {
+        // Expand the card
         collapseAllItems();
         history.replaceState(null, '', '?info=' + card.dataset.id);
 
@@ -277,9 +352,21 @@
     return card;
   }
 
+  /**
+   * Add content to the given card
+   * This is so that inner elements are only present if needed
+   * @param card Element to add the information to
+   * @param data Object describing the piece of information
+   */
   function addCardInfo(card, data) {
-    var content = card.querySelector('.card-content');
+    if (typeof data === 'undefined')
+      data = aboutCard;
 
+    // Clear any pre-existing content
+    var content = card.querySelector('.card-content');
+    content.innerHTML = '';
+
+    // Add information text
     var information = doc.createElement('div');
     information.classList.add('information');
     data.text.forEach(function(text) {
@@ -289,11 +376,13 @@
     });
     content.appendChild(information);
 
+    // If another section is required
     if (data.sources || data.related) {
       var separator = doc.createElement('div');
       separator.classList.add('separator');
       content.appendChild(separator);
 
+      // If there are sources to show
       if (data.sources)
         if (data.sources.length) {
           var sources = doc.createElement('div');
@@ -302,6 +391,7 @@
           sourceTitle.textContent = 'Sources';
           sources.appendChild(sourceTitle);
 
+          // Add sources to list
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
@@ -313,6 +403,8 @@
           content.appendChild(sources);
         }
 
+        // If there are related items to link to
+        // Unfinished, do not use at this stage
       if (data.related)
         if (data.related.length) {
           var related = doc.createElement('div');
@@ -321,6 +413,7 @@
           relatedTitle.textContent = 'Related';
           related.appendChild(relatedTitle);
 
+          // Add related items to list
           var relatedList = doc.createElement('ul');
           data.related.forEach(function(rItem, rIndex) {
             var itemEl = doc.createElement('li');
@@ -334,6 +427,11 @@
     }
   }
 
+  /**
+   * Create a card for a category
+   * @param data Object describing this category
+   * @return Element to add to the page
+   */
   function createCategoryCard(data) {
     // Create card element
     var card = doc.createElement('div');
@@ -357,6 +455,7 @@
     title.classList.add('card-title');
     card.appendChild(title);
 
+    // Do a category search when clicked
     card.addEventListener('click', function() {
       categorySearch(card.dataset.id);
     });
@@ -364,67 +463,214 @@
     return card;
   }
 
+  /**
+   * Create an element card
+   * @param data Object describing this element
+   * @return Element to add to the page
+   */
+  function createResourceCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('element-card');
+    card.classList.add("element-" + data.index);
+    // Store data values
+    card.dataset.id = data.index;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerSymbol = doc.createElement('h3');
+    headerSymbol.classList.add('element-symbol');
+    if (data.symbol)
+      headerSymbol.textContent = data.symbol;
+    else
+      headerSymbol.textContent = '??';
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    if (data.name)
+      headerTitle.textContent = data.name;
+    else
+      headerTitle.textContent = '???';
+    header.appendChild(headerBg);
+    header.appendChild(headerSymbol);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    // Add empty content box
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    // Expand card when clicked
+    header.addEventListener('click', function() {
+      if (card.classList.contains('expanded')) {
+        history.replaceState(null, '', '?element');
+
+        // Clear content after 0.5 seconds
+        setTimeout(function() {
+          content.innerHTML = '';
+        }, 500);
+      } else {
+        collapseAllItems();
+        history.replaceState(null, '', '?element=' + card.dataset.id);
+
+        addResourceInfo(card, data);
+      }
+      card.classList.toggle('expanded');
+    });
+
+    return card;
+  }
+
+  /**
+   * Add information to resource card
+   * This is so that inner elements are only present if needed
+   * @param card Element to add the information to
+   * @param data Object describing the element
+   */
+  function addResourceInfo(card, data) {
+    var content = card.querySelector('.card-content');
+    content.innerHTML = '';
+
+    // Add element description
+    var information = doc.createElement('div');
+    information.classList.add('information');
+    content.appendChild(information);
+    var description = doc.createElement('p');
+    description.classList.add('element-description');
+    if (data.description)
+      description.textContent = data.description;
+    else
+      description.textContent = 'No description for this element has been found yet';
+    information.appendChild(description);
+
+    // If another area is needed
+    if (data.makes || data.madeFrom) {
+      //Add a separator
+      var separator = doc.createElement('div');
+      separator.classList.add('separator');
+      content.appendChild(separator);
+
+      if (data.makes) {
+        // Add list of resources this one can make
+        var makes = doc.createElement('div');
+        makes.classList.add('element-makes');
+        var makesTitle = doc.createElement('h4');
+        makesTitle.textContent = 'Makes';
+        makes.appendChild(makesTitle);
+
+        var makesList = doc.createElement('ul');
+        data.makes.forEach(function(element) {
+          var elementEl = doc.createElement('li');
+          if (resources[element]) {
+            elementEl.textContent = resources[element].name;
+
+            // Expand other item when clicked
+            elementEl.addEventListener('click', function() {
+              collapseAllItems();
+              var otherElement = document.querySelector('.element-' + element);
+              otherElement.classList.add('expanded');
+              addResourceInfo(otherElement, resources[element]);
+            });
+          } else
+            elementEl.textContent = element;
+          makesList.appendChild(elementEl);
+        });
+        makes.appendChild(makesList);
+
+        content.appendChild(makes);
+      }
+      if (data.madeFrom) {
+        // Add list fo resource this one can be made from
+        var madeFrom = doc.createElement('div');
+        madeFrom.classList.add('element-made-from');
+        var madeFromTitle = doc.createElement('h4');
+        madeFromTitle.textContent = 'Made From';
+        madeFrom.appendChild(madeFromTitle);
+
+        var madeFromList = doc.createElement('ul');
+        data.madeFrom.forEach(function(element) {
+          var elementEl = doc.createElement('li');
+          if (resources[element]) {
+            elementEl.textContent = resources[element].name;
+
+            // Expand other item when clicked
+            elementEl.addEventListener('click', function() {
+              collapseAllItems();
+              var otherElement = document.querySelector('.element-' + element);
+              otherElement.classList.add('expanded');
+              addResourceInfo(otherElement, resources[element]);
+            });
+          } else
+            elementEl.textContent = element;
+          madeFromList.appendChild(elementEl);
+        });
+        madeFrom.appendChild(madeFromList);
+
+        content.appendChild(madeFrom);
+      }
+    }
+  }
+
+  /**
+   * Search by category
+   * Lists all pieces of information in the category
+   * @param id ID of a category to search for
+   */
   function categorySearch(id) {
     var category = categories[id];
     var title = doc.querySelector('.search-title');
     title.textContent = 'Category: ' + category.title;
     var container = doc.querySelector('.search-list');
-    container.innerHTML = '';
-    var colOne = doc.createElement('div');
-    var colTwo = doc.createElement('div');
-    colOne.classList.add('card-half');
-    colTwo.classList.add('card-half');
-
-    container.appendChild(colOne);
-    container.appendChild(colTwo);
 
     var cardArr = [];
 
     info.forEach(function(item) {
+      // If info is in the category
       if (item.categories.indexOf(id) > -1) {
+        // Create card and add to list
         var card = createInfoCard(item);
         cardArr.push(card);
       }
     });
 
-    cardArr.forEach(function(item, index) {
-      if (index % 2)
-        colTwo.appendChild(item);
-      else
-        colOne.appendChild(item);
-    });
+    distributeItems(cardArr, container);
+    changeTab(2);
 
     history.replaceState(null, '', '?cat=' + id);
-    changeTab(2);
-    scroll(0, 0);
   }
 
+  /**
+   * Perform a search
+   * @param query String to search for
+   */
   function generalSearch(query) {
     var title = doc.querySelector('.search-title');
     title.textContent = 'Search: ' + query;
     var container = doc.querySelector('.search-list');
-    container.innerHTML = '';
-    var colOne = doc.createElement('div');
-    var colTwo = doc.createElement('div');
-    colOne.classList.add('card-half');
-    colTwo.classList.add('card-half');
-    container.appendChild(colOne);
-    container.appendChild(colTwo);
 
     var scores = {};
 
+    // Get the score for a particular piece of information
     info.forEach(function(item) {
       var score = getSearchScore(query, item);
       var card = createInfoCard(item);
 
-      if (!scores[score])
-        scores[score] = [];
+      // Don't add anything with a score of 0
+      if (score > 0) {
+        if (!scores[score])
+          scores[score] = [];
 
-      scores[score].push(card);
+        scores[score].push(card);
+      }
     });
 
     var cardArr = [];
     var values = Object.keys(scores);
+    // Sort using integers, not strings
     values.sort(function(one, two) {
       // Sort as integers, not strings
       var a = parseInt(one);
@@ -435,25 +681,25 @@
         return 1;
       return 0;
     });
+    // Add information backwards (so highest score is at top)
     values.forEach(function(score) {
-      if (score > 0)
-        scores[score].forEach(function(card) {
-          cardArr.unshift(card);
-        });
+      scores[score].forEach(function(card) {
+        cardArr.unshift(card);
+      });
     });
 
-    cardArr.forEach(function(item, index) {
-      if (index % 2)
-        colTwo.appendChild(item);
-      else
-        colOne.appendChild(item);
-    });
+    distributeItems(cardArr, container);
 
     history.replaceState(null, '', '?search=' + encodeURIComponent(query));
-    changeTab(2);
     scroll(0, 0);
   }
 
+  /**
+   * Calculate search score based on query
+   * @param query String to search for
+   * @param info Object describing a piece of information
+   * @return Integer score for this piece of information. Higher means better match
+   */
   function getSearchScore(query, info) {
     query = query.toLowerCase();
     var score = 0;
@@ -484,13 +730,54 @@
     return score;
   }
 
+  /**
+   * Organise items into one or two columns depending on screen size
+   * @param array Array containin Elements that should be added
+   * @param container Element that the Elements in the array should be added to
+   */
+  function distributeItems(array, container) {
+    var twoColThreshold = 920; // Should match class
+
+    container.innerHTML = '';
+    if (innerWidth >= twoColThreshold) {
+      // Create columns
+      var colOne = doc.createElement('div');
+      var colTwo = doc.createElement('div');
+      colOne.classList.add('card-half');
+      colTwo.classList.add('card-half');
+      container.appendChild(colOne);
+      container.appendChild(colTwo);
+
+      array.forEach(function(item, index) {
+        // Add to column based on index
+        if (index % 2)
+          colTwo.appendChild(item);
+        else
+          colOne.appendChild(item);
+      });
+    } else {
+      // Just add to container
+      array.forEach(function(item) {
+        container.appendChild(item);
+      });
+    }
+  }
+
+  /**
+   * Close any expanded items
+   */
   function collapseAllItems() {
-    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-card.expanded'));
+    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.expanded'));
     cardArray.forEach(function(item) {
       item.classList.remove('expanded');
     });
   }
 
+  /**
+   * Helper function to reorder an array in a random order
+   * @param array Array to mix up. Is not modified in this process
+   * @return New array with same data, but in a random order
+   */
   function arrayRandomise(array) {
     var newArr = [];
 

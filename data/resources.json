@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Oxycen",
+    "symbol": "",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Hyglese",
+    "symbol": "",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Heridium",
+    "symbol": "Hr",
+    "description": "",
+    "color": "#1C91E8"
+  },
+  {
+    "name": "Ioxinite",
+    "symbol": "Ix",
+    "description": "Ioxinite is a hard, heavy meatal that is red-silver in colour. Tough and durable, it is found in a wide range of technological assemblies that need to survive in harsh conditions",
+    "color": "#5CC0B0"
+  },
+  {
+    "name": "Raegon-214",
+    "symbol": "Rg",
+    "description": "Standard High-yield fuel for small to medium spacefaring ION engines, raegon sublimates violently with little provocation and should be handled with caution",
+    "color": "#856396"
+  },
+  {
+    "name": "",
+    "symbol": "Cb",
+    "description": "",
+    "color": "#C60F10"
+  },
+  {
+    "name": "",
+    "symbol": "Vy",
+    "description": "",
+    "color": "#B86D67"
+  },
+  {
+    "name": "",
+    "symbol": "Fr",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "",
+    "symbol": "Tv",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "",
+    "symbol": "Ac",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "",
+    "symbol": "Ko",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "",
+    "symbol": "Ag",
+    "description": "",
+    "color": ""
+  }
+]
