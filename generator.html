@@ -43,6 +43,12 @@
       document.querySelector('.output').value = JSON.stringify(obj);
     }
     function parseJson() {
+      var arr = document.querySelectorAll('.inputContainer');
+      for (var i = 0; i < arr.length; i++){
+        arr[i].innerHTML = '';
+        addAddButton(arr[i]);
+      }
+
       var obj = JSON.parse(document.querySelector('.output').value);
 
       if (obj.title) {
@@ -105,7 +111,7 @@
       for (var i = 0; i < arr.length; i++)
         addAddButton(arr[i]);
       document.querySelector('button.generate').addEventListener('click', generateJson);
-    document.querySelector('button.parse').addEventListener('click', parseJson);
+      document.querySelector('button.parse').addEventListener('click', parseJson);
     });
     </script>
   </head>
@@ -122,6 +128,7 @@
       <option value="8" label="News">
       <option value="9" label="Economy">
       <option value="10" label="Life">
+      <option value="11" label="Miscelaneous">
     </datalist>
     <p>
       This is a page to help with formatting the json <br>

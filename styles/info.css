@@ -25,6 +25,7 @@ body {
 }
 header {
   background-color: #01385b;
+  max-height: 70px;
 }
 header .title {
   line-height: 50px;
@@ -208,7 +209,7 @@ main {
 .info-card.dark-text.spoiler .categories li {
   color: #fff;
 }
-.info-card .categories a:hover {
+.info-card .categories li:hover {
   text-decoration: none;
 }
 .info-card .card-content {

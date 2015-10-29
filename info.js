@@ -397,8 +397,6 @@
       scores[score].push(card);
     });
 
-    console.log(scores);
-
     var cardArr = [];
     var values = Object.keys(scores);
     values.sort(function(one, two) {
@@ -411,7 +409,6 @@
         return 1;
       return 0;
     });
-    console.log(values);
     values.forEach(function(score) {
       if (score > 0)
         scores[score].forEach(function(card) {
@@ -458,7 +455,6 @@
       });
     });
 
-    console.log(info.title + ' got ' + score);
     return score;
   }
 
