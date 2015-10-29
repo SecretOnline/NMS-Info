@@ -143,6 +143,11 @@
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
       changeTab(3);
+      if (searchParams.element) {
+        var element = document.querySelector('.element-' + searchParams.element);
+        element.classList.add('expanded');
+        addCardInfo(element, resources[element.dataset.id]);
+      }
     } else {
       changeTab(0); // Just go to default spot
     }
@@ -458,11 +463,75 @@
 
     var information = doc.createElement('div');
     information.classList.add('information');
-    content.appendChild(information)
+    content.appendChild(information);
     var description = doc.createElement('p');
     description.classList.add('element-description');
-    description.textContent = data.description;
+    if (data.description)
+      description.textContent = data.description;
+    else
+      description.textContent = 'No description for this element has been found yet';
     information.appendChild(description);
+
+    if (data.makes || data.madeFrom) {
+      var separator = doc.createElement('div');
+      separator.classList.add('separator');
+      content.appendChild(separator);
+
+      if (data.makes) {
+        var makes = doc.createElement('div');
+        makes.classList.add('element-makes');
+        var makesTitle = doc.createElement('h4');
+        makesTitle.textContent = 'Makes';
+        makes.appendChild(makesTitle);
+
+        var makesList = doc.createElement('ul');
+        data.makes.forEach(function(element) {
+          var elementEl = doc.createElement('li');
+          if (resources[element]) {
+            elementEl.textContent = resources[element].name;
+
+            elementEl.addEventListener('click', function() {
+              collapseAllItems();
+              var otherElement = document.querySelector('.element-' + element);
+              otherElement.classList.add('expanded');
+              addResourceInfo(otherElement, resources[element]);
+            });
+          } else
+            elementEl.textContent = element;
+          elementList.appendChild(elementEl);
+        });
+        makes.appendChild(makesList);
+
+        content.appendChild(makes);
+      }
+      if (data.madeFrom) {
+        var madeFrom = doc.createElement('div');
+        madeFrom.classList.add('element-made-from');
+        var madeFromTitle = doc.createElement('h4');
+        madeFromTitle.textContent = 'Made From';
+        madeFrom.appendChild(madeFromTitle);
+
+        var madeFromList = doc.createElement('ul');
+        data.madeFrom.forEach(function(element) {
+          var elementEl = doc.createElement('li');
+          if (resources[element]) {
+            elementEl.textContent = resources[element].name;
+
+            elementEl.addEventListener('click', function() {
+              collapseAllItems();
+              var otherElement = document.querySelector('.element-' + element);
+              otherElement.classList.add('expanded');
+              addResourceInfo(otherElement, resources[element]);
+            });
+          } else
+            elementEl.textContent = element;
+          elementList.appendChild(elementEl);
+        });
+        madeFrom.appendChild(madeFromList);
+
+        content.appendChild(madeFrom);
+      }
+    }
   }
 
   function categorySearch(id) {
@@ -585,7 +654,7 @@
   }
 
   function collapseAllItems() {
-    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-card.expanded'));
+    var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.expanded'));
     cardArray.forEach(function(item) {
       item.classList.remove('expanded');
     });
