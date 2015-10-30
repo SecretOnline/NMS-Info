@@ -701,13 +701,17 @@
         return 1;
       return 0;
     });
+
     // Add information backwards (so highest score is at top)
     values.forEach(function(score) {
+      var arr = [];
       scores[score].forEach(function(card) {
-        cardArr.unshift(card);
+        arr.push(card);
       });
+      cardArr = arr.concat(cardArr);
     });
 
+    // Expand card if only one item returned in search
     if (cardArr.length === 1) {
       cardArr[0].classList.add('expanded');
       if (cardArr[0].classList.contains('info-card'))
