@@ -213,9 +213,6 @@ main {
 .info-card .categories li:hover {
   text-decoration: none;
 }
-.element-card .card-title {
-  left: 40px;
-}
 .element-symbol {
   display: inline-block;
   position: absolute;
@@ -224,6 +221,7 @@ main {
   text-align: center;
   margin: 12px;
   top: 0;
+  right: 0;
   color: #fff;
   font-size: 24px;
   border: 2px solid #fff;
@@ -232,10 +230,6 @@ main {
   background: -o-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.25) 100%);
   background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.25) 100%);
   background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.25) 100%);
-}
-.element-card.expanded .card-title {
-  margin: 16px;
-  left: 0;
 }
 .card-content {
   max-height: 0;
