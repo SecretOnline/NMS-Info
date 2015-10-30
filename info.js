@@ -506,8 +506,15 @@
 
     // Expand card when clicked
     header.addEventListener('click', function() {
-      if (card.classList.contains('expanded')) {
-        history.replaceState(null, '', '?element');
+      if (card.classList.contains('expanded')) { // See whether we need to do anything special to the url
+        if (document.querySelector('.page-container').classList.contains('search'))
+        // Add search to the url
+          if (document.querySelector('.info-search-box').value)
+            history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
+          else
+            history.replaceState(null, '', '?search');
+        else
+          history.replaceState(null, '', '?');
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
@@ -667,6 +674,19 @@
         scores[score].push(card);
       }
     });
+    // Search elements as well
+    resources.forEach(function(item) {
+      var score = getElementSearchScore(query, item);
+
+      // Don't add anything with a score of 0
+      if (score > 0) {
+        if (!scores[score])
+          scores[score] = [];
+
+        var card = createResourceCard(item);
+        scores[score].push(card);
+      }
+    });
 
     var cardArr = [];
     var values = Object.keys(scores);
@@ -726,6 +746,50 @@
           score += 1;
       });
     });
+
+    return score;
+  }
+
+  /**
+   * Calculate search score based on query
+   * @param query String to search for
+   * @param element Object describing an element
+   * @return Integer score for this element. Higher means better match
+   */
+  function getElementSearchScore(query, element) {
+    query = query.toLowerCase();
+    var score = 0;
+
+    var querySplit = query.split(/\W+/);
+
+    // Name contains
+    if (element.name) {
+      var lName = element.name.toLowerCase();
+      if (lName.indexOf(query) > -1)
+        score += 8;
+      // Name contains parts
+      querySplit.forEach(function(word) {
+        if (lName.indexOf(word) > -1)
+          score += 6;
+      });
+    }
+
+    // Symbol
+    if (element.symbol)
+      if (query.match(new RegExp('\\b' + element.symbol + '\\b', 'i')))
+        score += 9;
+
+      // Text contains
+    if (element.description) {
+      var lText = element.description.toLowerCase();
+      if (lText.indexOf(query) > -1)
+        score += 2;
+      // Text contains parts
+      querySplit.forEach(function(word) {
+        if (lText.indexOf(word) > -1)
+          score += 1;
+      });
+    }
 
     return score;
   }
