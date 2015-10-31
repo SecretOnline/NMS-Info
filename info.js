@@ -337,7 +337,8 @@
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
-          content.innerHTML = '';
+          if (!card.classList.contains('expanded'))
+            content.innerHTML = '';
         }, 500);
       } else {
         // Expand the card
@@ -518,7 +519,8 @@
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
-          content.innerHTML = '';
+          if (!card.classList.contains('expanded'))
+            content.innerHTML = '';
         }, 500);
       } else {
         collapseAllItems();
