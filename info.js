@@ -746,11 +746,13 @@
 
     // Title contains
     if (lTitle.indexOf(query) > -1)
-      score += 8;
+      score += 3;
     // Title contains parts
     querySplit.forEach(function(word) {
-      if (lTitle.indexOf(word) > -1)
+      if (lTitle.match(new RegExp('\\s' + word + '\\s')))
         score += 5;
+      if (lTitle.indexOf(word) > -1)
+        score += 2;
     });
     info.text.forEach(function(text) {
       var lText = text.toLowerCase();
@@ -759,6 +761,8 @@
         score += 2;
       // Text contains parts
       querySplit.forEach(function(word) {
+        if (lText.match(new RegExp('\\s' + word + '\\s')))
+          score += 1;
         if (lText.indexOf(word) > -1)
           score += 1;
       });
@@ -786,8 +790,10 @@
         score += 8;
       // Name contains parts
       querySplit.forEach(function(word) {
-        if (lName.indexOf(word) > -1)
+        if (lName.match(new RegExp('\\s' + word + '\\s')))
           score += 6;
+        if (lName.indexOf(word) > -1)
+          score += 2;
       });
     }
 
@@ -803,6 +809,8 @@
         score += 2;
       // Text contains parts
       querySplit.forEach(function(word) {
+        if (lText.match(new RegExp('\\s' + word + '\\s')))
+          score += 2;
         if (lText.indexOf(word) > -1)
           score += 1;
       });
@@ -896,14 +904,14 @@
         try {
           // Get title of document, and set text content
           var reponseTitle = response.match(/(?:<title>)(.+)(?:<\/title>)/i)[1];
-          hoverTitle.textContent = truncateString(responseTitle, 25);
+          hoverTitle.textContent = truncateString(responseTitle, 32);
           knownLinks[url] = responseTitle;
         } catch (err) {
           hoverTitle.textContent = 'Title unknown';
         }
       });
     }
-    hoverLink.textContent = truncateString(url, 25);
+    hoverLink.textContent = truncateString(url, 32);
 
     // Build subtree
     hoverContainer.appendChild(hoverTitle);

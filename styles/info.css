@@ -299,6 +299,7 @@ main {
 }
 .hover-link-container {
   background-color: rgba(0, 0, 0, 0.6);
+  font-size: 0.75em;
   position: absolute;
   top: -3.5em;
   padding: 5px !important;
