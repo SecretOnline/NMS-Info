@@ -40,16 +40,16 @@
 
     // Add navigation event handlers
     doc.querySelector('.tab-info').addEventListener('click', function() {
-      changeTab(0);
+      changeTab('main');
     });
     doc.querySelector('.tab-cat').addEventListener('click', function() {
-      changeTab(1);
+      changeTab('categories');
     });
     doc.querySelector('.tab-search').addEventListener('click', function() {
-      changeTab(2);
+      changeTab('search');
     });
     doc.querySelector('.tab-elements').addEventListener('click', function() {
-      changeTab(3);
+      changeTab('elements');
     });
 
     function doInfoSearch() {
@@ -72,31 +72,31 @@
 
   /**
    * Change which page is currently visible
-   * @param number Index of tab to switch to
+   * @param tab Name of the tab to switch to
    */
-  function changeTab(number) {
+  function changeTab(tab) {
     scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
-    if (number === 0) {
+    if (typeof tab === 'undefined' || tab === 'main') {
       // Go to main page
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?');
-    } else if (number === 1) {
+    } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?cat');
-    } else if (number === 2) {
+    } else if (tab === 'search') {
       // Go to search
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?search');
-    } else if (number === 3) {
+    } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
@@ -134,14 +134,14 @@
 
     if (typeof searchParams.cat !== 'undefined') {
       // Go to the categories page
-      changeTab(1);
+      changeTab('categories');
       if (searchParams.cat !== '') {
         // Go to the search page, but fill it with all info in the specified category
         categorySearch(searchParams.cat);
       }
     } else if (typeof searchParams.search !== 'undefined') {
       // Go to the search page
-      changeTab(2);
+      changeTab('search');
       if (searchParams.search) {
         // Perform a search with the given parameter
         var query = decodeURIComponent(searchParams.search);
@@ -160,7 +160,7 @@
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
       // Go to the elements page
-      changeTab(3);
+      changeTab('elements');
       if (searchParams.element) {
         // Expand the specified element
         var element = document.querySelector('.element-' + searchParams.element);
@@ -168,7 +168,7 @@
         addResourceInfo(element, resources[element.dataset.id]);
       }
     } else {
-      changeTab(0); // Just go to default spot
+      changeTab('main'); // Just go to default spot
     }
   }
 
@@ -647,7 +647,7 @@
     });
 
     distributeItems(cardArr, container);
-    changeTab(2);
+    changeTab('search');
 
     history.replaceState(null, '', '?cat=' + id);
   }
