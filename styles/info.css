@@ -110,7 +110,7 @@ main {
   right: calc(100vw - (50vw - (53em / 2)));
 }
 .page-container.search {
-  right: calc((100vw - (50vw - (53em / 2))) * 2);
+  right: calc((100vw - (50vw - (53em / 2))) * -1);
 }
 .page-container.elements {
   right: calc((100vw - (50vw - (53em / 2))) * 3);
@@ -125,7 +125,7 @@ main {
   left: calc(100vw - (50vw - (53em / 2)));
 }
 .page-search {
-  left: calc((100vw - (50vw - (53em / 2))) * 2);
+  left: calc((100vw - (50vw - (53em / 2))) * -1);
 }
 .page-elements {
   left: calc((100vw - (50vw - (53em / 2))) * 3);
