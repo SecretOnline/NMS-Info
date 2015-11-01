@@ -113,7 +113,7 @@ main {
   right: calc((100vw - (50vw - (53em / 2))) * -1);
 }
 .page-container.elements {
-  right: calc((100vw - (50vw - (53em / 2))) * 3);
+  right: calc((100vw - (50vw - (53em / 2))) * 2);
 }
 .page-container > div {
   margin: 0 5px;
@@ -128,7 +128,7 @@ main {
   left: calc((100vw - (50vw - (53em / 2))) * -1);
 }
 .page-elements {
-  left: calc((100vw - (50vw - (53em / 2))) * 3);
+  left: calc((100vw - (50vw - (53em / 2))) * 2);
 }
 .info-list .info-card,
 .cat-list .category-card,
