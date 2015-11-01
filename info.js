@@ -151,12 +151,11 @@
       }
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
-      var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.info-' + searchParams.info));
-      // Expand all cards with this id
-      cardArray.forEach(function(element) {
-        element.classList.add('expanded');
-        addCardInfo(element, info[element.dataset.id]);
-      });
+      // Expand card
+      var element = doc.querySelector('.info-' + searchParams.info);
+      element.classList.add('expanded');
+      addCardInfo(element, info[element.dataset.id]);
+      element.scrollIntoView();
       // Make sure card isn't hidden behind the floating navigation bar
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
