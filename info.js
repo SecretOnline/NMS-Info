@@ -4,6 +4,7 @@
   var info = [];
   var categories = [];
   var resources = [];
+  var knownLinks = {};
 
   var aboutCard = {
     title: 'About this Repository',
@@ -40,16 +41,16 @@
 
     // Add navigation event handlers
     doc.querySelector('.tab-info').addEventListener('click', function() {
-      changeTab(0);
+      changeTab('main');
     });
     doc.querySelector('.tab-cat').addEventListener('click', function() {
-      changeTab(1);
+      changeTab('categories');
     });
     doc.querySelector('.tab-search').addEventListener('click', function() {
-      changeTab(2);
+      changeTab('search');
     });
     doc.querySelector('.tab-elements').addEventListener('click', function() {
-      changeTab(3);
+      changeTab('elements');
     });
 
     function doInfoSearch() {
@@ -72,31 +73,31 @@
 
   /**
    * Change which page is currently visible
-   * @param number Index of tab to switch to
+   * @param tab Name of the tab to switch to
    */
-  function changeTab(number) {
+  function changeTab(tab) {
     scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
-    if (number === 0) {
+    if (typeof tab === 'undefined' || tab === 'main') {
       // Go to main page
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?');
-    } else if (number === 1) {
+    } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?cat');
-    } else if (number === 2) {
+    } else if (tab === 'search') {
       // Go to search
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       history.replaceState(null, '', '?search');
-    } else if (number === 3) {
+    } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
@@ -134,14 +135,14 @@
 
     if (typeof searchParams.cat !== 'undefined') {
       // Go to the categories page
-      changeTab(1);
+      changeTab('categories');
       if (searchParams.cat !== '') {
         // Go to the search page, but fill it with all info in the specified category
         categorySearch(searchParams.cat);
       }
     } else if (typeof searchParams.search !== 'undefined') {
       // Go to the search page
-      changeTab(2);
+      changeTab('search');
       if (searchParams.search) {
         // Perform a search with the given parameter
         var query = decodeURIComponent(searchParams.search);
@@ -160,7 +161,7 @@
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
       // Go to the elements page
-      changeTab(3);
+      changeTab('elements');
       if (searchParams.element) {
         // Expand the specified element
         var element = document.querySelector('.element-' + searchParams.element);
@@ -168,7 +169,7 @@
         addResourceInfo(element, resources[element.dataset.id]);
       }
     } else {
-      changeTab(0); // Just go to default spot
+      changeTab('main'); // Just go to default spot
     }
   }
 
@@ -337,7 +338,8 @@
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
-          content.innerHTML = '';
+          if (!card.classList.contains('expanded'))
+            content.innerHTML = '';
         }, 500);
       } else {
         // Expand the card
@@ -395,7 +397,9 @@
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
-            sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
+            var anchor = createLinkElement(source, sIndex + 1);
+            sourceEl.appendChild(anchor);
+            //sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
             sourceList.appendChild(sourceEl);
           });
           sources.appendChild(sourceList);
@@ -518,7 +522,8 @@
 
         // Clear content after 0.5 seconds
         setTimeout(function() {
-          content.innerHTML = '';
+          if (!card.classList.contains('expanded'))
+            content.innerHTML = '';
         }, 500);
       } else {
         collapseAllItems();
@@ -645,7 +650,7 @@
     });
 
     distributeItems(cardArr, container);
-    changeTab(2);
+    changeTab('search');
 
     history.replaceState(null, '', '?cat=' + id);
   }
@@ -701,13 +706,17 @@
         return 1;
       return 0;
     });
+
     // Add information backwards (so highest score is at top)
     values.forEach(function(score) {
+      var arr = [];
       scores[score].forEach(function(card) {
-        cardArr.unshift(card);
+        arr.push(card);
       });
+      cardArr = arr.concat(cardArr);
     });
 
+    // Expand card if only one item returned in search
     if (cardArr.length === 1) {
       cardArr[0].classList.add('expanded');
       if (cardArr[0].classList.contains('info-card'))
@@ -737,11 +746,13 @@
 
     // Title contains
     if (lTitle.indexOf(query) > -1)
-      score += 8;
+      score += 3;
     // Title contains parts
     querySplit.forEach(function(word) {
-      if (lTitle.indexOf(word) > -1)
+      if (lTitle.match(new RegExp('\\s' + word + '\\s')))
         score += 5;
+      if (lTitle.indexOf(word) > -1)
+        score += 2;
     });
     info.text.forEach(function(text) {
       var lText = text.toLowerCase();
@@ -750,6 +761,8 @@
         score += 2;
       // Text contains parts
       querySplit.forEach(function(word) {
+        if (lText.match(new RegExp('\\s' + word + '\\s')))
+          score += 1;
         if (lText.indexOf(word) > -1)
           score += 1;
       });
@@ -777,8 +790,10 @@
         score += 8;
       // Name contains parts
       querySplit.forEach(function(word) {
-        if (lName.indexOf(word) > -1)
+        if (lName.match(new RegExp('\\s' + word + '\\s')))
           score += 6;
+        if (lName.indexOf(word) > -1)
+          score += 2;
       });
     }
 
@@ -794,6 +809,8 @@
         score += 2;
       // Text contains parts
       querySplit.forEach(function(word) {
+        if (lText.match(new RegExp('\\s' + word + '\\s')))
+          score += 2;
         if (lText.indexOf(word) > -1)
           score += 1;
       });
@@ -859,6 +876,55 @@
     }
 
     return newArr;
+  }
+
+  /**
+   * Creates a link that has special hover powers
+   * @param url URL the link goes to
+   * @return Element to add
+   */
+  function createLinkElement(url, text) {
+    // Create elements
+    var anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.innerHTML = text;
+    anchor.classList.add('hover-link');
+    var hoverContainer = document.createElement('div');
+    hoverContainer.classList.add('hover-link-container');
+    var hoverTitle = document.createElement('p');
+    var hoverLink = document.createElement('p');
+
+    if (knownLinks[url]) {
+      // Retrieve
+      hoverTitle.textContent = truncateString(knownLinks[url]);
+    } else {
+      hoverTitle.textContent = '???';
+      // Request document
+      httpGet(url, function(response) {
+        try {
+          // Get title of document, and set text content
+          var reponseTitle = response.match(/(?:<title>)(.+)(?:<\/title>)/i)[1];
+          hoverTitle.textContent = truncateString(responseTitle, 32);
+          knownLinks[url] = responseTitle;
+        } catch (err) {
+          hoverTitle.textContent = 'Title unknown';
+        }
+      });
+    }
+    hoverLink.textContent = truncateString(url, 32);
+
+    // Build subtree
+    hoverContainer.appendChild(hoverTitle);
+    hoverContainer.appendChild(hoverLink);
+    anchor.appendChild(hoverContainer);
+    return anchor;
+  }
+
+  function truncateString(string, maxLength) {
+    if (string.length < maxLength)
+      return string;
+    else
+      return string.substr(0, maxLength - 3) + '...';
   }
 
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
