@@ -4,6 +4,7 @@
   var info = [];
   var categories = [];
   var resources = [];
+  var knownLinks = {};
 
   var aboutCard = {
     title: 'About this Repository',
@@ -396,7 +397,9 @@
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
-            sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
+            var anchor = createLinkElement(source, sIndex + 1);
+            sourceEl.appendChild(anchor);
+            //sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
             sourceList.appendChild(sourceEl);
           });
           sources.appendChild(sourceList);
@@ -865,6 +868,55 @@
     }
 
     return newArr;
+  }
+
+  /**
+   * Creates a link that has special hover powers
+   * @param url URL the link goes to
+   * @return Element to add
+   */
+  function createLinkElement(url, text) {
+    // Create elements
+    var anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.innerHTML = text;
+    anchor.classList.add('hover-link');
+    var hoverContainer = document.createElement('div');
+    hoverContainer.classList.add('hover-link-container');
+    var hoverTitle = document.createElement('p');
+    var hoverLink = document.createElement('p');
+
+    if (knownLinks[url]) {
+      // Retrieve
+      hoverTitle.textContent = truncateString(knownLinks[url]);
+    } else {
+      hoverTitle.textContent = '???';
+      // Request document
+      httpGet(url, function(response) {
+        try {
+          // Get title of document, and set text content
+          var reponseTitle = response.match(/(?:<title>)(.+)(?:<\/title>)/i)[1];
+          hoverTitle.textContent = truncateString(responseTitle, 25);
+          knownLinks[url] = responseTitle;
+        } catch (err) {
+          hoverTitle.textContent = 'Title unknown';
+        }
+      });
+    }
+    hoverLink.textContent = truncateString(url, 25);
+
+    // Build subtree
+    hoverContainer.appendChild(hoverTitle);
+    hoverContainer.appendChild(hoverLink);
+    anchor.appendChild(hoverContainer);
+    return anchor;
+  }
+
+  function truncateString(string, maxLength) {
+    if (string.length < maxLength)
+      return string;
+    else
+      return string.substr(0, maxLength - 3) + '...';
   }
 
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
