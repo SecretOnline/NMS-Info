@@ -3,7 +3,7 @@
 
   var info = {};
   var categories = {};
-  var resources = [];
+  var resources = {};
 
   var aboutCard = {
     title: 'About this Repository',
@@ -163,9 +163,9 @@
       changeTab('elements');
       if (searchParams.element) {
         // Expand the specified element
-        var element = document.querySelector('.element-' + searchParams.element);
+        var element = document.querySelector('.element-card[data-name="' + searchParams.element + '"]');
         element.classList.add('expanded');
-        addResourceInfo(element, resources[element.dataset.id]);
+        addResourceInfo(element, resources[searchParams.element]);
       }
     } else {
       changeTab('main'); // Just go to default spot
@@ -231,15 +231,23 @@
     httpGet('data/resources.json', function(response) {
       var cardList = doc.querySelector('.elements-list');
 
-      resources = JSON.parse(response);
+      var resourcesArr = JSON.parse(response);
 
       var cardArr = [];
 
       // Create element cards
-      resources.forEach(function(item, index) {
-        item.index = index;
+      resourcesArr.forEach(function(item, index) {
+        resources[item.name] = item;
 
-        // Add entry back to this item if thi one makes the other
+        var card = createResourceCard(item);
+        cardArr.push(card);
+      });
+
+      // This must be done in a second loop, otherwise some things might not have been initialise
+      var resIndexArr = Object.keys(resources);
+      resIndexArr.forEach(function(index) {
+        var item = resources[index];
+        // Add entry back to this item if this one makes the other
         if (item.makes) {
           item.makes.forEach(function(compound) {
             if (resources[compound]) {
@@ -249,9 +257,6 @@
             }
           });
         }
-
-        var card = createResourceCard(item);
-        cardArr.push(card);
       });
 
       distributeItems(cardArr, cardList);
@@ -489,9 +494,8 @@
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('element-card');
-    card.classList.add("element-" + data.index);
     // Store data values
-    card.dataset.id = data.index;
+    card.dataset.name = data.name;
 
     // Create header
     var header = doc.createElement('div');
@@ -540,7 +544,7 @@
         }, 500);
       } else {
         collapseAllItems();
-        history.replaceState(null, '', '?element=' + card.dataset.id);
+        history.replaceState(null, '', '?element=' + card.dataset.name);
 
         addResourceInfo(card, data);
       }
@@ -596,7 +600,7 @@
             // Expand other item when clicked
             elementEl.addEventListener('click', function() {
               collapseAllItems();
-              var otherElement = document.querySelector('.element-' + element);
+              var otherElement = document.querySelector('.element-card[data-name="' + element + '"]');
               otherElement.classList.add('expanded');
               addResourceInfo(otherElement, resources[element]);
             });
@@ -625,7 +629,7 @@
             // Expand other item when clicked
             elementEl.addEventListener('click', function() {
               collapseAllItems();
-              var otherElement = document.querySelector('.element-' + element);
+              var otherElement = document.querySelector('.element-card[data-name="' + element + '"]');
               otherElement.classList.add('expanded');
               addResourceInfo(otherElement, resources[element]);
             });
