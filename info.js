@@ -166,6 +166,9 @@
         var element = document.querySelector('.element-card[data-name="' + searchParams.element + '"]');
         element.classList.add('expanded');
         addResourceInfo(element, resources[searchParams.element]);
+        element.scrollIntoView();
+        // Make sure card isn't hidden behind the floating navigation bar
+        scroll(scrollX, scrollY - 60);
       }
     } else {
       changeTab('main'); // Just go to default spot
@@ -701,7 +704,10 @@
       }
     });
     // Search elements as well
-    resources.forEach(function(item) {
+    var resIndexArr = Object.keys(resources);
+    // Get the score for an element
+    resIndexArr.forEach(function(index) {
+      var item = resources[index];
       var score = getElementSearchScore(query, item);
 
       // Don't add anything with a score of 0
