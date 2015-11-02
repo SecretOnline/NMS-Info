@@ -2,7 +2,7 @@
   'use strict';
 
   var info = {};
-  var categories = [];
+  var categories = {};
   var resources = [];
 
   var aboutCard = {
@@ -152,7 +152,7 @@
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       // Expand card
-      var infoElement = doc.querySelector('[data-title="' + searchParams.info + '"]');
+      var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
       infoElement.classList.add('expanded');
       addCardInfo(infoElement, info[searchParams.info]);
       infoElement.scrollIntoView();
@@ -207,12 +207,12 @@
     httpGet('data/categories.json', function(response) {
       var cardList = doc.querySelector('.cat-list');
 
-      categories = JSON.parse(response);
+      var categoriesArr = JSON.parse(response);
 
       // Create category cards for each of the categories
       var cardArr = [];
-      categories.forEach(function(item, index) {
-        item.index = index;
+      categoriesArr.forEach(function(item) {
+        categories[item.title] = item;
         var card = createCategoryCard(item);
         cardArr.push(card);
       });
@@ -425,7 +425,7 @@
             var itemEl = doc.createElement('li');
             itemEl.textContent = rItem;
             itemEl.addEventListener('click', function() {
-              var otherCard = document.querySelector('[data-title="' + rItem + '"]');
+              var otherCard = document.querySelector('.info-card[data-title="' + rItem + '"]');
               // Expand the other card
               collapseAllItems();
               history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
@@ -454,9 +454,8 @@
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('category-card');
-    card.classList.add("cat-" + data.index);
     // Store data values
-    card.dataset.id = data.index;
+    card.dataset.title = data.title;
     card.style.backgroundColor = data.color;
 
     if (data.darkText)
@@ -475,7 +474,7 @@
 
     // Do a category search when clicked
     card.addEventListener('click', function() {
-      categorySearch(card.dataset.id);
+      categorySearch(data.title);
     });
 
     return card;
