@@ -293,37 +293,38 @@
     card.appendChild(content);
 
     // Add category list
-    if (data.categories.length) {
-      var category = categories[data.categories[0]];
-      if (category.darkText) {
-        card.classList.add('dark-text');
-      }
-      headerBg.style.backgroundColor = category.color;
+    if (data.categories)
+      if (data.categories.length) {
+        var category = categories[data.categories[0]];
+        if (category.darkText) {
+          card.classList.add('dark-text');
+        }
+        headerBg.style.backgroundColor = category.color;
 
-      var cats = doc.createElement('div');
-      cats.classList.add('categories');
+        var cats = doc.createElement('div');
+        cats.classList.add('categories');
 
-      // Add all specified categories to a list
-      var catList = doc.createElement('ul');
-      data.categories.forEach(function(cat) {
-        var catEl = doc.createElement('li');
-        catEl.textContent = categories[cat].title;
-        catEl.dataset.id = cat;
-        catEl.style.color = category.textColor;
+        // Add all specified categories to a list
+        var catList = doc.createElement('ul');
+        data.categories.forEach(function(cat) {
+          var catEl = doc.createElement('li');
+          catEl.textContent = categories[cat].title;
+          catEl.dataset.id = cat;
+          catEl.style.color = category.textColor;
 
-        catEl.addEventListener('click', function() {
-          // Perform a category search on the clicked category
-          categorySearch(catEl.dataset.id);
+          catEl.addEventListener('click', function() {
+            // Perform a category search on the clicked category
+            categorySearch(catEl.dataset.id);
+          });
+
+          catList.appendChild(catEl);
         });
+        cats.appendChild(catList);
 
-        catList.appendChild(catEl);
-      });
-      cats.appendChild(catList);
+        header.appendChild(cats);
+      }
 
-      header.appendChild(cats);
-    }
-
-    // Open / close the card when the header is clicked
+      // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
         // See whether we need to do anything special to the url
@@ -371,11 +372,12 @@
     // Add information text
     var information = doc.createElement('div');
     information.classList.add('information');
-    data.text.forEach(function(text) {
-      var t = doc.createElement('p');
-      t.textContent = text;
-      information.appendChild(t);
-    });
+    if (data.text)
+      data.text.forEach(function(text) {
+        var t = doc.createElement('p');
+        t.textContent = text;
+        information.appendChild(t);
+      });
     content.appendChild(information);
 
     // If another section is required
@@ -421,9 +423,22 @@
 
           // Add related items to list
           var relatedList = doc.createElement('ul');
-          data.related.forEach(function(rItem, rIndex) {
+          data.related.forEach(function(rItem) {
+            var itemObj = info[rItem];
             var itemEl = doc.createElement('li');
-            itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
+            itemEl.textContent = itemObj.title;
+            itemEl.addEventListener('click', function() {
+              var otherCard = document.querySelector('.info-' + rItem);
+              // Expand the other card
+              collapseAllItems();
+              history.replaceState(null, '', '?info=' + card.dataset.id);
+
+              addCardInfo(otherCard, itemObj);
+              otherCard.classList.add('expanded');
+              otherCard.scrollIntoView();
+              // Make sure card isn't hidden behind the floating navigation bar
+              scroll(scrollX, scrollY - 60);
+            });
             relatedList.appendChild(itemEl);
           });
           related.appendChild(relatedList);
@@ -882,10 +897,8 @@
 
   /**
    * Creates a link that has special hover powers
-   * @param url URL the link goes to
-   * @param text Text to use for the inside of the anchor
-   * @param header Optional link title. If ommitted, header is not shown
-   * @return Element to add
+   * @param element Element to add hover box to
+   * @param textArray Array of text to place in hover box
    */
   function appendHoverElement(element, textArray) {
     if (textArray.length === 0)

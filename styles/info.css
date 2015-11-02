@@ -316,6 +316,16 @@ main {
 .hoverable-container p {
   margin: 0;
 }
+.related li,
+.sources li {
+  color: #000 !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.related li:hover,
+.sources li:hover {
+  text-decoration: none;
+}
 @media all and (min-width: 920px) {
   .card-half {
     display: inline-block;
