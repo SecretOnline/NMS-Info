@@ -701,7 +701,10 @@
       }
     });
     // Search elements as well
-    resources.forEach(function(item) {
+    var resIndexArr = Object.keys(resources);
+    // Get the score for an element
+    resIndexArr.forEach(function(index) {
+      var item = info[index];
       var score = getElementSearchScore(query, item);
 
       // Don't add anything with a score of 0
