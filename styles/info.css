@@ -29,10 +29,9 @@ header {
 }
 header .title {
   line-height: 50px;
-  font-size: 50px;
+  font-size: 22px;
   padding: 10px;
   margin: 0 auto;
-  text-align: center;
   color: #fff;
 }
 header .button-container {
@@ -325,6 +324,26 @@ main {
 .related li:hover,
 .sources li:hover {
   text-decoration: none;
+}
+@media all and (min-width: 400px) {
+  header .title {
+    font-size: 30px;
+  }
+}
+@media all and (min-width: 500px) {
+  header .title {
+    text-align: center;
+  }
+}
+@media all and (min-width: 600px) {
+  header .title {
+    font-size: 40px;
+  }
+}
+@media all and (min-width: 700px) {
+  header .title {
+    font-size: 50px;
+  }
 }
 @media all and (min-width: 920px) {
   .card-half {
