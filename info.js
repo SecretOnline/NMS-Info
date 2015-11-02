@@ -4,7 +4,6 @@
   var info = [];
   var categories = [];
   var resources = [];
-  var knownLinks = {};
 
   var aboutCard = {
     title: 'About this Repository',
@@ -398,9 +397,11 @@
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
-            var anchor = createLinkElement(source, sIndex + 1);
+            var anchor = document.createElement('a');
+            anchor.href = source;
+            anchor.textContent = sIndex + 1;
+            appendHoverElement(anchor, [source]);
             sourceEl.appendChild(anchor);
-            //sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
             sourceList.appendChild(sourceEl);
           });
           sources.appendChild(sourceList);
@@ -882,43 +883,24 @@
   /**
    * Creates a link that has special hover powers
    * @param url URL the link goes to
+   * @param text Text to use for the inside of the anchor
+   * @param header Optional link title. If ommitted, header is not shown
    * @return Element to add
    */
-  function createLinkElement(url, text) {
+  function appendHoverElement(element, textArray) {
+    if (textArray.length === 0)
+      return;
     // Create elements
-    var anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.innerHTML = text;
-    anchor.classList.add('hover-link');
+    element.classList.add('hoverable');
     var hoverContainer = document.createElement('div');
-    hoverContainer.classList.add('hover-link-container');
-    var hoverTitle = document.createElement('p');
-    var hoverLink = document.createElement('p');
+    hoverContainer.classList.add('hoverable-container');
+    element.appendChild(hoverContainer);
 
-    if (knownLinks[url]) {
-      // Retrieve
-      hoverTitle.textContent = truncateString(knownLinks[url]);
-    } else {
-      hoverTitle.textContent = '???';
-      // Request document
-      httpGet(url, function(response) {
-        try {
-          // Get title of document, and set text content
-          var reponseTitle = response.match(/(?:<title>)(.+)(?:<\/title>)/i)[1];
-          hoverTitle.textContent = truncateString(responseTitle, 32);
-          knownLinks[url] = responseTitle;
-        } catch (err) {
-          hoverTitle.textContent = 'Title unknown';
-        }
-      });
-    }
-    hoverLink.textContent = truncateString(url, 32);
-
-    // Build subtree
-    hoverContainer.appendChild(hoverTitle);
-    hoverContainer.appendChild(hoverLink);
-    anchor.appendChild(hoverContainer);
-    return anchor;
+    textArray.forEach(function(item) {
+      var itemElement = document.createElement('p');
+      itemElement.textContent = truncateString(item, 32);
+      hoverContainer.appendChild(itemElement);
+    });
   }
 
   function truncateString(string, maxLength) {
