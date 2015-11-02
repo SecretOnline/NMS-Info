@@ -13,11 +13,13 @@
       'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
       'It is an open source project, and source code can be found on GitHub',
       'It was created by secret_online, but a full list of contributors can be found on GitHub',
-      'If something is missing, please tell someone, or fork this project and add it yourself'
+      'If something is missing, please send me a message using one of the link below, or fork this project and add it yourself',
+      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame. This prevents the need for a lot of useless posts'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'http://secretonline.co'
+      'http://secretonline.co',
+      'https://www.reddit.com/message/compose/?to=secret_online'
     ],
     categories: []
   };
@@ -152,10 +154,10 @@
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       // Expand card
-      var element = doc.querySelector('.info-' + searchParams.info);
-      element.classList.add('expanded');
-      addCardInfo(element, info[element.dataset.id]);
-      element.scrollIntoView();
+      var infoElement = doc.querySelector('.info-' + searchParams.info);
+      infoElement.classList.add('expanded');
+      addCardInfo(infoElement, info[searchParams.info]);
+      infoElement.scrollIntoView();
       // Make sure card isn't hidden behind the floating navigation bar
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
