@@ -1,13 +1,12 @@
 (function(win, doc) {
   'use strict';
 
-  var info = [];
+  var info = {};
   var categories = [];
   var resources = [];
 
   var aboutCard = {
     title: 'About this Repository',
-    index: -1,
     text: [
       'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
       'It is an open source project, and source code can be found on GitHub',
@@ -153,7 +152,7 @@
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       // Expand card
-      var infoElement = doc.querySelector('.info-' + searchParams.info);
+      var infoElement = doc.querySelector('[data-title="' + searchParams.info + '"]');
       infoElement.classList.add('expanded');
       addCardInfo(infoElement, info[searchParams.info]);
       infoElement.scrollIntoView();
@@ -180,12 +179,12 @@
     httpGet('data/info.json', function(response) {
       var cardList = doc.querySelector('.info-list');
 
-      info = JSON.parse(response);
+      var infoArr = JSON.parse(response);
       var cardArr = [];
 
       // Create cards for each of the pieces of information
-      info.forEach(function(item, index) {
-        item.index = index;
+      infoArr.forEach(function(item) {
+        info[item.title] = item;
         var card = createInfoCard(item);
         cardArr.push(card);
       });
@@ -268,9 +267,8 @@
     // Create card element
     var card = doc.createElement('div');
     card.classList.add('info-card');
-    card.classList.add("info-" + data.index);
     // Store data values
-    card.dataset.id = data.index;
+    card.dataset.title = data.title;
 
     if (data.spoiler)
       card.classList.add('spoiler');
@@ -345,7 +343,7 @@
       } else {
         // Expand the card
         collapseAllItems();
-        history.replaceState(null, '', '?info=' + card.dataset.id);
+        history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
 
         addCardInfo(card, data);
       }
@@ -424,16 +422,15 @@
           // Add related items to list
           var relatedList = doc.createElement('ul');
           data.related.forEach(function(rItem) {
-            var itemObj = info[rItem];
             var itemEl = doc.createElement('li');
-            itemEl.textContent = itemObj.title;
+            itemEl.textContent = rItem;
             itemEl.addEventListener('click', function() {
-              var otherCard = document.querySelector('.info-' + rItem);
+              var otherCard = document.querySelector('[data-title="' + rItem + '"]');
               // Expand the other card
               collapseAllItems();
-              history.replaceState(null, '', '?info=' + card.dataset.id);
+              history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
 
-              addCardInfo(otherCard, itemObj);
+              addCardInfo(otherCard, info[rItem]);
               otherCard.classList.add('expanded');
               otherCard.scrollIntoView();
               // Make sure card isn't hidden behind the floating navigation bar
@@ -656,8 +653,10 @@
     var container = doc.querySelector('.search-list');
 
     var cardArr = [];
+    var infoIndexArr = Object.keys(info);
 
-    info.forEach(function(item) {
+    infoIndexArr.forEach(function(index) {
+      var item = info[index];
       // If info is in the category
       if (item.categories.indexOf(id) > -1) {
         // Create card and add to list
@@ -682,9 +681,11 @@
     var container = doc.querySelector('.search-list');
 
     var scores = {};
+    var infoIndexArr = Object.keys(info);
 
-    // Get the score for a particular piece of information
-    info.forEach(function(item) {
+    // Get the score for a aprticulat piece of information
+    infoIndexArr.forEach(function(index) {
+      var item = info[index];
       var score = getSearchScore(query, item);
       var card = createInfoCard(item);
 
