@@ -4,7 +4,6 @@
   var info = [];
   var categories = [];
   var resources = [];
-  var knownLinks = {};
 
   var aboutCard = {
     title: 'About this Repository',
@@ -13,11 +12,13 @@
       'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
       'It is an open source project, and source code can be found on GitHub',
       'It was created by secret_online, but a full list of contributors can be found on GitHub',
-      'If something is missing, please tell someone, or fork this project and add it yourself'
+      'If something is missing, please send me a message using one of the link below, or fork this project and add it yourself',
+      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame. This prevents the need for a lot of useless posts'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'http://secretonline.co'
+      'http://secretonline.co',
+      'https://www.reddit.com/message/compose/?to=secret_online'
     ],
     categories: []
   };
@@ -152,10 +153,10 @@
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       // Expand card
-      var element = doc.querySelector('.info-' + searchParams.info);
-      element.classList.add('expanded');
-      addCardInfo(element, info[element.dataset.id]);
-      element.scrollIntoView();
+      var infoElement = doc.querySelector('.info-' + searchParams.info);
+      infoElement.classList.add('expanded');
+      addCardInfo(infoElement, info[searchParams.info]);
+      infoElement.scrollIntoView();
       // Make sure card isn't hidden behind the floating navigation bar
       scroll(scrollX, scrollY - 60);
     } else if (typeof searchParams.element !== 'undefined') {
@@ -292,37 +293,38 @@
     card.appendChild(content);
 
     // Add category list
-    if (data.categories.length) {
-      var category = categories[data.categories[0]];
-      if (category.darkText) {
-        card.classList.add('dark-text');
-      }
-      headerBg.style.backgroundColor = category.color;
+    if (data.categories)
+      if (data.categories.length) {
+        var category = categories[data.categories[0]];
+        if (category.darkText) {
+          card.classList.add('dark-text');
+        }
+        headerBg.style.backgroundColor = category.color;
 
-      var cats = doc.createElement('div');
-      cats.classList.add('categories');
+        var cats = doc.createElement('div');
+        cats.classList.add('categories');
 
-      // Add all specified categories to a list
-      var catList = doc.createElement('ul');
-      data.categories.forEach(function(cat) {
-        var catEl = doc.createElement('li');
-        catEl.textContent = categories[cat].title;
-        catEl.dataset.id = cat;
-        catEl.style.color = category.textColor;
+        // Add all specified categories to a list
+        var catList = doc.createElement('ul');
+        data.categories.forEach(function(cat) {
+          var catEl = doc.createElement('li');
+          catEl.textContent = categories[cat].title;
+          catEl.dataset.id = cat;
+          catEl.style.color = category.textColor;
 
-        catEl.addEventListener('click', function() {
-          // Perform a category search on the clicked category
-          categorySearch(catEl.dataset.id);
+          catEl.addEventListener('click', function() {
+            // Perform a category search on the clicked category
+            categorySearch(catEl.dataset.id);
+          });
+
+          catList.appendChild(catEl);
         });
+        cats.appendChild(catList);
 
-        catList.appendChild(catEl);
-      });
-      cats.appendChild(catList);
+        header.appendChild(cats);
+      }
 
-      header.appendChild(cats);
-    }
-
-    // Open / close the card when the header is clicked
+      // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
         // See whether we need to do anything special to the url
@@ -370,11 +372,12 @@
     // Add information text
     var information = doc.createElement('div');
     information.classList.add('information');
-    data.text.forEach(function(text) {
-      var t = doc.createElement('p');
-      t.textContent = text;
-      information.appendChild(t);
-    });
+    if (data.text)
+      data.text.forEach(function(text) {
+        var t = doc.createElement('p');
+        t.textContent = text;
+        information.appendChild(t);
+      });
     content.appendChild(information);
 
     // If another section is required
@@ -396,9 +399,11 @@
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
-            var anchor = createLinkElement(source, sIndex + 1);
+            var anchor = document.createElement('a');
+            anchor.href = source;
+            anchor.textContent = sIndex + 1;
+            appendHoverElement(anchor, [source]);
             sourceEl.appendChild(anchor);
-            //sourceEl.innerHTML = '<a href="' + source + '">' + (sIndex + 1) + '</a>';
             sourceList.appendChild(sourceEl);
           });
           sources.appendChild(sourceList);
@@ -418,9 +423,22 @@
 
           // Add related items to list
           var relatedList = doc.createElement('ul');
-          data.related.forEach(function(rItem, rIndex) {
+          data.related.forEach(function(rItem) {
+            var itemObj = info[rItem];
             var itemEl = doc.createElement('li');
-            itemEl.innerHTML = '<a href="' + rItem + '">' + (rIndex + 1) + '</a>';
+            itemEl.textContent = itemObj.title;
+            itemEl.addEventListener('click', function() {
+              var otherCard = document.querySelector('.info-' + rItem);
+              // Expand the other card
+              collapseAllItems();
+              history.replaceState(null, '', '?info=' + card.dataset.id);
+
+              addCardInfo(otherCard, itemObj);
+              otherCard.classList.add('expanded');
+              otherCard.scrollIntoView();
+              // Make sure card isn't hidden behind the floating navigation bar
+              scroll(scrollX, scrollY - 60);
+            });
             relatedList.appendChild(itemEl);
           });
           related.appendChild(relatedList);
@@ -879,44 +897,23 @@
 
   /**
    * Creates a link that has special hover powers
-   * @param url URL the link goes to
-   * @return Element to add
+   * @param element Element to add hover box to
+   * @param textArray Array of text to place in hover box
    */
-  function createLinkElement(url, text) {
+  function appendHoverElement(element, textArray) {
+    if (textArray.length === 0)
+      return;
     // Create elements
-    var anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.innerHTML = text;
-    anchor.classList.add('hover-link');
+    element.classList.add('hoverable');
     var hoverContainer = document.createElement('div');
-    hoverContainer.classList.add('hover-link-container');
-    var hoverTitle = document.createElement('p');
-    var hoverLink = document.createElement('p');
+    hoverContainer.classList.add('hoverable-container');
+    element.appendChild(hoverContainer);
 
-    if (knownLinks[url]) {
-      // Retrieve
-      hoverTitle.textContent = truncateString(knownLinks[url]);
-    } else {
-      hoverTitle.textContent = '???';
-      // Request document
-      httpGet(url, function(response) {
-        try {
-          // Get title of document, and set text content
-          var reponseTitle = response.match(/(?:<title>)(.+)(?:<\/title>)/i)[1];
-          hoverTitle.textContent = truncateString(responseTitle, 32);
-          knownLinks[url] = responseTitle;
-        } catch (err) {
-          hoverTitle.textContent = 'Title unknown';
-        }
-      });
-    }
-    hoverLink.textContent = truncateString(url, 32);
-
-    // Build subtree
-    hoverContainer.appendChild(hoverTitle);
-    hoverContainer.appendChild(hoverLink);
-    anchor.appendChild(hoverContainer);
-    return anchor;
+    textArray.forEach(function(item) {
+      var itemElement = document.createElement('p');
+      itemElement.textContent = truncateString(item, 32);
+      hoverContainer.appendChild(itemElement);
+    });
   }
 
   function truncateString(string, maxLength) {
