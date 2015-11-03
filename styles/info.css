@@ -346,10 +346,39 @@ main {
   }
 }
 @media all and (min-width: 920px) {
-  .card-half {
+  .card-column {
     display: inline-block;
     width: calc(50% - 10px);
     padding: 0 5px;
     vertical-align: top;
+  }
+}
+@media all and (min-width: 1300px) {
+  main {
+    max-width: 72em;
+  }
+  .page-container.cat {
+    right: calc(100vw - (50vw - (72em / 2)));
+  }
+  .page-container.search {
+    right: calc((100vw - (50vw - (72em / 2))) * -1);
+  }
+  .page-container.elements {
+    right: calc((100vw - (50vw - (72em / 2))) * 2);
+  }
+  .page-container > div {
+    max-width: 72em;
+  }
+  .page-cat {
+    left: calc(100vw - (50vw - (72em / 2)));
+  }
+  .page-search {
+    left: calc((100vw - (50vw - (72em / 2))) * -1);
+  }
+  .page-elements {
+    left: calc((100vw - (50vw - (72em / 2))) * 2);
+  }
+  .card-column {
+    width: calc(33% - 10px);
   }
 }
