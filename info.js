@@ -747,9 +747,9 @@
     if (cardArr.length === 1) {
       cardArr[0].classList.add('expanded');
       if (cardArr[0].classList.contains('info-card'))
-        addCardInfo(cardArr[0], info[cardArr[0].dataset.id]);
+        addCardInfo(cardArr[0], info[cardArr[0].dataset.title]);
       else if (cardArr[0].classList.contains('element-card'))
-        addResourceInfo(cardArr[0], resources[cardArr[0].dataset.id]);
+        addResourceInfo(cardArr[0], resources[cardArr[0].dataset.name]);
     }
 
     distributeItems(cardArr, container);
