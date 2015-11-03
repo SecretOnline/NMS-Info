@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Generator</title>
+    <script type="text/javascript">
+    function httpGet(url, callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', function() {
+        callback(xhr.responseText);
+      });
+      xhr.open('get', url, true);
+      xhr.send();
+    }
+    window.addEventListener('DOMContentLoaded', function(){
+      'use strict';
+      httpGet('data/info.json', function(response){
+        var data = JSON.parse(response);
+        var str = '';
+        data.forEach(function(item){
+          str += '<h3>'+item.title+'</h3>';
+          item.text.forEach(function(text){
+            str += '<p>'+text+'</p>';
+          });
+        });
+        document.querySelector('body').innerHTML += str;
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <p>
+      This page dumps all information onto a page, for easy copy/pase for spelling / grammar checking.<br>
+      Speaking of, this process should be done reasonably often, and definitely before pushing any changes.
+    </p>
+  </body>
+</html>

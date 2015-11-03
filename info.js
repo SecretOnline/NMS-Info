@@ -853,14 +853,20 @@
    */
   function distributeItems(array, container) {
     var twoColThreshold = 920; // Should match class
+    var threeColThreshold = 1300; // Should match class
 
     container.innerHTML = '';
-    if (innerWidth >= twoColThreshold) {
+    if (innerWidth <= twoColThreshold) {
+      // Just add to container
+      array.forEach(function(item) {
+        container.appendChild(item);
+      });
+    } else if (innerWidth <= threeColThreshold) {
       // Create columns
       var colOne = doc.createElement('div');
       var colTwo = doc.createElement('div');
-      colOne.classList.add('card-half');
-      colTwo.classList.add('card-half');
+      colOne.classList.add('card-column');
+      colTwo.classList.add('card-column');
       container.appendChild(colOne);
       container.appendChild(colTwo);
 
@@ -872,9 +878,26 @@
           colOne.appendChild(item);
       });
     } else {
-      // Just add to container
-      array.forEach(function(item) {
-        container.appendChild(item);
+      // Create columns
+      var colOne = doc.createElement('div');
+      var colTwo = doc.createElement('div');
+      var colThree = doc.createElement('div');
+      colOne.classList.add('card-column');
+      colTwo.classList.add('card-column');
+      colThree.classList.add('card-column');
+      container.appendChild(colOne);
+      container.appendChild(colTwo);
+      container.appendChild(colThree);
+
+      array.forEach(function(item, index) {
+        // Add to column based on index
+        var mod = index % 3;
+        if (mod === 0)
+          colOne.appendChild(item);
+        else if (mod === 1)
+          colTwo.appendChild(item);
+        else
+          colThree.appendChild(item);
       });
     }
   }
