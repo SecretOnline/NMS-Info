@@ -191,14 +191,26 @@
   function getItems() {
     httpGet('data/info.json', function(response) {
 
-      var infoArr = JSON.parse(response);
+      var responseArr = JSON.parse(response);
 
       // Create cards for each of the pieces of information
-      infoArr.forEach(function(item) {
+      responseArr.forEach(function(item) {
         info[item.title] = item;
       });
 
-      sortItems();
+      var infoArr = sortItems();
+
+      var cardArr = [];
+      infoArr.forEach(function(item) {
+        var card = createInfoCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      // Add "about" card to the top of the list
+      cardArr.unshift(createInfoCard(aboutCard));
+      var cardList = doc.querySelector('.info-list');
+      distributeItems(cardArr, cardList);
 
       // Now that data is loaded, process the search parameters
       handleSearchParams();
@@ -206,33 +218,42 @@
   }
 
   function sortItems() {
-    var cardList = doc.querySelector('.info-list');
-    var cardArr = [];
+    function titleSort(a, b) {
+      if (a.title < b.title)
+        return -1;
+      if (a.title > b.title)
+        return 1;
+      return 0;
+    }
+
+    var infoArr = [];
+    var returnArr = [];
     var infoKeyArr = Object.keys(info);
     infoKeyArr.forEach(function(key) {
-      var card = createInfoCard(info[key]);
-      if (!card)
-        return;
-      cardArr.push(card);
+      infoArr.push(info[key]);
     });
-
     if (sortMethod === 'random') {
-      cardArr = arrayRandomise(cardArr);
+      returnArr = arrayRandomise(infoArr);
     } else if (sortMethod === 'alphabet') {
-      cardArr = cardArr.sort(function(a, b) {
-        if (a.dataset.title < b.dataset.title)
-          return -1;
-        if (a.dataset.title > b.dataset.title)
-          return 1;
-        return 0;
-      });
+      returnArr = infoArr.sort(titleSort);
     } else if (sortMethod === 'category') {
-
+      var catObj = {};
+      Object.keys(categories).forEach(function(key) {
+        catObj[key] = [];
+      });
+      infoArr.forEach(function(item) {
+        if (item.categories)
+          if (item.categories[0])
+            catObj[item.categories[0]].push(item);
+      });
+      var catKeys = Object.keys(catObj);
+      catKeys.sort();
+      catKeys.forEach(function(key) {
+        catObj[key].sort(titleSort);
+        returnArr = returnArr.concat(catObj[key]);
+      });
     }
-    // Add "about" card to the top of the list
-    cardArr.unshift(createInfoCard(aboutCard));
-
-    distributeItems(cardArr, cardList);
+    return returnArr;
   }
 
   /**
@@ -240,7 +261,6 @@
    */
   function getCategories() {
     httpGet('data/categories.json', function(response) {
-      var cardList = doc.querySelector('.cat-list');
 
       var categoriesArr = JSON.parse(response);
 
@@ -249,7 +269,16 @@
         categories[item.title] = item;
       });
 
-      sortCategories();
+      var catArr = sortCategories();
+      var cardArr = [];
+      catArr.forEach(function(item) {
+        var card = createCategoryCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.cat-list');
+      distributeItems(cardArr, cardList);
 
       // Load in information, now that categories are loaded
       getItems();
@@ -257,31 +286,27 @@
   }
 
   function sortCategories() {
-    var cardList = doc.querySelector('.cat-list');
-    var cardArr = [];
+    function titleSort(a, b) {
+      if (a.title < b.title)
+        return -1;
+      if (a.title > b.title)
+        return 1;
+      return 0;
+    }
+    var catArr = [];
     var catKeyArr = Object.keys(categories);
     catKeyArr.forEach(function(key) {
-      var card = createCategoryCard(categories[key]);
-      if (!card)
-        return;
-      cardArr.push(card);
+      catArr.push(categories[key]);
     });
 
     if (sortMethod === 'random') {
-      cardArr = arrayRandomise(cardArr);
+      catArr = arrayRandomise(catArr);
     } else if (sortMethod === 'alphabet') {
-      cardArr = cardArr.sort(function(a, b) {
-        if (a.dataset.title < b.dataset.title)
-          return -1;
-        if (a.dataset.title > b.dataset.title)
-          return 1;
-        return 0;
-      });
+      catArr = catArr.sort(titleSort);
     } else if (sortMethod === 'category') {
-
+      catArr = catArr.sort(titleSort);
     }
-
-    distributeItems(cardArr, cardList);
+    return catArr;
   }
 
   /**
