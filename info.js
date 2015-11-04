@@ -372,23 +372,29 @@
     httpGet('data/recent.json', function(response) {
 
       var recentArr = JSON.parse(response);
-      var recents = [];
 
-      // Create category cards for each of the categories
-      recentArr.forEach(function(item) {
-        recents.push(info[item]);
-      });
-
-      var infoArr = recents.sort(function(a, b) {
-        if (a.title < b.title)
-          return -1;
-        if (a.title > b.title)
-          return 1;
-        return 0;
-      });
       var cardArr = [];
-      infoArr.forEach(function(item) {
-        var card = createInfoCard(item);
+      recentArr.forEach(function(item) {
+        var card;
+        if (typeof item === 'string') {
+          card = createInfoCard(info[item]);
+          card.querySelector('.header').addEventListener('click', function() {
+            card.querySelector('.card-content').classList.add('added');
+          });
+        } else {
+          card = createInfoCard(info[item.title]);
+          card.querySelector('.header').addEventListener('click', function() {
+            var infoArray = card.querySelectorAll('.information p');
+            if (item.additions)
+              item.additions.forEach(function(added) {
+                infoArray[added].classList.add('added');
+              });
+            if (item.edited)
+              item.edited.forEach(function(edit) {
+                infoArray[edit].classList.add('edited');
+              });
+          });
+        }
         if (!card)
           return;
         cardArr.push(card);
@@ -480,6 +486,8 @@
             history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
           else
             history.replaceState(null, '', '?search');
+        else if (document.querySelector('.page-container').classList.contains('recent'))
+          history.replaceState(null, '', '?recent');
         else
           history.replaceState(null, '', '?');
 

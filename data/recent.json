@@ -1,5 +1,10 @@
 [
   "Utilities / Gadgets",
   "Crafting System",
-  "Ship Types"
+  {
+    "title": "Ship Types",
+    "additions": [
+      "7"
+    ]
+  }
 ]
