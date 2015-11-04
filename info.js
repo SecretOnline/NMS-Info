@@ -54,6 +54,9 @@
     doc.querySelector('.tab-elements').addEventListener('click', function() {
       changeTab('elements');
     });
+    doc.querySelector('.tab-recent').addEventListener('click', function() {
+      changeTab('recent');
+    });
 
     function doInfoSearch() {
       changeTab(2);
@@ -86,25 +89,36 @@
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('recent');
       history.replaceState(null, '', '?');
     } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('recent');
       history.replaceState(null, '', '?cat');
     } else if (tab === 'search') {
       // Go to search
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('recent');
       history.replaceState(null, '', '?search');
     } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('recent');
       history.replaceState(null, '', '?element');
+    } else if (tab === 'recent') {
+      // Go to elements
+      pageContainer.classList.add('recent');
+      pageContainer.classList.remove('search');
+      pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('elements');
+      history.replaceState(null, '', '?recent');
     }
   }
 
@@ -180,6 +194,9 @@
           console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
+    } else if (typeof searchParams.recent !== 'undefined') {
+      // Go to the elements page
+      changeTab('recent');
     } else {
       changeTab('main'); // Just go to default spot
     }
@@ -214,6 +231,7 @@
 
       // Now that data is loaded, process the search parameters
       handleSearchParams();
+      getRecentChanges();
     });
   }
 
@@ -346,6 +364,36 @@
         }
       });
 
+      distributeItems(cardArr, cardList);
+    });
+  }
+
+  function getRecentChanges() {
+    httpGet('data/recent.json', function(response) {
+
+      var recentArr = JSON.parse(response);
+      var recents = [];
+
+      // Create category cards for each of the categories
+      recentArr.forEach(function(item) {
+        recents.push(info[item]);
+      });
+
+      var infoArr = recents.sort(function(a, b) {
+        if (a.title < b.title)
+          return -1;
+        if (a.title > b.title)
+          return 1;
+        return 0;
+      });
+      var cardArr = [];
+      infoArr.forEach(function(item) {
+        var card = createInfoCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.recent-list');
       distributeItems(cardArr, cardList);
     });
   }
