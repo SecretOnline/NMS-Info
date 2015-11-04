@@ -5,6 +5,8 @@
   var categories = {};
   var resources = {};
 
+  var sortMethod = 'alphabet'; // One of 'random', 'alphabet', 'category'
+
   var aboutCard = {
     title: 'About this Repository',
     text: [
@@ -152,23 +154,31 @@
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
       // Expand card
-      var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
-      infoElement.classList.add('expanded');
-      addCardInfo(infoElement, info[searchParams.info]);
-      infoElement.scrollIntoView();
-      // Make sure card isn't hidden behind the floating navigation bar
-      scroll(scrollX, scrollY - 60);
+      try {
+        var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
+        infoElement.classList.add('expanded');
+        addCardInfo(infoElement, info[searchParams.info]);
+        infoElement.scrollIntoView();
+        // Make sure card isn't hidden behind the floating navigation bar
+        scroll(scrollX, scrollY - 60);
+      } catch (err) {
+        console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
+      }
     } else if (typeof searchParams.element !== 'undefined') {
       // Go to the elements page
       changeTab('elements');
       if (searchParams.element) {
         // Expand the specified element
-        var element = document.querySelector('.element-card[data-name="' + searchParams.element + '"]');
-        element.classList.add('expanded');
-        addResourceInfo(element, resources[searchParams.element]);
-        element.scrollIntoView();
-        // Make sure card isn't hidden behind the floating navigation bar
-        scroll(scrollX, scrollY - 60);
+        try {
+          var element = document.querySelector('.element-card[data-name="' + searchParams.element + '"]');
+          element.classList.add('expanded');
+          addResourceInfo(element, resources[searchParams.element]);
+          element.scrollIntoView();
+          // Make sure card isn't hidden behind the floating navigation bar
+          scroll(scrollX, scrollY - 60);
+        } catch (err) {
+          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+        }
       }
     } else {
       changeTab('main'); // Just go to default spot
@@ -180,22 +190,26 @@
    */
   function getItems() {
     httpGet('data/info.json', function(response) {
-      var cardList = doc.querySelector('.info-list');
 
-      var infoArr = JSON.parse(response);
-      var cardArr = [];
+      var responseArr = JSON.parse(response);
 
       // Create cards for each of the pieces of information
-      infoArr.forEach(function(item) {
+      responseArr.forEach(function(item) {
         info[item.title] = item;
-        var card = createInfoCard(item);
-        cardArr.push(card);
       });
 
-      cardArr = arrayRandomise(cardArr);
+      var infoArr = sortItems();
+
+      var cardArr = [];
+      infoArr.forEach(function(item) {
+        var card = createInfoCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
       // Add "about" card to the top of the list
       cardArr.unshift(createInfoCard(aboutCard));
-
+      var cardList = doc.querySelector('.info-list');
       distributeItems(cardArr, cardList);
 
       // Now that data is loaded, process the search parameters
@@ -203,28 +217,96 @@
     });
   }
 
+  function sortItems() {
+    function titleSort(a, b) {
+      if (a.title < b.title)
+        return -1;
+      if (a.title > b.title)
+        return 1;
+      return 0;
+    }
+
+    var infoArr = [];
+    var returnArr = [];
+    var infoKeyArr = Object.keys(info);
+    infoKeyArr.forEach(function(key) {
+      infoArr.push(info[key]);
+    });
+    if (sortMethod === 'random') {
+      returnArr = arrayRandomise(infoArr);
+    } else if (sortMethod === 'alphabet') {
+      returnArr = infoArr.sort(titleSort);
+    } else if (sortMethod === 'category') {
+      var catObj = {};
+      Object.keys(categories).forEach(function(key) {
+        catObj[key] = [];
+      });
+      infoArr.forEach(function(item) {
+        if (item.categories)
+          if (item.categories[0])
+            catObj[item.categories[0]].push(item);
+      });
+      var catKeys = Object.keys(catObj);
+      catKeys.sort();
+      catKeys.forEach(function(key) {
+        catObj[key].sort(titleSort);
+        returnArr = returnArr.concat(catObj[key]);
+      });
+    }
+    return returnArr;
+  }
+
   /**
    * Retrieve categories and create cards for them
    */
   function getCategories() {
     httpGet('data/categories.json', function(response) {
-      var cardList = doc.querySelector('.cat-list');
 
       var categoriesArr = JSON.parse(response);
 
       // Create category cards for each of the categories
-      var cardArr = [];
       categoriesArr.forEach(function(item) {
         categories[item.title] = item;
-        var card = createCategoryCard(item);
-        cardArr.push(card);
       });
 
+      var catArr = sortCategories();
+      var cardArr = [];
+      catArr.forEach(function(item) {
+        var card = createCategoryCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.cat-list');
       distributeItems(cardArr, cardList);
 
       // Load in information, now that categories are loaded
       getItems();
     });
+  }
+
+  function sortCategories() {
+    function titleSort(a, b) {
+      if (a.title < b.title)
+        return -1;
+      if (a.title > b.title)
+        return 1;
+      return 0;
+    }
+    var catArr = [];
+    var catKeyArr = Object.keys(categories);
+    catKeyArr.forEach(function(key) {
+      catArr.push(categories[key]);
+    });
+
+    if (sortMethod === 'random') {
+      catArr = arrayRandomise(catArr);
+    } else if (sortMethod === 'alphabet') {
+      catArr = catArr.sort(titleSort);
+    } else if (sortMethod === 'category') {
+      catArr = catArr.sort(titleSort);
+    }
+    return catArr;
   }
 
   /**
@@ -243,6 +325,8 @@
         resources[item.name] = item;
 
         var card = createResourceCard(item);
+        if (!card)
+          return;
         cardArr.push(card);
       });
 
@@ -301,11 +385,15 @@
     // Add category list
     if (data.categories)
       if (data.categories.length) {
-        var category = categories[data.categories[0]];
-        if (category.darkText) {
-          card.classList.add('dark-text');
+        try {
+          var category = categories[data.categories[0]];
+          if (category.darkText) {
+            card.classList.add('dark-text');
+          }
+          headerBg.style.backgroundColor = category.color;
+        } catch (err) {
+          console.warn('Category ' + data.categories[0] + ' might not exist. Couldn\'t set header properties');
         }
-        headerBg.style.backgroundColor = category.color;
 
         var cats = doc.createElement('div');
         cats.classList.add('categories');
@@ -313,17 +401,21 @@
         // Add all specified categories to a list
         var catList = doc.createElement('ul');
         data.categories.forEach(function(cat) {
-          var catEl = doc.createElement('li');
-          catEl.textContent = categories[cat].title;
-          catEl.dataset.id = cat;
-          catEl.style.color = category.textColor;
+          try {
+            var catEl = doc.createElement('li');
+            catEl.textContent = categories[cat].title;
+            catEl.dataset.id = cat;
+            catEl.style.color = category.textColor;
 
-          catEl.addEventListener('click', function() {
-            // Perform a category search on the clicked category
-            categorySearch(catEl.dataset.id);
-          });
+            catEl.addEventListener('click', function() {
+              // Perform a category search on the clicked category
+              categorySearch(catEl.dataset.id);
+            });
 
-          catList.appendChild(catEl);
+            catList.appendChild(catEl);
+          } catch (err) {
+            console.warn('Countn\'n add category ' + cat + ', ignoring');
+          }
         });
         cats.appendChild(catList);
 
