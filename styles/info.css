@@ -332,6 +332,14 @@ main {
 .sources li:hover {
   text-decoration: none;
 }
+.added {
+  background-color: #eaffea;
+  color: #1c5a0b;
+}
+.edited {
+  background-color: #fffcea;
+  color: #90521e;
+}
 @media all and (min-width: 400px) {
   header .title {
     font-size: 30px;
