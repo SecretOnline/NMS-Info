@@ -29,7 +29,7 @@
    */
   function initInfo() {
     // do navbar scoll stuff
-    window.addEventListener("optimizedScroll", function() {
+    win.addEventListener("optimizedScroll", function() {
       var nav = doc.querySelector('nav');
       // If the header is out of view
       if (scrollY > 70) {
@@ -38,7 +38,7 @@
         nav.classList.remove('floating');
       }
       if (scrollX > 0)
-        scroll(0, scrollY);
+        win.scroll(0, scrollY);
     });
 
     // Add navigation event handlers
@@ -81,7 +81,7 @@
    * @param tab Name of the tab to switch to
    */
   function changeTab(tab) {
-    scroll(0, 0);
+    win.scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
     if (typeof tab === 'undefined' || tab === 'main') {
@@ -90,35 +90,35 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      history.replaceState(null, '', '?');
+      win.history.replaceState(null, '', '?');
     } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      history.replaceState(null, '', '?cat');
+      win.history.replaceState(null, '', '?cat');
     } else if (tab === 'search') {
       // Go to search
       pageContainer.classList.add('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      history.replaceState(null, '', '?search');
+      win.history.replaceState(null, '', '?search');
     } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('recent');
-      history.replaceState(null, '', '?element');
+      win.history.replaceState(null, '', '?element');
     } else if (tab === 'recent') {
       // Go to elements
       pageContainer.classList.add('recent');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
-      history.replaceState(null, '', '?recent');
+      win.history.replaceState(null, '', '?recent');
     }
   }
 
@@ -141,12 +141,18 @@
    */
   function handleSearchParams() {
     var searchParams = {};
-    // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following block of code
-    if (location.search.length > 1) {
-      for (var aItKey, nKeyId = 0, aCouples = location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
-        aItKey = aCouples[nKeyId].split("=");
-        searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+    try {
+      // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following block of code
+      if (win.location.search.length > 1) {
+        for (var aItKey, nKeyId = 0, aCouples = win.location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
+          aItKey = aCouples[nKeyId].split("=");
+          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+        }
       }
+    } catch (err) {
+      console.error('Error trying to process search parameters');
+      console.error(location.search);
+      return;
     }
 
     if (typeof searchParams.cat !== 'undefined') {
@@ -160,23 +166,30 @@
       // Go to the search page
       changeTab('search');
       if (searchParams.search) {
-        // Perform a search with the given parameter
-        var query = decodeURIComponent(searchParams.search);
-        generalSearch(query);
-        document.querySelector('.info-search-box').value = searchParams.search;
+        try {
+          // Perform a search with the given parameter
+          var query = decodeURIComponent(searchParams.search);
+          generalSearch(query);
+          doc.querySelector('.info-search-box').value = searchParams.search;
+        } catch (err) {
+          console.error('Error trying to search');
+          console.error(searchParams.search);
+        }
       }
     } else if (typeof searchParams.info !== 'undefined') {
       collapseAllItems();
-      // Expand card
-      try {
-        var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
-        infoElement.classList.add('expanded');
-        addCardInfo(infoElement, info[searchParams.info]);
-        infoElement.scrollIntoView();
-        // Make sure card isn't hidden behind the floating navigation bar
-        scroll(scrollX, scrollY - 60);
-      } catch (err) {
-        console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
+      if (searchParams.info) {
+        // Expand card
+        try {
+          var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
+          infoElement.classList.add('expanded');
+          addCardInfo(infoElement, info[searchParams.info]);
+          infoElement.scrollIntoView();
+          // Make sure card isn't hidden behind the floating navigation bar
+          win.scroll(scrollX, scrollY - 60);
+        } catch (err) {
+          console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
+        }
       }
     } else if (typeof searchParams.element !== 'undefined') {
       // Go to the elements page
@@ -184,12 +197,12 @@
       if (searchParams.element) {
         // Expand the specified element
         try {
-          var element = document.querySelector('.element-card[data-name="' + searchParams.element + '"]');
+          var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
           addResourceInfo(element, resources[searchParams.element]);
           element.scrollIntoView();
           // Make sure card isn't hidden behind the floating navigation bar
-          scroll(scrollX, scrollY - 60);
+          win.scroll(scrollX, scrollY - 60);
         } catch (err) {
           console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
@@ -235,37 +248,42 @@
     });
   }
 
+  /**
+   * Sort items according to the current sort method
+   * @return Array containing the sorted items
+   */
   function sortItems() {
-    function titleSort(a, b) {
-      if (a.title < b.title)
-        return -1;
-      if (a.title > b.title)
-        return 1;
-      return 0;
-    }
-
     var infoArr = [];
     var returnArr = [];
+
+    // Get all info into an array
     var infoKeyArr = Object.keys(info);
     infoKeyArr.forEach(function(key) {
       infoArr.push(info[key]);
     });
+
     if (sortMethod === 'random') {
       returnArr = arrayRandomise(infoArr);
     } else if (sortMethod === 'alphabet') {
       returnArr = infoArr.sort(titleSort);
     } else if (sortMethod === 'category') {
+      // Create object of arrays, each one corresponding to a category
       var catObj = {};
       Object.keys(categories).forEach(function(key) {
         catObj[key] = [];
       });
+
+      // Addeach piee of info to it's category's array
       infoArr.forEach(function(item) {
         if (item.categories)
           if (item.categories[0])
             catObj[item.categories[0]].push(item);
       });
+
+      // Sort categories
       var catKeys = Object.keys(catObj);
       catKeys.sort();
+      // Add items to returned array
       catKeys.forEach(function(key) {
         catObj[key].sort(titleSort);
         returnArr = returnArr.concat(catObj[key]);
@@ -304,13 +322,6 @@
   }
 
   function sortCategories() {
-    function titleSort(a, b) {
-      if (a.title < b.title)
-        return -1;
-      if (a.title > b.title)
-        return 1;
-      return 0;
-    }
     var catArr = [];
     var catKeyArr = Object.keys(categories);
     catKeyArr.forEach(function(key) {
@@ -374,21 +385,28 @@
       var recentArr = JSON.parse(response);
       var recents = [];
 
-      // Create category cards for each of the categories
-      recentArr.forEach(function(item) {
-        recents.push(info[item]);
-      });
-
-      var infoArr = recents.sort(function(a, b) {
-        if (a.title < b.title)
-          return -1;
-        if (a.title > b.title)
-          return 1;
-        return 0;
-      });
       var cardArr = [];
-      infoArr.forEach(function(item) {
-        var card = createInfoCard(item);
+      recentArr.forEach(function(item) {
+        var card;
+        if (typeof item === 'string') {
+          card = createInfoCard(info[item]);
+          card.querySelector('.header').addEventListener('click', function() {
+            card.querySelector('.card-content').classList.add('added');
+          });
+        } else {
+          card = createInfoCard(info[item.title]);
+          card.querySelector('.header').addEventListener('click', function() {
+            var infoArray = card.querySelectorAll('.information p');
+            if (item.additions)
+              item.additions.forEach(function(added) {
+                infoArray[added].classList.add('added');
+              });
+            if (item.edited)
+              item.edited.forEach(function(edit) {
+                infoArray[edit].classList.add('edited');
+              });
+          });
+        }
         if (!card)
           return;
         cardArr.push(card);
@@ -473,25 +491,30 @@
       // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
-        // See whether we need to do anything special to the url
-        if (document.querySelector('.page-container').classList.contains('search'))
-        // Add search to the url
-          if (document.querySelector('.info-search-box').value)
-            history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
+        try {
+          // See whether we need to do anything special to the url
+          if (doc.querySelector('.page-container').classList.contains('search'))
+          // Add search to the url
+            if (doc.querySelector('.info-search-box').value)
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+            else
+              win.history.replaceState(null, '', '?search');
           else
-            history.replaceState(null, '', '?search');
-        else
-          history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '?');
 
-        // Clear content after 0.5 seconds
-        setTimeout(function() {
-          if (!card.classList.contains('expanded'))
-            content.innerHTML = '';
-        }, 500);
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } catch (err) {
+          console.error('Error while trying to expand card ' + data.title);
+          console.error(err);
+        }
       } else {
         // Expand the card
         collapseAllItems();
-        history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
+        win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
 
         addCardInfo(card, data);
       }
@@ -545,7 +568,7 @@
           var sourceList = doc.createElement('ul');
           data.sources.forEach(function(source, sIndex) {
             var sourceEl = doc.createElement('li');
-            var anchor = document.createElement('a');
+            var anchor = doc.createElement('a');
             anchor.href = source;
             anchor.textContent = sIndex + 1;
             appendHoverElement(anchor, [source]);
@@ -573,16 +596,23 @@
             var itemEl = doc.createElement('li');
             itemEl.textContent = rItem;
             itemEl.addEventListener('click', function() {
-              var otherCard = document.querySelector('.info-card[data-title="' + rItem + '"]');
-              // Expand the other card
-              collapseAllItems();
-              history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
+              try {
+                var otherCard = doc.querySelector('.info-card[data-title="' + rItem + '"]');
+                // Expand the other card
+                collapseAllItems();
+                win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
 
-              addCardInfo(otherCard, info[rItem]);
-              otherCard.classList.add('expanded');
-              otherCard.scrollIntoView();
-              // Make sure card isn't hidden behind the floating navigation bar
-              scroll(scrollX, scrollY - 60);
+                addCardInfo(otherCard, info[rItem]);
+                otherCard.classList.add('expanded');
+                otherCard.scrollIntoView();
+                // Make sure card isn't hidden behind the floating navigation bar
+                win.scroll(scrollX, scrollY - 60);
+              } catch (err) {
+                console.error('Failed to switch to card ' + rItem);
+                console.error(err);
+              } finally {
+
+              }
             });
             relatedList.appendChild(itemEl);
           });
@@ -671,23 +701,28 @@
     // Expand card when clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) { // See whether we need to do anything special to the url
-        if (document.querySelector('.page-container').classList.contains('search'))
-        // Add search to the url
-          if (document.querySelector('.info-search-box').value)
-            history.replaceState(null, '', '?search=' + encodeURIComponent(document.querySelector('.info-search-box').value.toLowerCase()));
+        try {
+          if (doc.querySelector('.page-container').classList.contains('search'))
+          // Add search to the url
+            if (doc.querySelector('.info-search-box').value)
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+            else
+              win.history.replaceState(null, '', '?search');
           else
-            history.replaceState(null, '', '?search');
-        else
-          history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '?');
 
-        // Clear content after 0.5 seconds
-        setTimeout(function() {
-          if (!card.classList.contains('expanded'))
-            content.innerHTML = '';
-        }, 500);
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } catch (err) {
+          console.error('Error while trying to expand resource' + data.name);
+          console.error(err);
+        }
       } else {
         collapseAllItems();
-        history.replaceState(null, '', '?element=' + card.dataset.name);
+        win.history.replaceState(null, '', '?element=' + card.dataset.name);
 
         addResourceInfo(card, data);
       }
@@ -742,10 +777,15 @@
 
             // Expand other item when clicked
             elementEl.addEventListener('click', function() {
-              collapseAllItems();
-              var otherElement = document.querySelector('.element-card[data-name="' + element + '"]');
-              otherElement.classList.add('expanded');
-              addResourceInfo(otherElement, resources[element]);
+              try {
+                collapseAllItems();
+                var otherElement = doc.querySelector('.element-card[data-name="' + element + '"]');
+                otherElement.classList.add('expanded');
+                addResourceInfo(otherElement, resources[element]);
+              } catch (err) {
+                console.error('Error while trying to expand resource ' + element);
+                console.error(err);
+              }
             });
           } else
             elementEl.textContent = element;
@@ -771,10 +811,15 @@
 
             // Expand other item when clicked
             elementEl.addEventListener('click', function() {
-              collapseAllItems();
-              var otherElement = document.querySelector('.element-card[data-name="' + element + '"]');
-              otherElement.classList.add('expanded');
-              addResourceInfo(otherElement, resources[element]);
+              try {
+                collapseAllItems();
+                var otherElement = doc.querySelector('.element-card[data-name="' + element + '"]');
+                otherElement.classList.add('expanded');
+                addResourceInfo(otherElement, resources[element]);
+              } catch (err) {
+                console.error('Error while trying to expand resource ' + element);
+                console.error(err);
+              }
             });
           } else
             elementEl.textContent = element;
@@ -814,7 +859,7 @@
     distributeItems(cardArr, container);
     changeTab('search');
 
-    history.replaceState(null, '', '?cat=' + id);
+    win.history.replaceState(null, '', '?cat=' + id);
   }
 
   /**
@@ -894,8 +939,8 @@
 
     distributeItems(cardArr, container);
 
-    history.replaceState(null, '', '?search=' + encodeURIComponent(query));
-    scroll(0, 0);
+    win.history.replaceState(null, '', '?search=' + encodeURIComponent(query));
+    win.scroll(0, 0);
   }
 
   /**
@@ -1078,17 +1123,23 @@
       return;
     // Create elements
     element.classList.add('hoverable');
-    var hoverContainer = document.createElement('div');
+    var hoverContainer = doc.createElement('div');
     hoverContainer.classList.add('hoverable-container');
     element.appendChild(hoverContainer);
 
     textArray.forEach(function(item) {
-      var itemElement = document.createElement('p');
+      var itemElement = doc.createElement('p');
       itemElement.textContent = truncateString(item, 32);
       hoverContainer.appendChild(itemElement);
     });
   }
 
+  /**
+   * Truncates a string if its length is greater than the maximum, otherwise returns the string
+   * @param string String to Truncates
+   * @param maxLength Maximum length of output string
+   * @return A string of length no more than the given maximum
+   */
   function truncateString(string, maxLength) {
     if (string.length < maxLength)
       return string;
@@ -1096,12 +1147,26 @@
       return string.substr(0, maxLength - 3) + '...';
   }
 
+  /**
+   * Sort according to title
+   * @param a Item 1
+   * @param b Item 2
+   * @return Integer describing relationship between items
+   */
+  function titleSort(a, b) {
+    if (a.title < b.title)
+      return -1;
+    if (a.title > b.title)
+      return 1;
+    return 0;
+  }
+
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
   // For the following scroll event throtling.
   // Yay for making things go slightly slower for performance!
   (function() {
     var throttle = function(type, name, obj) {
-      obj = obj || window;
+      obj = obj || win;
       var running = false;
       var func = function() {
         if (running) {
