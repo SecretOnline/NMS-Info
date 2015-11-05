@@ -92,7 +92,7 @@ nav li:hover {
 }
 nav li span {
   display: inline-block;
-  padding: 19px 10px;
+  padding: 10px;
   color: #fff !important;
 }
 main {
@@ -332,9 +332,40 @@ main {
 .sources li:hover {
   text-decoration: none;
 }
+.added {
+  background-color: #eaffea;
+  color: #1c5a0b;
+}
+.edited {
+  background-color: #fffcea;
+  color: #90521e;
+}
+.sort-type {
+  display: inline-block;
+  float: right;
+}
+.sort-type.alpha svg:not(.sort-alpha) {
+  display: none;
+}
+.sort-type.category svg:not(.sort-category) {
+  display: none;
+}
+.sort-type.random svg:not(.sort-random) {
+  display: none;
+}
+.sort-type svg {
+  fill: #000;
+  position: absolute;
+  right: 0;
+  height: 24px;
+  width: 24px;
+}
 @media all and (min-width: 400px) {
   header .title {
     font-size: 30px;
+  }
+  nav li span {
+    padding: 19px 10px;
   }
 }
 @media all and (min-width: 500px) {
