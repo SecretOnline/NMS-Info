@@ -607,6 +607,7 @@
                 otherCard.scrollIntoView();
                 // Make sure card isn't hidden behind the floating navigation bar
                 win.scroll(scrollX, scrollY - 60);
+                changeTab('main');
               } catch (err) {
                 console.error('Failed to switch to card ' + rItem);
                 console.error(err);
