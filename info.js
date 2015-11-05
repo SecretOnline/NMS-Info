@@ -385,15 +385,28 @@
       var recentArr = JSON.parse(response);
       var recents = [];
 
-      // Create category cards for each of the categories
-      recentArr.forEach(function(item) {
-        recents.push(info[item]);
-      });
-
-      var infoArr = recents.sort(titleSort);
       var cardArr = [];
-      infoArr.forEach(function(item) {
-        var card = createInfoCard(item);
+      recentArr.forEach(function(item) {
+        var card;
+        if (typeof item === 'string') {
+          card = createInfoCard(info[item]);
+          card.querySelector('.header').addEventListener('click', function() {
+            card.querySelector('.card-content').classList.add('added');
+          });
+        } else {
+          card = createInfoCard(info[item.title]);
+          card.querySelector('.header').addEventListener('click', function() {
+            var infoArray = card.querySelectorAll('.information p');
+            if (item.additions)
+              item.additions.forEach(function(added) {
+                infoArray[added].classList.add('added');
+              });
+            if (item.edited)
+              item.edited.forEach(function(edit) {
+                infoArray[edit].classList.add('edited');
+              });
+          });
+        }
         if (!card)
           return;
         cardArr.push(card);
