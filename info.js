@@ -60,6 +60,18 @@
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
 
+    var nav = doc.querySelector('nav');
+
+    function closeNav() {
+      nav.classList.remove('open');
+    }
+
+    function toggleNav() {
+      nav.classList.toggle('open');
+    }
+    doc.querySelector('.menu').addEventListener('click', toggleNav);
+    doc.querySelector('main').addEventListener('click', closeNav);
+
     function doInfoSearch() {
       changeTab(2);
       var query = doc.querySelector('.info-search-box').value;
@@ -83,6 +95,7 @@
    * @param tab Name of the tab to switch to
    */
   function changeTab(tab) {
+    doc.querySelector('nav').classList.remove('open');
     win.scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
@@ -634,11 +647,11 @@
                 win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
 
                 addCardInfo(otherCard, info[rItem]);
+                changeTab('main');
                 otherCard.classList.add('expanded');
                 otherCard.scrollIntoView();
                 // Make sure card isn't hidden behind the floating navigation bar
                 win.scroll(scrollX, scrollY - 60);
-                changeTab('main');
               } catch (err) {
                 console.error('Failed to switch to card ' + rItem);
                 console.error(err);
