@@ -26,6 +26,7 @@ body {
 header {
   background-color: #01385b;
   max-height: 70px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .3);
 }
 header .title {
   line-height: 50px;
@@ -56,14 +57,16 @@ header button {
 header button:hover {
   background-color: rgba(255, 255, 255, .2);
 }
+header button:focus {
+  outline: 0;
+}
 header button img {
-  width: 40px;
-  height: 40px;
-  padding: 15px;
+  width: 30px;
+  height: 30px;
+  margin: 20px;
 }
 nav {
   position: absolute;
-  left: 0;
   top: 70px;
   width: 100vw;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .3);
@@ -71,19 +74,18 @@ nav {
   background-color: #01385b;
   z-index: 1;
 }
-nav.floating {
-  position: fixed;
-  top: 0;
-}
 nav ul {
+  max-height: 0;
+  transition: max-height 0.5s;
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-y: hidden;
+}
+nav.open ul {
+  max-height: 100vh;
 }
 nav li {
-  display: inline-block;
-  /* Workaround a small inline-block bug/feature */
-  margin-left: -4px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -94,13 +96,15 @@ nav li span {
   display: inline-block;
   padding: 10px 7px;
   color: #fff !important;
-  font-size: 0.75em;
+}
+nav .github {
+  height: 1.5em;
+  width: 1.5em;
 }
 main {
   margin: 0 auto;
   top: 0;
   max-width: 53em;
-  padding-top: 30px;
 }
 .page-container {
   position: relative;
@@ -357,13 +361,6 @@ main {
   header .title {
     text-align: center;
   }
-  nav li span {
-    font-size: 1em;
-    padding: 19px 10px;
-  }
-  main {
-    padding-top: 60px;
-  }
 }
 @media all and (min-width: 600px) {
   header .title {
@@ -376,6 +373,62 @@ main {
   }
 }
 @media all and (min-width: 920px) {
+  header {
+    box-shadow: 0;
+  }
+  header .menu {
+    display: none;
+  }
+  nav {
+    position: absolute;
+    left: 0;
+    top: 70px;
+    width: 100vw;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .3);
+    text-align: center;
+    background-color: #01385b;
+    z-index: 1;
+  }
+  nav.floating {
+    position: fixed;
+    top: 0;
+  }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: none;
+  }
+  nav li {
+    display: inline-block;
+    /* Workaround a small inline-block bug/feature */
+    margin-left: -4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  nav li span {
+    display: inline-block;
+    font-size: 1em;
+    padding: 19px 10px;
+  }
+  nav .github-link {
+    position: absolute;
+    top: -70px;
+    right: 0;
+  }
+  nav .github-link span {
+    width: 30px;
+    height: 30px;
+    margin: 20px;
+    padding: 0;
+  }
+  nav .github {
+    width: 30px;
+    height: 30px;
+  }
+  main {
+    padding-top: 50px;
+  }
   .card-column {
     display: inline-block;
     width: calc(50% - 10px);
