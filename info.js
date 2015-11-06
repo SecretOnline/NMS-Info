@@ -58,6 +58,20 @@
       changeTab('recent');
     });
 
+    doc.querySelector('.sort-type').addEventListener('click', changeSort);
+
+    var nav = doc.querySelector('nav');
+
+    function closeNav() {
+      nav.classList.remove('open');
+    }
+
+    function toggleNav() {
+      nav.classList.toggle('open');
+    }
+    doc.querySelector('.menu').addEventListener('click', toggleNav);
+    doc.querySelector('main').addEventListener('click', closeNav);
+
     function doInfoSearch() {
       changeTab(2);
       var query = doc.querySelector('.info-search-box').value;
@@ -71,6 +85,28 @@
       }
     });
 
+    // Retrieve sort preference
+    if (win.localStorage) {
+      try {
+        var sortType = win.localStorage.getItem('info-sort');
+        if (sortType) {
+          sortMethod = sortType;
+          var button = document.querySelector('.sort-type');
+          if (sortMethod === 'category') {
+            button.classList.remove('alpha');
+            button.classList.add('category');
+          } else if (sortMethod === 'random') {
+            button.classList.remove('alpha');
+            button.classList.add('random');
+          }
+        } else
+          win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
     // Create cards for all the information
     getCategories();
     getResources();
@@ -81,6 +117,7 @@
    * @param tab Name of the tab to switch to
    */
   function changeTab(tab) {
+    doc.querySelector('nav').classList.remove('open');
     win.scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
@@ -249,6 +286,51 @@
   }
 
   /**
+   * Change the sort method used on the main page
+   */
+  function changeSort() {
+    var button = document.querySelector('.sort-type');
+
+    if (button.classList.contains('category')) {
+      button.classList.remove('category');
+      button.classList.add('random');
+      sortMethod = 'random';
+    } else if (button.classList.contains('random')) {
+      button.classList.remove('random');
+      button.classList.add('alpha');
+      sortMethod = 'alphabet';
+    } else {
+      button.classList.remove('alpha');
+      button.classList.add('category');
+      sortMethod = 'category';
+    }
+
+    // Set stored sort type
+    if (win.localStorage) {
+      try {
+        win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
+    var infoArr = sortItems();
+
+    var cardArr = [];
+    infoArr.forEach(function(item) {
+      var card = createInfoCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+    // Add "about" card to the top of the list
+    cardArr.unshift(createInfoCard(aboutCard));
+    var cardList = doc.querySelector('.info-list');
+    distributeItems(cardArr, cardList);
+  }
+
+  /**
    * Sort items according to the current sort method
    * @return Array containing the sorted items
    */
@@ -328,13 +410,7 @@
       catArr.push(categories[key]);
     });
 
-    if (sortMethod === 'random') {
-      catArr = arrayRandomise(catArr);
-    } else if (sortMethod === 'alphabet') {
-      catArr = catArr.sort(titleSort);
-    } else if (sortMethod === 'category') {
-      catArr = catArr.sort(titleSort);
-    }
+    catArr = catArr.sort(titleSort);
     return catArr;
   }
 
@@ -603,11 +679,11 @@
                 win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
 
                 addCardInfo(otherCard, info[rItem]);
+                changeTab('main');
                 otherCard.classList.add('expanded');
                 otherCard.scrollIntoView();
                 // Make sure card isn't hidden behind the floating navigation bar
                 win.scroll(scrollX, scrollY - 60);
-                changeTab('main');
               } catch (err) {
                 console.error('Failed to switch to card ' + rItem);
                 console.error(err);
