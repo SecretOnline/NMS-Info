@@ -1,5 +1,4 @@
 # NMS Information Repository
-
 [Visit the Repository](http://secretonline.github.io/NMS-Info)
 
 This is intended to be a repository for any No Man's Sky related information.
@@ -16,4 +15,84 @@ This is an open source project (duh, it's on GitHub). Feel free to contribute.
 6. Wait for it to be merged
 7. Congratulations, you just contributed!
 
-If you're adding information to the repo, use the [generator](http://secretonline.github.io/NMS-Info/generator.html) to ensure proper formatting. Always add new information to the end of the file. Inserting between items could break and "related" links between items.
+## Adding into to the repository
+
+If you're adding information to the repo, use the [generator](http://secretonline.github.io/NMS-Info/generator.html) to ensure proper formatting.
+
+In previous versions it was important that you added to the end of the file. Now it is no longer as important. In order to keep things consistent, I ask that you still add to the end of the file.
+
+The [info dump](http://secretonline.github.io/NMS-Info/infodump.html) can be used to quickly dump all of the information, which can help with grammar and spelling checking.
+
+Changes to the information cards can be documented in `data/recent.json`. More on the format below.
+
+## Data formats
+
+You don't really need to worry about this, but it's here for documentation purposes. Arrays can hold no elements unless otherwise stated. If an array holds elements of different types, then either is acceptable.
+
+**info.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of this piece of information",
+    "text": [
+      "String. A paragraph to be put inside the expanded card"
+    ],
+    "categories": [
+      "String. Title of a category. The first entry determines a card's header background and text color"
+    ],
+    "sources": [
+      "String. URL of a source"
+    ],
+    "related": [
+      "String. Title of a related card"
+    ]
+  }
+]
+```
+
+**categories.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of this category",
+    "color": "String. Valid CSS color",
+    "darkText": "Boolean. Black text if true, otherwise white"
+  }
+]
+```
+
+**resources.json**
+
+``` JSON
+[
+  {
+    "name": "String. Name of this element",
+    "symbol": "String. Generally two characters. Chemical symbol for this element",
+    "description": "String. Description as given in the game",
+    "color": "String. Valid CSS color",
+    "makes": [
+      "String. Name of item this element is a component of. If it is another element, then this will link to that element"
+    ],
+    "madeFrom": "Array. Does not need to be defined, as it is created when the page loads"
+  }
+]
+```
+
+**recent.json**
+
+``` JSON
+[
+  "String. Marks entire card as being added",
+  {
+    "title": "String. Title of piece of information that has been edited",
+    "additions": [
+      "Integer. Index (starting at 0) of piece of information that was added"
+    ],
+    "edited": [
+      "Integer. Index (starting at 0) of piece of information that was edited"
+    ]
+  }
+]
+```

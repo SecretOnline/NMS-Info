@@ -58,6 +58,8 @@
       changeTab('recent');
     });
 
+    doc.querySelector('.sort-type').addEventListener('click', changeSort);
+
     function doInfoSearch() {
       changeTab(2);
       var query = doc.querySelector('.info-search-box').value;
@@ -249,6 +251,41 @@
   }
 
   /**
+   * Change the sort method used on the main page
+   */
+  function changeSort() {
+    var button = document.querySelector('.sort-type');
+
+    if (button.classList.contains('category')) {
+      button.classList.remove('category');
+      button.classList.add('random');
+      sortMethod = 'random';
+    } else if (button.classList.contains('random')) {
+      button.classList.remove('random');
+      button.classList.add('alpha');
+      sortMethod = 'alphabet';
+    } else {
+      button.classList.remove('alpha');
+      button.classList.add('category');
+      sortMethod = 'category';
+    }
+
+    var infoArr = sortItems();
+
+    var cardArr = [];
+    infoArr.forEach(function(item) {
+      var card = createInfoCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+    // Add "about" card to the top of the list
+    cardArr.unshift(createInfoCard(aboutCard));
+    var cardList = doc.querySelector('.info-list');
+    distributeItems(cardArr, cardList);
+  }
+
+  /**
    * Sort items according to the current sort method
    * @return Array containing the sorted items
    */
@@ -328,13 +365,7 @@
       catArr.push(categories[key]);
     });
 
-    if (sortMethod === 'random') {
-      catArr = arrayRandomise(catArr);
-    } else if (sortMethod === 'alphabet') {
-      catArr = catArr.sort(titleSort);
-    } else if (sortMethod === 'category') {
-      catArr = catArr.sort(titleSort);
-    }
+    catArr = catArr.sort(titleSort);
     return catArr;
   }
 
