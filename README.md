@@ -23,3 +23,76 @@ In previous versions it was important that you added to the end of the file. Now
 
 The [info dump](http://secretonline.github.io/NMS-Info/infodump.html) can be used to quickly dump all of the information, which can help with grammar and spelling checking.
 
+Changes to the information cards can be documented in `data/recent.json`. More on the format below.
+
+## Data formats
+
+You don't really need to worry about this, but it's here for documentation purposes. Arrays can hold no elements unless otherwise stated. If an array holds elements of different types, then either is acceptable.
+
+**info.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of this piece of information",
+    "text": [
+      "String. A paragraph to be put inside the expanded card"
+    ],
+    "categories": [
+      "String. Title of a category. The first entry determines a card's header background and text color"
+    ],
+    "sources": [
+      "String. URL of a source"
+    ],
+    "related": [
+      "String. Title of a related card"
+    ]
+  }
+]
+```
+
+**categories.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of this category",
+    "color": "String. Valid CSS color",
+    "darkText": "Boolean. Black text if true, otherwise white"
+  }
+]
+```
+
+**resources.json**
+
+``` JSON
+[
+  {
+    "name": "String. Name of this element",
+    "symbol": "String. Generally two characters. Chemical symbol for this element",
+    "description": "String. Description as given in the game",
+    "color": "String. Valid CSS color",
+    "makes": [
+      "String. Name of item this element is a component of. If it is another element, then this will link to that element"
+    ],
+    "madeFrom": "Array. Does not need to be defined, as it is created when the page loads"
+  }
+]
+```
+
+**recent.json**
+
+``` JSON
+[
+  "String. Marks entire card as being added",
+  {
+    "title": "String. Title of piece of information that has been edited",
+    "additions": [
+      "Integer. Index (starting at 0) of piece of information that was added"
+    ],
+    "edited": [
+      "Integer. Index (starting at 0) of piece of information that was edited"
+    ]
+  }
+]
+```
