@@ -85,6 +85,28 @@
       }
     });
 
+    // Retrieve sort preference
+    if (win.localStorage) {
+      try {
+        var sortType = win.localStorage.getItem('info-sort');
+        if (sortType) {
+          sortMethod = sortType;
+          var button = document.querySelector('.sort-type');
+          if (sortMethod === 'category') {
+            button.classList.remove('alpha');
+            button.classList.add('category');
+          } else if (sortMethod === 'random') {
+            button.classList.remove('alpha');
+            button.classList.add('random');
+          }
+        } else
+          win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
     // Create cards for all the information
     getCategories();
     getResources();
@@ -281,6 +303,16 @@
       button.classList.remove('alpha');
       button.classList.add('category');
       sortMethod = 'category';
+    }
+
+    // Set stored sort type
+    if (win.localStorage) {
+      try {
+        win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
     }
 
     var infoArr = sortItems();
