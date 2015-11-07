@@ -481,6 +481,16 @@
               item.edited.forEach(function(edit) {
                 infoArray[edit].classList.add('edited');
               });
+            if (item.removals)
+              item.removals.forEach(function(removed) {
+                var removalBar = doc.createElement('p');
+                removalBar.classList.add('removed');
+                removalBar.innerHTML = '<em>Removed</em>';
+                if (removed < infoArray.length)
+                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                else
+                  card.querySelector('.information').appendChild(removalBar);
+              });
           });
         }
         if (!card)
