@@ -57,6 +57,9 @@
     doc.querySelector('.tab-recent').addEventListener('click', function() {
       changeTab('recent');
     });
+    doc.querySelector('.tab-sources').addEventListener('click', function() {
+      changeTab('sources');
+    });
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
 
@@ -127,6 +130,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?');
     } else if (tab === 'categories') {
       // Go to categories list
@@ -134,6 +138,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?cat');
     } else if (tab === 'search') {
       // Go to search
@@ -141,6 +146,7 @@
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?search');
     } else if (tab === 'elements') {
       // Go to elements
@@ -148,6 +154,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?element');
     } else if (tab === 'recent') {
       // Go to elements
@@ -155,7 +162,16 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?recent');
+    } else if (tab === 'sources') {
+      // Go to elements
+      pageContainer.classList.add('sources');
+      pageContainer.classList.remove('search');
+      pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('recent');
+      win.history.replaceState(null, '', '?sources');
     }
   }
 
@@ -247,6 +263,9 @@
     } else if (typeof searchParams.recent !== 'undefined') {
       // Go to the elements page
       changeTab('recent');
+    } else if (typeof searchParams.sources !== 'undefined') {
+      // Go to the elements page
+      changeTab('sources');
     } else {
       changeTab('main'); // Just go to default spot
     }
@@ -459,7 +478,6 @@
     httpGet('data/recent.json', function(response) {
 
       var recentArr = JSON.parse(response);
-      var recents = [];
 
       var cardArr = [];
       recentArr.forEach(function(item) {
@@ -489,6 +507,12 @@
       });
       var cardList = doc.querySelector('.recent-list');
       distributeItems(cardArr, cardList);
+    });
+  }
+
+  function getSources() {
+    httpGet('data/sources.json', function(response) {
+      var sourceArr = JSON.parse(response);
     });
   }
 

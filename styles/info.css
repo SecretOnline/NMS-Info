@@ -112,16 +112,19 @@ main {
   transition: right 0.5s;
 }
 .page-container.cat {
-  right: calc(100vw - (50vw - (53em / 2)));
+  right: calc(100vw - (50vw - (100% / 2)));
 }
 .page-container.search {
-  right: calc((100vw - (50vw - (53em / 2))) * -1);
+  right: calc((100vw - (50vw - (100% / 2))) * -1);
 }
 .page-container.elements {
-  right: calc((100vw - (50vw - (53em / 2))) * 2);
+  right: calc((100vw - (50vw - (100% / 2))) * 2);
+}
+.page-container.sources {
+  right: calc((100vw - (50vw - (100% / 2))) * 3);
 }
 .page-container.recent {
-  right: calc((100vw - (50vw - (53em / 2))) * 3);
+  right: calc((100vw - (50vw - (100% / 2))) * 4);
 }
 .page-container > div {
   margin: 0 5px;
@@ -130,16 +133,19 @@ main {
   max-width: 53em;
 }
 .page-cat {
-  left: calc(100vw - (50vw - (53em / 2)));
+  left: calc(100vw - (50vw - (100% / 2)));
 }
 .page-search {
-  left: calc((100vw - (50vw - (53em / 2))) * -1);
+  left: calc((100vw - (50vw - (100% / 2))) * -1);
 }
 .page-elements {
-  left: calc((100vw - (50vw - (53em / 2))) * 2);
+  left: calc((100vw - (50vw - (100% / 2))) * 2);
+}
+.page-sources {
+  left: calc((100vw - (50vw - (100% / 2))) * 3);
 }
 .page-recent {
-  left: calc((100vw - (50vw - (53em / 2))) * 3);
+  left: calc((100vw - (50vw - (100% / 2))) * 4);
 }
 .info-list .info-card,
 .cat-list .category-card,
@@ -440,32 +446,8 @@ main {
   main {
     max-width: 72em;
   }
-  .page-container.cat {
-    right: calc(100vw - (50vw - (72em / 2)));
-  }
-  .page-container.search {
-    right: calc((100vw - (50vw - (72em / 2))) * -1);
-  }
-  .page-container.elements {
-    right: calc((100vw - (50vw - (72em / 2))) * 2);
-  }
-  .page-container.recent {
-    right: calc((100vw - (50vw - (72em / 2))) * 3);
-  }
   .page-container > div {
     max-width: 72em;
-  }
-  .page-cat {
-    left: calc(100vw - (50vw - (72em / 2)));
-  }
-  .page-search {
-    left: calc((100vw - (50vw - (72em / 2))) * -1);
-  }
-  .page-elements {
-    left: calc((100vw - (50vw - (72em / 2))) * 2);
-  }
-  .page-recent {
-    left: calc((100vw - (50vw - (72em / 2))) * 3);
   }
   .card-column {
     width: calc(33% - 10px);
