@@ -113,6 +113,7 @@
     // Create cards for all the information
     getCategories();
     getResources();
+    getSources();
   }
 
   /**
@@ -474,6 +475,9 @@
     });
   }
 
+  /**
+   * Retrieve recent changes and add to page
+   */
   function getRecentChanges() {
     httpGet('data/recent.json', function(response) {
 
@@ -510,9 +514,22 @@
     });
   }
 
+  /**
+   * Retrieve sources and add to page
+   */
   function getSources() {
     httpGet('data/sources.json', function(response) {
       var sourceArr = JSON.parse(response);
+
+      var cardArr = [];
+      sourceArr.forEach(function(item) {
+        var card = createSourceCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.source-list');
+      distributeItems(cardArr, cardList);
     });
   }
 
@@ -931,6 +948,78 @@
         content.appendChild(madeFrom);
       }
     }
+  }
+
+  /**
+   * Create a source card with the given data
+   * @param data Object describing the information source
+   * @return Element to add to page
+   */
+  function createSourceCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('source-card');
+
+    if (data.darkText) {
+      card.classList.add('dark-text');
+    }
+    // Store data values
+    card.dataset.title = data.title;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    headerTitle.textContent = data.title;
+    header.appendChild(headerBg);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    // Add empty content box
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    // Open / close the card when the header is clicked
+    header.addEventListener('click', function() {
+      if (data.method === 'embed') {
+        if (card.classList.contains('expanded')) {
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } else {
+          // Expand the card
+          collapseAllItems();
+          addSourceInfo(card, data);
+        }
+        card.classList.toggle('expanded');
+      } else if (data.method === 'link') {
+        win.open(data.src, '_blank'); // Open link in new tab/window (user's broswer preference)
+      }
+    });
+
+    return card;
+  }
+
+  /**
+   * Add content to the given card
+   * This is so that inner elements are only present if needed
+   * @param card Element to add the information to
+   * @param data Object describing the piece of information
+   */
+  function addSourceInfo(card, data) {
+    // Clear any pre-existing content
+    var content = card.querySelector('.card-content');
+    content.innerHTML = '';
+
+    var frame = doc.createElement('iframe');
+    frame.src = data.src;
   }
 
   /**
