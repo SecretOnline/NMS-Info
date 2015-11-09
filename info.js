@@ -979,6 +979,14 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    if (data.method === 'link') {
+      var icon = doc.createElement('img');
+      icon.src = (data.darkText) ? 'res/external-dark.svg' : 'res/external.svg';
+      icon.alt = 'Open in new window / tab';
+      icon.classList.add('external');
+      header.appendChild(icon);
+    }
+
     // Add empty content box
     var content = doc.createElement('div');
     content.classList.add('card-content');
@@ -1020,6 +1028,7 @@
 
     var frame = doc.createElement('iframe');
     frame.src = data.src;
+    content.appendChild(frame);
   }
 
   /**
