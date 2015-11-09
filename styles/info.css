@@ -254,12 +254,23 @@ main {
 .external {
   display: inline-block;
   text-align: center;
+}
+.header .external {
   position: absolute;
   width: 32px;
   height: 32px;
   margin: 14px;
   top: 0;
   right: 0;
+}
+.card-content .external {
+  height: 1.5em;
+  width: 1.5em;
+  cursor: pointer;
+}
+.external ~ span {
+  position: absolute;
+  cursor: pointer;
 }
 .card-content {
   max-height: 0;

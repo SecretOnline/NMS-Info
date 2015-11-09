@@ -1026,6 +1026,20 @@
     var content = card.querySelector('.card-content');
     content.innerHTML = '';
 
+    var container = doc.createElement('div');
+    var link = doc.createElement('a');
+    link.href = data.src;
+    var icon = doc.createElement('img');
+    icon.src = 'res/external-dark.svg';
+    icon.alt = 'Open in new window / tab';
+    icon.classList.add('external');
+    link.appendChild(icon);
+    var text = doc.createElement('span');
+    text.textContent = 'Open in new window / tab';
+    link.appendChild(text);
+    container.appendChild(link);
+    content.appendChild(container);
+
     var frame = doc.createElement('iframe');
     frame.src = data.src;
     content.appendChild(frame);
