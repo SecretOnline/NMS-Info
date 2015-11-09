@@ -127,7 +127,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      win.history.replaceState(null, '', '?');
+      win.history.replaceState(null, '', '.');
     } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
@@ -587,7 +587,7 @@
             else
               win.history.replaceState(null, '', '?search');
           else
-            win.history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '.');
 
           // Clear content after 0.5 seconds
           win.setTimeout(function() {
@@ -797,7 +797,7 @@
             else
               win.history.replaceState(null, '', '?search');
           else
-            win.history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '.');
 
           // Clear content after 0.5 seconds
           win.setTimeout(function() {
