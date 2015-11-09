@@ -96,3 +96,17 @@ You don't really need to worry about this, but it's here for documentation purpo
   }
 ]
 ```
+
+**sources.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of source",
+    "method": "String. One of 'link' or 'embed'. Determines click behaviour",
+    "src": "String. URL of source",
+    "color": "String. Valid CSS Color",
+    "darkText": "Boolean. Black text if true, otherwise white"
+  }
+]
+```
