@@ -142,6 +142,7 @@
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
       win.history.replaceState(null, '', '?search');
+      doc.querySelector('.info-search-box').focus();
     } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
