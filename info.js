@@ -132,7 +132,7 @@
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
       pageContainer.classList.remove('sources');
-      win.history.replaceState(null, '', '?');
+      win.history.replaceState(null, '', '.');
     } else if (tab === 'categories') {
       // Go to categories list
       pageContainer.classList.add('cat');
@@ -149,6 +149,7 @@
       pageContainer.classList.remove('recent');
       pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?search');
+      doc.querySelector('.info-search-box').focus();
     } else if (tab === 'elements') {
       // Go to elements
       pageContainer.classList.add('elements');
@@ -503,6 +504,16 @@
               item.edited.forEach(function(edit) {
                 infoArray[edit].classList.add('edited');
               });
+            if (item.removals)
+              item.removals.forEach(function(removed) {
+                var removalBar = doc.createElement('p');
+                removalBar.classList.add('removed');
+                removalBar.innerHTML = '<em>Removed</em>';
+                if (removed < infoArray.length)
+                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                else
+                  card.querySelector('.information').appendChild(removalBar);
+              });
           });
         }
         if (!card)
@@ -617,7 +628,7 @@
             else
               win.history.replaceState(null, '', '?search');
           else
-            win.history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '.');
 
           // Clear content after 0.5 seconds
           win.setTimeout(function() {
@@ -827,7 +838,7 @@
             else
               win.history.replaceState(null, '', '?search');
           else
-            win.history.replaceState(null, '', '?');
+            win.history.replaceState(null, '', '.');
 
           // Clear content after 0.5 seconds
           win.setTimeout(function() {
