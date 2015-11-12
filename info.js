@@ -57,6 +57,9 @@
     doc.querySelector('.tab-recent').addEventListener('click', function() {
       changeTab('recent');
     });
+    doc.querySelector('.tab-sources').addEventListener('click', function() {
+      changeTab('sources');
+    });
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
 
@@ -110,6 +113,7 @@
     // Create cards for all the information
     getCategories();
     getResources();
+    getSources();
   }
 
   /**
@@ -127,6 +131,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '.');
     } else if (tab === 'categories') {
       // Go to categories list
@@ -134,6 +139,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?cat');
     } else if (tab === 'search') {
       // Go to search
@@ -141,6 +147,7 @@
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?search');
       doc.querySelector('.info-search-box').focus();
     } else if (tab === 'elements') {
@@ -149,6 +156,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('recent');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?element');
     } else if (tab === 'recent') {
       // Go to elements
@@ -156,7 +164,16 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('sources');
       win.history.replaceState(null, '', '?recent');
+    } else if (tab === 'sources') {
+      // Go to elements
+      pageContainer.classList.add('sources');
+      pageContainer.classList.remove('search');
+      pageContainer.classList.remove('cat');
+      pageContainer.classList.remove('elements');
+      pageContainer.classList.remove('recent');
+      win.history.replaceState(null, '', '?sources');
     }
   }
 
@@ -248,6 +265,9 @@
     } else if (typeof searchParams.recent !== 'undefined') {
       // Go to the elements page
       changeTab('recent');
+    } else if (typeof searchParams.sources !== 'undefined') {
+      // Go to the elements page
+      changeTab('sources');
     } else {
       changeTab('main'); // Just go to default spot
     }
@@ -456,11 +476,13 @@
     });
   }
 
+  /**
+   * Retrieve recent changes and add to page
+   */
   function getRecentChanges() {
     httpGet('data/recent.json', function(response) {
 
       var recentArr = JSON.parse(response);
-      var recents = [];
 
       var cardArr = [];
       recentArr.forEach(function(item) {
@@ -499,6 +521,25 @@
         cardArr.push(card);
       });
       var cardList = doc.querySelector('.recent-list');
+      distributeItems(cardArr, cardList);
+    });
+  }
+
+  /**
+   * Retrieve sources and add to page
+   */
+  function getSources() {
+    httpGet('data/sources.json', function(response) {
+      var sourceArr = JSON.parse(response);
+
+      var cardArr = [];
+      sourceArr.forEach(function(item) {
+        var card = createSourceCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.source-list');
       distributeItems(cardArr, cardList);
     });
   }
@@ -918,6 +959,101 @@
         content.appendChild(madeFrom);
       }
     }
+  }
+
+  /**
+   * Create a source card with the given data
+   * @param data Object describing the information source
+   * @return Element to add to page
+   */
+  function createSourceCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('source-card');
+
+    if (data.darkText) {
+      card.classList.add('dark-text');
+    }
+    // Store data values
+    card.dataset.title = data.title;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    headerTitle.textContent = data.title;
+    header.appendChild(headerBg);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    if (data.method === 'link') {
+      var icon = doc.createElement('img');
+      icon.src = (data.darkText) ? 'res/external-dark.svg' : 'res/external.svg';
+      icon.alt = 'Open in new window / tab';
+      icon.classList.add('external');
+      header.appendChild(icon);
+    }
+
+    // Add empty content box
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    // Open / close the card when the header is clicked
+    header.addEventListener('click', function() {
+      if (data.method === 'embed') {
+        if (card.classList.contains('expanded')) {
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } else {
+          // Expand the card
+          collapseAllItems();
+          addSourceInfo(card, data);
+        }
+        card.classList.toggle('expanded');
+      } else if (data.method === 'link') {
+        win.open(data.src, '_blank'); // Open link in new tab/window (user's broswer preference)
+      }
+    });
+
+    return card;
+  }
+
+  /**
+   * Add content to the given card
+   * This is so that inner elements are only present if needed
+   * @param card Element to add the information to
+   * @param data Object describing the piece of information
+   */
+  function addSourceInfo(card, data) {
+    // Clear any pre-existing content
+    var content = card.querySelector('.card-content');
+    content.innerHTML = '';
+
+    var container = doc.createElement('div');
+    var link = doc.createElement('a');
+    link.href = data.src;
+    var icon = doc.createElement('img');
+    icon.src = 'res/external-dark.svg';
+    icon.alt = 'Open in new window / tab';
+    icon.classList.add('external');
+    link.appendChild(icon);
+    var text = doc.createElement('span');
+    text.textContent = 'Open in new window / tab';
+    link.appendChild(text);
+    container.appendChild(link);
+    content.appendChild(container);
+
+    var frame = doc.createElement('iframe');
+    frame.src = data.src;
+    content.appendChild(frame);
   }
 
   /**
