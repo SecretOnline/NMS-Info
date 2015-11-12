@@ -325,12 +325,16 @@ main {
   text-decoration: none;
 }
 .added {
-  background-color: #eaffea;
+  background-color: #c9ffca;
   color: #1c5a0b;
 }
 .edited {
-  background-color: #fffcea;
+  background-color: #fcffc9;
   color: #90521e;
+}
+.removed {
+  background-color: #ffcac9;
+  color: #8e1310;
 }
 .sort-type {
   display: inline-block;
