@@ -120,7 +120,7 @@ main {
 .page-container.elements {
   right: calc((100vw - (50vw - (100% / 2))) * 2);
 }
-.page-container.sources {
+.page-container.links {
   right: calc((100vw - (50vw - (100% / 2))) * 3);
 }
 .page-container.recent {
@@ -141,7 +141,7 @@ main {
 .page-elements {
   left: calc((100vw - (50vw - (100% / 2))) * 2);
 }
-.page-sources {
+.page-links {
   left: calc((100vw - (50vw - (100% / 2))) * 3);
 }
 .page-recent {
@@ -150,14 +150,14 @@ main {
 .info-list .info-card,
 .cat-list .category-card,
 .elements-list .element-card,
-.source-list .source-card,
+.link-list .link-card,
 .search-area {
   margin-bottom: 10px;
 }
 .info-card,
 .category-card,
 .element-card,
-.source-card,
+.link-card,
 .search-area {
   display: inline-block;
   position: relative;

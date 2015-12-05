@@ -57,8 +57,8 @@
     doc.querySelector('.tab-recent').addEventListener('click', function() {
       changeTab('recent');
     });
-    doc.querySelector('.tab-sources').addEventListener('click', function() {
-      changeTab('sources');
+    doc.querySelector('.tab-links').addEventListener('click', function() {
+      changeTab('links');
     });
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
@@ -113,7 +113,7 @@
     // Create cards for all the information
     getCategories();
     getResources();
-    getSources();
+    getLinks();
   }
 
   /**
@@ -131,7 +131,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      pageContainer.classList.remove('sources');
+      pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '.');
     } else if (tab === 'categories') {
       // Go to categories list
@@ -139,7 +139,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      pageContainer.classList.remove('sources');
+      pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '?cat');
     } else if (tab === 'search') {
       // Go to search
@@ -147,7 +147,7 @@
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      pageContainer.classList.remove('sources');
+      pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '?search');
       doc.querySelector('.info-search-box').focus();
     } else if (tab === 'elements') {
@@ -156,7 +156,7 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('recent');
-      pageContainer.classList.remove('sources');
+      pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '?element');
     } else if (tab === 'recent') {
       // Go to elements
@@ -164,16 +164,16 @@
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
-      pageContainer.classList.remove('sources');
+      pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '?recent');
-    } else if (tab === 'sources') {
+    } else if (tab === 'links') {
       // Go to elements
-      pageContainer.classList.add('sources');
+      pageContainer.classList.add('links');
       pageContainer.classList.remove('search');
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      win.history.replaceState(null, '', '?sources');
+      win.history.replaceState(null, '', '?link');
     }
   }
 
@@ -265,9 +265,9 @@
     } else if (typeof searchParams.recent !== 'undefined') {
       // Go to the elements page
       changeTab('recent');
-    } else if (typeof searchParams.sources !== 'undefined') {
+    } else if (typeof searchParams.link !== 'undefined') {
       // Go to the elements page
-      changeTab('sources');
+      changeTab('links');
     } else {
       changeTab('main'); // Just go to default spot
     }
@@ -526,21 +526,33 @@
   }
 
   /**
-   * Retrieve sources and add to page
+   * Retrieve links and add to page
    */
-  function getSources() {
-    httpGet('data/sources.json', function(response) {
-      var sourceArr = JSON.parse(response);
+  function getLinks() {
+    httpGet('data/links.json', function(response) {
+      var categoryArr = JSON.parse(response);
+      var container = doc.querySelector('.link-list');
 
-      var cardArr = [];
-      sourceArr.forEach(function(item) {
-        var card = createSourceCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
+      categoryArr.forEach(function(category) {
+        // create title
+        var title = doc.createElement('h2');
+        title.textContent = category.title;
+        container.appendChild(title);
+        // Add link cards
+        var cardList = doc.createElement('div');
+
+        var cardArr = [];
+        category.items.forEach(function(item) {
+          var card = createLinkCard(item);
+          if (!card)
+            return;
+          cardArr.push(card);
+        });
+        distributeItems(cardArr, cardList);
+
+        container.appendChild(cardList);
       });
-      var cardList = doc.querySelector('.source-list');
-      distributeItems(cardArr, cardList);
+
     });
   }
 
@@ -966,10 +978,10 @@
    * @param data Object describing the information source
    * @return Element to add to page
    */
-  function createSourceCard(data) {
+  function createLinkCard(data) {
     // Create card element
     var card = doc.createElement('div');
-    card.classList.add('source-card');
+    card.classList.add('link-card');
 
     if (data.darkText) {
       card.classList.add('dark-text');
@@ -1015,7 +1027,7 @@
         } else {
           // Expand the card
           collapseAllItems();
-          addSourceInfo(card, data);
+          addLinkInfo(card, data);
         }
         card.classList.toggle('expanded');
       } else if (data.method === 'link') {
@@ -1032,7 +1044,7 @@
    * @param card Element to add the information to
    * @param data Object describing the piece of information
    */
-  function addSourceInfo(card, data) {
+  function addLinkInfo(card, data) {
     // Clear any pre-existing content
     var content = card.querySelector('.card-content');
     content.innerHTML = '';
@@ -1053,6 +1065,7 @@
 
     var frame = doc.createElement('iframe');
     frame.src = data.src;
+    frame.allowfullscreen = true;
     content.appendChild(frame);
   }
 
@@ -1318,6 +1331,12 @@
     var cardArray = Array.prototype.slice.call(doc.querySelectorAll('.expanded'));
     cardArray.forEach(function(item) {
       item.classList.remove('expanded');
+      var content = item.querySelector('.card-content');
+      if (content) {
+        setTimeout(function() {
+          content.innerHTML = '';
+        }, 500);
+      }
     });
   }
 
