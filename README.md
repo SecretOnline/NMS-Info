@@ -92,7 +92,24 @@ You don't really need to worry about this, but it's here for documentation purpo
     ],
     "edited": [
       "Integer. Index (starting at 0) of piece of information that was edited"
+    ],
+    "removals": [
+      "Integer. Index (starting at 0) of piece of information to insert a removal notice before"
     ]
+  }
+]
+```
+
+**sources.json**
+
+``` JSON
+[
+  {
+    "title": "String. Title of source",
+    "method": "String. One of 'link' or 'embed'. Determines click behaviour",
+    "src": "String. URL of source",
+    "color": "String. Valid CSS Color",
+    "darkText": "Boolean. Black text if true, otherwise white"
   }
 ]
 ```

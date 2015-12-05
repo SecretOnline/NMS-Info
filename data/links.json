@@ -1,0 +1,285 @@
+[
+  {
+    "title": "Official Links",
+    "items": [
+      {
+        "title": "Website",
+        "color": "#5D8482",
+        "src": "http://www.no-mans-sky.com/",
+        "method": "link"
+      },
+      {
+        "title": "Twitter - Hello Games",
+        "color": "#55ACEE",
+        "src": "https://twitter.com/hellogames",
+        "method": "link"
+      },
+      {
+        "title": "Twitter - Sean Murray",
+        "color": "#55ACEE",
+        "src": "https://twitter.com/nomanssky",
+        "method": "link"
+      },
+      {
+        "title":"Press Sheet",
+        "color":"#fff",
+        "src":"http://no-mans-sky.com/press/sheet.php?p=no_man%27s_sky",
+        "method": "link",
+        "darkText": true
+      }
+    ]
+  },
+  {
+    "title": "Trailers",
+    "items": [
+      {
+        "title":"Announcement Trailer",
+        "color":"#D0302C",
+        "src":"https://www.youtube.com/embed/RRpDn5qPp3s",
+        "method": "embed"
+      },
+      {
+        "title":"Infinite Worlds Gameplay",
+        "color":"#C4314F",
+        "src":"https://www.youtube.com/embed/0APP5WcX8v8",
+        "method": "embed"
+      },
+      {
+        "title":"E3 2014 Gameplay",
+        "color":"#FA602D",
+        "src":"https://www.youtube.com/embed/MZO40WBNA60",
+        "method": "embed"
+      },
+      {
+        "title":"Portal Gameplay",
+        "color":"#07147A",
+        "src":"https://www.youtube.com/embed/WQhSP82uhY4",
+        "method": "embed"
+      },
+      {
+        "title":"Galaxy Gameplay",
+        "color":"#B9FCDC",
+        "src":"https://www.youtube.com/embed/xpcoO7bTV48",
+        "method": "embed",
+        "darkText": true
+      },
+      {
+        "title":"\"I've Seen Things\"",
+        "color":"#E6001A",
+        "src":"https://www.youtube.com/embed/-UVQ14JrfRI",
+        "method": "embed"
+      }
+    ]
+  },
+  {
+    "title": "IGN First (July 2015)",
+    "items": [
+      {
+        "title":"18 Minutes of Gameplay",
+        "color":"#59475C",
+        "src":"https://www.youtube.com/embed/CLcjvIQJns0",
+        "method": "embed"
+      },
+      {
+        "title":"How the Economy Works",
+        "color":"#56631F",
+        "src":"https://www.youtube.com/embed/BXUrOFVItgs",
+        "method": "embed"
+      },
+      {
+        "title":"How to Leave Your Mark",
+        "color":"#D41B2D",
+        "src":"http://www.ign.com/articles/2015/07/07/no-mans-sky-how-to-leave-your-mark-on-the-universe",
+        "method": "link"
+      },
+      {
+        "title":"From Humble Beginnings",
+        "color":"#D41B2D",
+        "src":"http://www.ign.com/articles/2015/07/13/no-mans-sky-from-humble-beginnings",
+        "method": "link"
+      },
+      {
+        "title":"Sci-Fi Inspirations",
+        "color":"#7E713F",
+        "src":"https://www.youtube.com/embed/UgFNPg9qUXI",
+        "method": "embed"
+      },
+      {
+        "title":"A Tour of 5 New Planets",
+        "color":"#3A9169",
+        "src":"https://www.youtube.com/embed/ytPJWfrsU0g",
+        "method": "embed"
+      },
+      {
+        "title":"6 Minutes of Exploration Gameplay",
+        "color":"#61D9BF",
+        "src":"https://www.youtube.com/embed/qfpMRoZwzpk",
+        "method": "embed",
+        "darkText": true
+      },
+      {
+        "title":"How the Universe Actually Works",
+        "color":"#7D4123",
+        "src":"https://www.youtube.com/embed/ueBCC1PCf84",
+        "method": "embed"
+      },
+      {
+        "title":"The Otherworldly Sounds",
+        "color":"#15792F",
+        "src":"https://www.youtube.com/embed/KUyQFRuXpfE",
+        "method": "embed"
+      },
+      {
+        "title":"Making the Soundtrack",
+        "color":"#584350",
+        "src":"https://www.youtube.com/embed/ERwVR5DjlYo",
+        "method": "embed"
+      },
+      {
+        "title":"Sean Murray's Q/A",
+        "color":"#D41B2D",
+        "src":"http://www.ign.com/articles/2015/07/31/ask-sean-murray-anything-about-no-mans-sky-2",
+        "method": "link"
+      }
+    ]
+  },
+  {
+    "title": "Game Informer (December 2014)",
+    "items": [
+      {
+        "title": "NMS Hub",
+        "color": "#24B1BB",
+        "src": "http://www.gameinformer.com/p/nomanssky.aspx",
+        "method": "link",
+        "darkText": true
+      },
+      {
+        "title": "Behind the Scenes of NMS",
+        "color": "#DF4337",
+        "src": "https://www.youtube.com/embed/h-kifCYToAU",
+        "method": "embed"
+      },
+      {
+        "title":"Galactic Map Scale",
+        "color":"#384DB8",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/08/galactic-map-puts-scale-of-no-man-s-sky-in-perspective.aspx",
+        "method": "link"
+      },
+      {
+        "title":"Not a Multiplayer Game",
+        "color":"#F8AD51",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/10/stop-thinking-of-no-man-s-sky-as-a-multiplayer-game.aspx",
+        "method": "link",
+        "darkText": true
+      },
+      {
+        "title": "70 Questions and Answers",
+        "color": "#235000",
+        "src": "https://www.youtube.com/embed/n0uYnwqlslU",
+        "method": "embed"
+      },
+      {
+        "title":"The Path to the End Game",
+        "color":"#BA00A3",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/15/the-path-to-no-man-s-sky-s-end-game.aspx",
+        "method": "link"
+      },
+      {
+        "title": "Managing the Hype",
+        "color": "#BB6022",
+        "src": "https://www.youtube.com/embed/R4zKTNLz0kQ",
+        "method": "embed"
+      },
+      {
+        "title":"The Secret Story Behind NMS",
+        "color":"#68A0CC",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/19/the-secret-story-behind-no-man-s-sky.aspx",
+        "method": "link",
+        "darkText": true
+      },
+      {
+        "title": "Creating the Infinite Soundtrack",
+        "color": "#915472",
+        "src": "https://www.youtube.com/embed/dgRJbFQGyIE",
+        "method": "embed"
+      },
+      {
+        "title":"The Creatures of No Man's Sky",
+        "color":"#456B5E",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/24/a-look-at-no-mans-skys-creature-features.aspx",
+        "method": "link"
+      },
+      {
+        "title":"Lesser Known Facts",
+        "color":"#C8F5A4",
+        "src":"http://www.gameinformer.com/b/features/archive/2014/12/26/an-assortment-of-lesser-known-no-man-s-sky-facts.aspx",
+        "method": "link",
+        "darkText": true
+      },
+      {
+        "title":"Special Edition Podcast",
+        "color":"#963628",
+        "src":"http://www.gameinformer.com/b/podcasts/archive/2014/12/29/special-edition-podcast-no-mans-sky.aspx",
+        "method": "link"
+      }
+    ]
+  },
+  {
+    "title": "Other Interviews / Press",
+    "items": [
+      {
+        "title": "Late Show with Colbert",
+        "color": "#8A3A24",
+        "src": "https://www.youtube.com/embed/ZqeN6hj4dZU",
+        "method": "embed"
+      },
+      {
+        "title": "IGN - Story, Gameplay, Multiplayer",
+        "color": "#586A6D",
+        "src": "https://www.youtube.com/embed/tYoGN2zgXQU",
+        "method": "embed"
+      },
+      {
+        "title":"Edge - Maths Effect",
+        "color":"#4789C1",
+        "src":"http://imgur.com/a/O3HEp",
+        "method": "link"
+      },
+      {
+        "title": "VGX 2013 - Interview with Sean",
+        "color": "#B22A19",
+        "src": "https://www.youtube.com/embed/YRFcO2XgqDw",
+        "method": "embed"
+      },
+      {
+        "title":"Game Informer Jan 2015 Article",
+        "color":"#DF4C18",
+        "src":"https://drive.google.com/file/d/0BziSqK3-HoqScGhUcUFzLXlwbGM/preview",
+        "method": "link"
+      },
+      {
+        "title":"MIT Tech Review",
+        "color":"#113D72",
+        "src":"http://www.technologyreview.com/news/529136/no-mans-sky-a-vast-game-crafted-by-algorithms/",
+        "method": "link"
+      }
+    ]
+  },
+  {
+    "title": "Community Resources",
+    "items": [
+      {
+        "title":"/r/NoMansSkyTheGame FAQ",
+        "color":"#FF4500",
+        "src":"http://www.reddit.com/r/NoMansSkyTheGame/wiki/faq",
+        "method": "link"
+      },
+      {
+        "title":"/r/NoMansSkyTheGame Archive",
+        "color":"#FF4500",
+        "src":"http://www.reddit.com/r/NoMansSkyTheGame/wiki/archive",
+        "method": "link"
+      }
+    ]
+  }
+]
