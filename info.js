@@ -173,7 +173,7 @@
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('elements');
       pageContainer.classList.remove('recent');
-      win.history.replaceState(null, '', '?link');
+      win.history.replaceState(null, '', '?links');
     }
   }
 
@@ -265,9 +265,19 @@
     } else if (typeof searchParams.recent !== 'undefined') {
       // Go to the elements page
       changeTab('recent');
-    } else if (typeof searchParams.link !== 'undefined') {
-      // Go to the elements page
+    } else if (typeof searchParams.links !== 'undefined') {
+      // Go to the links page
       changeTab('links');
+      if (searchParams.links) {
+        try {
+          var heading = doc.querySelector('h2[data-title="' + searchParams.links + '"]');
+          heading.scrollIntoView();
+          // Make sure card isn't hidden behind the floating navigation bar
+          win.scroll(scrollX, scrollY - 60);
+        } catch (err) {
+          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+        }
+      }
     } else {
       changeTab('main'); // Just go to default spot
     }
@@ -537,6 +547,7 @@
         // create title
         var title = doc.createElement('h2');
         title.textContent = category.title;
+        title.dataset.title = category.title;
         container.appendChild(title);
         // Add link cards
         var cardList = doc.createElement('div');
