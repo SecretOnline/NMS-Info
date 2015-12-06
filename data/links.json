@@ -228,6 +228,12 @@
     "title": "Other Interviews / Press",
     "items": [
       {
+        "title": "PSX 2015 w/ Shuhei Yoshida",
+        "color": "#650D29",
+        "src": "https://www.youtube.com/embed/4J-z2F8S39U",
+        "method": "embed"
+      },
+      {
         "title": "Late Show with Colbert",
         "color": "#8A3A24",
         "src": "https://www.youtube.com/embed/ZqeN6hj4dZU",
