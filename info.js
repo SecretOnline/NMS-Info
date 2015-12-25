@@ -239,9 +239,10 @@
           var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
           infoElement.classList.add('expanded');
           addCardInfo(infoElement, info[searchParams.info]);
-          infoElement.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          infoElement.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
           console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
         }
@@ -255,9 +256,10 @@
           var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
           addResourceInfo(element, resources[searchParams.element]);
-          element.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          element.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
           console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
@@ -271,9 +273,10 @@
       if (searchParams.links) {
         try {
           var heading = doc.querySelector('h2[data-title="' + searchParams.links + '"]');
-          heading.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          heading.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
           console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
@@ -756,9 +759,10 @@
                 addCardInfo(otherCard, info[rItem]);
                 changeTab('main');
                 otherCard.classList.add('expanded');
-                otherCard.scrollIntoView();
-                // Make sure card isn't hidden behind the floating navigation bar
-                win.scroll(scrollX, scrollY - 60);
+                otherCard.scrollIntoView({
+                  block: 'start',
+                  behavior: 'smooth'
+                });
               } catch (err) {
                 console.error('Failed to switch to card ' + rItem);
                 console.error(err);
@@ -1281,6 +1285,7 @@
 
   /**
    * Organise items into one or two columns depending on screen size
+   * Once browser support for `display: grid;` is non-experimental, this won't be needed
    * @param array Array containin Elements that should be added
    * @param container Element that the Elements in the array should be added to
    */
