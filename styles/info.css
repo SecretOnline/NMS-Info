@@ -112,7 +112,6 @@ main {
   margin: 0 auto;
 }
 .page-container {
-  max-width: 53em;
   position: relative;
   right: 0;
   transition: right 0.5s;
@@ -136,7 +135,6 @@ main {
   margin: 0 5px;
   position: absolute;
   width: calc(100% - 10px);
-  max-width: 53em;
 }
 .page-cat {
   left: calc(100vw - (50vw - (100% / 2)));
