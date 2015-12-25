@@ -1,17 +1,11 @@
 [
-  "Utilities / Gadgets",
-  "Crafting System",
   {
-    "title": "Ship Types",
-    "additions": [
-      "8"
-    ]
-  },
-  {
-    "title": "Multiplayer",
-    "additions": [
-      "6"
+    "type": "manual",
+    "title": "Misc. Changes",
+    "text": [
+      "Header is now stuck at the top of the page for easier navigation",
+      "Links page added. Contains links to sources of information",
+      "Fix issues with autofocus on search box"
     ]
   }
-
 ]

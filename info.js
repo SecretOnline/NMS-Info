@@ -506,28 +506,32 @@
             card.querySelector('.card-content').classList.add('added');
           });
         } else {
-          card = createInfoCard(info[item.title]);
-          card.querySelector('.header').addEventListener('click', function() {
-            var infoArray = card.querySelectorAll('.information p');
-            if (item.additions)
-              item.additions.forEach(function(added) {
-                infoArray[added].classList.add('added');
-              });
-            if (item.edited)
-              item.edited.forEach(function(edit) {
-                infoArray[edit].classList.add('edited');
-              });
-            if (item.removals)
-              item.removals.forEach(function(removed) {
-                var removalBar = doc.createElement('p');
-                removalBar.classList.add('removed');
-                removalBar.innerHTML = '<em>Removed</em>';
-                if (removed < infoArray.length)
-                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
-                else
-                  card.querySelector('.information').appendChild(removalBar);
-              });
-          });
+          if (item.type && item.type === 'manual') {
+            card = createInfoCard(item);
+          } else {
+            card = createInfoCard(info[item.title]);
+            card.querySelector('.header').addEventListener('click', function() {
+              var infoArray = card.querySelectorAll('.information p');
+              if (item.additions)
+                item.additions.forEach(function(added) {
+                  infoArray[added].classList.add('added');
+                });
+              if (item.edited)
+                item.edited.forEach(function(edit) {
+                  infoArray[edit].classList.add('edited');
+                });
+              if (item.removals)
+                item.removals.forEach(function(removed) {
+                  var removalBar = doc.createElement('p');
+                  removalBar.classList.add('removed');
+                  removalBar.innerHTML = '<em>Removed</em>';
+                  if (removed < infoArray.length)
+                    card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                  else
+                    card.querySelector('.information').appendChild(removalBar);
+                });
+            });
+          }
         }
         if (!card)
           return;
