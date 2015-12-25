@@ -282,17 +282,24 @@ main {
   transition: max-height 0.5s, padding 0.5s;
 }
 .expanded .card-content {
-  padding: 16px 0;
+  padding-bottom: 16px;
   /* Just has to be a big value, but not too big */
   max-height: 1000px;
-}
-.card-content div:not(.separator) {
-  padding: 0 16px;
 }
 .card-content iframe {
   max-height: 300px;
   width: 100%;
   border: 0;
+}
+.card-content div:not(.separator) > * {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.card-content div:not(.separator) > p {
+  margin: 0 0.5em;
+  padding: 0.5em;
 }
 .separator {
   border-bottom: 2px solid #aaa;
