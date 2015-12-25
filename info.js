@@ -244,7 +244,7 @@
             behavior: 'smooth'
           });
         } catch (err) {
-          console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
+          console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
         }
       }
     } else if (typeof searchParams.element !== 'undefined') {
@@ -261,7 +261,7 @@
             behavior: 'smooth'
           });
         } catch (err) {
-          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
     } else if (typeof searchParams.recent !== 'undefined') {
@@ -278,7 +278,7 @@
             behavior: 'smooth'
           });
         } catch (err) {
-          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
     } else {
