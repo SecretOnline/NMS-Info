@@ -100,14 +100,14 @@ You don't really need to worry about this, but it's here for documentation purpo
 ]
 ```
 
-**sources.json**
+**links.json**
 
 ``` JSON
 [
   {
-    "title": "String. Title of source",
+    "title": "String. Title of link",
     "method": "String. One of 'link' or 'embed'. Determines click behaviour",
-    "src": "String. URL of source",
+    "src": "String. URL of link",
     "color": "String. Valid CSS Color",
     "darkText": "Boolean. Black text if true, otherwise white"
   }
