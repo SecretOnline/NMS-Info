@@ -107,27 +107,30 @@ main {
   overflow-y: scroll;
   height: calc(100vh - 70px);
 }
-.page-container {
+.main {
+  max-width: 53em;
   margin: 0 auto;
+}
+.page-container {
   max-width: 53em;
   position: relative;
   right: 0;
   transition: right 0.5s;
 }
 .page-container.cat {
-  right: calc(100vw - (50vw - (53em / 2)));
+  right: calc(100vw - (50vw - (100% / 2)));
 }
 .page-container.search {
-  right: calc((100vw - (50vw - (53em / 2))) * -1);
+  right: calc((100vw - (50vw - (100% / 2))) * -1);
 }
 .page-container.elements {
-  right: calc((100vw - (50vw - (53em / 2))) * 2);
+  right: calc((100vw - (50vw - (100% / 2))) * 2);
 }
 .page-container.links {
-  right: calc((100vw - (50vw - (53em / 2))) * 3);
+  right: calc((100vw - (50vw - (100% / 2))) * 3);
 }
 .page-container.recent {
-  right: calc((100vw - (50vw - (53em / 2))) * 4);
+  right: calc((100vw - (50vw - (100% / 2))) * 4);
 }
 .page-container > div {
   margin: 0 5px;
@@ -481,25 +484,7 @@ main {
   }
 }
 @media all and (min-width: 1300px) {
-  .page-container {
-    max-width: 72em;
-  }
-  .page-container.cat {
-    right: calc(100vw - (50vw - (72em / 2)));
-  }
-  .page-container.search {
-    right: calc((100vw - (50vw - (72em / 2))) * -1);
-  }
-  .page-container.elements {
-    right: calc((100vw - (50vw - (72em / 2))) * 2);
-  }
-  .page-container.links {
-    right: calc((100vw - (50vw - (72em / 2))) * 3);
-  }
-  .page-container.recent {
-    right: calc((100vw - (50vw - (72em / 2))) * 4);
-  }
-  .page-container > div {
+  .main {
     max-width: 72em;
   }
   .card-column {
