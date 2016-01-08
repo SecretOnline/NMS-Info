@@ -18,7 +18,7 @@
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'http://secretonline.co',
+      'https://secretonline.co',
       'https://www.reddit.com/message/compose/?to=secret_online'
     ],
     categories: []
