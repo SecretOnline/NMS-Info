@@ -18,7 +18,7 @@
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'http://secretonline.co',
+      'https://secretonline.co',
       'https://www.reddit.com/message/compose/?to=secret_online'
     ],
     categories: []
@@ -30,12 +30,12 @@
   function initInfo() {
     // do navbar scoll stuff
     win.addEventListener("optimizedScroll", function() {
-      var nav = doc.querySelector('nav');
+      var header = doc.querySelector('header');
       // If the header is out of view
       if (scrollY > 70) {
-        nav.classList.add('floating');
+        header.classList.add('floating');
       } else {
-        nav.classList.remove('floating');
+        header.classList.remove('floating');
       }
       if (scrollX > 0)
         win.scroll(0, scrollY);
@@ -239,11 +239,12 @@
           var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
           infoElement.classList.add('expanded');
           addCardInfo(infoElement, info[searchParams.info]);
-          infoElement.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          infoElement.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
-          console.err('Failed to open card with title ' + searchParams.info + '. ' + err);
+          console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
         }
       }
     } else if (typeof searchParams.element !== 'undefined') {
@@ -255,11 +256,12 @@
           var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
           addResourceInfo(element, resources[searchParams.element]);
-          element.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          element.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
-          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
     } else if (typeof searchParams.recent !== 'undefined') {
@@ -271,11 +273,12 @@
       if (searchParams.links) {
         try {
           var heading = doc.querySelector('h2[data-title="' + searchParams.links + '"]');
-          heading.scrollIntoView();
-          // Make sure card isn't hidden behind the floating navigation bar
-          win.scroll(scrollX, scrollY - 60);
+          heading.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
         } catch (err) {
-          console.err('Failed to open element with name ' + searchParams.element + '. ' + err);
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
     } else {
@@ -503,28 +506,32 @@
             card.querySelector('.card-content').classList.add('added');
           });
         } else {
-          card = createInfoCard(info[item.title]);
-          card.querySelector('.header').addEventListener('click', function() {
-            var infoArray = card.querySelectorAll('.information p');
-            if (item.additions)
-              item.additions.forEach(function(added) {
-                infoArray[added].classList.add('added');
-              });
-            if (item.edited)
-              item.edited.forEach(function(edit) {
-                infoArray[edit].classList.add('edited');
-              });
-            if (item.removals)
-              item.removals.forEach(function(removed) {
-                var removalBar = doc.createElement('p');
-                removalBar.classList.add('removed');
-                removalBar.innerHTML = '<em>Removed</em>';
-                if (removed < infoArray.length)
-                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
-                else
-                  card.querySelector('.information').appendChild(removalBar);
-              });
-          });
+          if (item.type && item.type === 'manual') {
+            card = createInfoCard(item);
+          } else {
+            card = createInfoCard(info[item.title]);
+            card.querySelector('.header').addEventListener('click', function() {
+              var infoArray = card.querySelectorAll('.information p');
+              if (item.additions)
+                item.additions.forEach(function(added) {
+                  infoArray[added].classList.add('added');
+                });
+              if (item.edited)
+                item.edited.forEach(function(edit) {
+                  infoArray[edit].classList.add('edited');
+                });
+              if (item.removals)
+                item.removals.forEach(function(removed) {
+                  var removalBar = doc.createElement('p');
+                  removalBar.classList.add('removed');
+                  removalBar.innerHTML = '<em>Removed</em>';
+                  if (removed < infoArray.length)
+                    card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                  else
+                    card.querySelector('.information').appendChild(removalBar);
+                });
+            });
+          }
         }
         if (!card)
           return;
@@ -756,9 +763,10 @@
                 addCardInfo(otherCard, info[rItem]);
                 changeTab('main');
                 otherCard.classList.add('expanded');
-                otherCard.scrollIntoView();
-                // Make sure card isn't hidden behind the floating navigation bar
-                win.scroll(scrollX, scrollY - 60);
+                otherCard.scrollIntoView({
+                  block: 'start',
+                  behavior: 'smooth'
+                });
               } catch (err) {
                 console.error('Failed to switch to card ' + rItem);
                 console.error(err);
@@ -1281,6 +1289,7 @@
 
   /**
    * Organise items into one or two columns depending on screen size
+   * Once browser support for `display: grid;` is non-experimental, this won't be needed
    * @param array Array containin Elements that should be added
    * @param container Element that the Elements in the array should be added to
    */
