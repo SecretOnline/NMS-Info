@@ -436,7 +436,7 @@ main {
     background-color: #01385b;
     z-index: 1;
   }
-  .floating nav {
+  .floating + nav {
     position: fixed;
     top: 0;
   }
