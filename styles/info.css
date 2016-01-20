@@ -16,7 +16,7 @@ body,
 }
 body {
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .center {
   display: block;
@@ -103,8 +103,6 @@ nav .github {
 }
 main {
   position: relative;
-  overflow-x: hidden;
-  overflow-y: scroll;
   height: calc(100vh - 70px);
 }
 .main {
@@ -438,7 +436,7 @@ main {
     background-color: #01385b;
     z-index: 1;
   }
-  nav.floating {
+  .floating nav {
     position: fixed;
     top: 0;
   }
@@ -477,8 +475,6 @@ main {
   }
   main {
     top: 56px;
-    overflow-x: hidden;
-    overflow-y: scroll;
     height: calc(100vh - 126px);
   }
   .card-column {

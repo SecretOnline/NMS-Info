@@ -30,12 +30,12 @@
   function initInfo() {
     // do navbar scoll stuff
     win.addEventListener("optimizedScroll", function() {
-      var nav = doc.querySelector('nav');
+      var header = doc.querySelector('header');
       // If the header is out of view
       if (scrollY > 70) {
-        nav.classList.add('floating');
+        header.classList.add('floating');
       } else {
-        nav.classList.remove('floating');
+        header.classList.remove('floating');
       }
       if (scrollX > 0)
         win.scroll(0, scrollY);
