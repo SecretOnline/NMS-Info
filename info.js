@@ -243,6 +243,7 @@
         try {
           var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
           infoElement.classList.add('expanded');
+          ga('send', 'event', 'Info Card', 'open-from-param', info[searchParams.info].title);
           addCardInfo(infoElement, info[searchParams.info]);
           infoElement.scrollIntoView({
             block: 'start',
@@ -260,6 +261,7 @@
         try {
           var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
+          ga('send', 'event', 'Element Card', 'open-from-param', info[searchParams.element].title);
           addResourceInfo(element, resources[searchParams.element]);
           element.scrollIntoView({
             block: 'start',
@@ -774,6 +776,8 @@
                 // Expand the other card
                 collapseAllItems();
                 win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
+
+                ga('send', 'event', 'Info Card', 'open-from-related', info[rItem].title);
 
                 addCardInfo(otherCard, info[rItem]);
                 changeTab('main');
