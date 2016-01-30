@@ -125,7 +125,12 @@
     win.scroll(0, 0);
     var pageContainer = doc.querySelector('.page-container');
 
-    if (typeof tab === 'undefined' || tab === 'main') {
+    // Add main as default tab
+    tab = tab || 'main';
+
+    ga('send', 'event', 'Tab', 'change', tab);
+
+    if (tab === 'main') {
       // Go to main page
       pageContainer.classList.remove('cat');
       pageContainer.classList.remove('search');
@@ -238,6 +243,7 @@
         try {
           var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
           infoElement.classList.add('expanded');
+          ga('send', 'event', 'Info Card', 'open-from-param', info[searchParams.info].title);
           addCardInfo(infoElement, info[searchParams.info]);
           infoElement.scrollIntoView({
             block: 'start',
@@ -255,6 +261,7 @@
         try {
           var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
+          ga('send', 'event', 'Element Card', 'open-from-param', info[searchParams.element].title);
           addResourceInfo(element, resources[searchParams.element]);
           element.scrollIntoView({
             block: 'start',
@@ -338,6 +345,8 @@
       button.classList.add('category');
       sortMethod = 'category';
     }
+
+    ga('send', 'event', 'Info Sort', 'sort', sortMethod);
 
     // Set stored sort type
     if (win.localStorage) {
@@ -649,6 +658,8 @@
       // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) {
+        ga('send', 'event', 'Info Card', 'close', data.title);
+
         try {
           // See whether we need to do anything special to the url
           if (doc.querySelector('.page-container').classList.contains('search'))
@@ -670,6 +681,7 @@
           console.error(err);
         }
       } else {
+        ga('send', 'event', 'Info Card', 'open', data.title);
         // Expand the card
         collapseAllItems();
         win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
@@ -728,10 +740,15 @@
             var sourceEl = doc.createElement('li');
             var anchor = doc.createElement('a');
             anchor.href = source;
+            anchor.target = '_blank';
             anchor.textContent = sIndex + 1;
             appendHoverElement(anchor, [source]);
             sourceEl.appendChild(anchor);
             sourceList.appendChild(sourceEl);
+
+            anchor.addEventListener('click', function() {
+              ga('send', 'event', 'Info Card Source', 'source', data.title, sIndex + 1);
+            });
           });
           sources.appendChild(sourceList);
 
@@ -759,6 +776,8 @@
                 // Expand the other card
                 collapseAllItems();
                 win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
+
+                ga('send', 'event', 'Info Card', 'open-from-related', info[rItem].title);
 
                 addCardInfo(otherCard, info[rItem]);
                 changeTab('main');
@@ -861,6 +880,8 @@
     // Expand card when clicked
     header.addEventListener('click', function() {
       if (card.classList.contains('expanded')) { // See whether we need to do anything special to the url
+        ga('send', 'event', 'Element Card', 'close', data.title);
+
         try {
           if (doc.querySelector('.page-container').classList.contains('search'))
           // Add search to the url
@@ -881,6 +902,8 @@
           console.error(err);
         }
       } else {
+        ga('send', 'event', 'Element Card', 'open', data.title);
+
         collapseAllItems();
         win.history.replaceState(null, '', '?element=' + card.dataset.name);
 
@@ -1038,18 +1061,24 @@
     header.addEventListener('click', function() {
       if (data.method === 'embed') {
         if (card.classList.contains('expanded')) {
+          ga('send', 'event', 'Link Card', 'close', data.title);
+
           // Clear content after 0.5 seconds
           win.setTimeout(function() {
             if (!card.classList.contains('expanded'))
               content.innerHTML = '';
           }, 500);
         } else {
+          ga('send', 'event', 'Link Card', 'open', data.title);
+
           // Expand the card
           collapseAllItems();
           addLinkInfo(card, data);
         }
         card.classList.toggle('expanded');
       } else if (data.method === 'link') {
+        ga('send', 'event', 'Link Card', 'external', data.title);
+
         win.open(data.src, '_blank'); // Open link in new tab/window (user's broswer preference)
       }
     });
@@ -1071,6 +1100,7 @@
     var container = doc.createElement('div');
     var link = doc.createElement('a');
     link.href = data.src;
+    link.target = '_blank';
     var icon = doc.createElement('img');
     icon.src = 'res/external-dark.svg';
     icon.alt = 'Open in new window / tab';
@@ -1081,6 +1111,10 @@
     link.appendChild(text);
     container.appendChild(link);
     content.appendChild(container);
+
+    link.addEventListener('click', function() {
+      ga('send', 'event', 'Link Card', 'external', data.title);
+    });
 
     var frame = doc.createElement('iframe');
     frame.src = data.src;
@@ -1098,6 +1132,8 @@
     var title = doc.querySelector('.search-title');
     title.textContent = 'Category: ' + category.title;
     var container = doc.querySelector('.search-list');
+
+    ga('send', 'event', 'Search', 'category', category.title);
 
     var cardArr = [];
     var infoIndexArr = Object.keys(info);
@@ -1183,6 +1219,8 @@
       });
       cardArr = arr.concat(cardArr);
     });
+
+    ga('send', 'event', 'Search', 'search', query, cardArr.length);
 
     // Expand card if only one item returned in search
     if (cardArr.length === 1) {
@@ -1445,6 +1483,23 @@
     };
     throttle("scroll", "optimizedScroll");
   })();
+
+  // Google Analytics
+  // No personal information stored, just how it's used
+  (function(i, s, o, g, r, a, m) {
+    i.GoogleAnalyticsObject = r;
+    i[r] = i[r] || function() {
+      (i[r].q = i[r].q || []).push(arguments);
+    };
+    i[r].l = 1 * new Date();
+    a = s.createElement(o);
+    m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', 'UA-55893575-6', 'auto');
+  ga('send', 'pageview');
 
   if (doc.readyState !== 'loading')
     initInfo();
