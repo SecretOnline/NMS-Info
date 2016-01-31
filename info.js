@@ -13,7 +13,7 @@
       'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
       'It is an open source project, and source code can be found on GitHub',
       'It was created by secret_online, but a full list of contributors can be found on GitHub',
-      'If something is missing, please send me a message using one of the link below, or fork this project and add it yourself',
+      'If something is missing, please send me a message using one of the links below, or fork this project and add it yourself',
       'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame. This prevents the need for a lot of useless posts'
     ],
     sources: [
@@ -241,7 +241,7 @@
       if (searchParams.info) {
         // Expand card
         try {
-          var infoElement = doc.querySelector('.info-card[data-title="' + searchParams.info + '"]');
+          var infoElement = doc.querySelector('.page-info .info-card[data-title="' + searchParams.info + '"]');
           infoElement.classList.add('expanded');
           ga('send', 'event', 'Info Card', 'open-from-param', info[searchParams.info].title);
           addCardInfo(infoElement, info[searchParams.info]);
@@ -259,7 +259,7 @@
       if (searchParams.element) {
         // Expand the specified element
         try {
-          var element = doc.querySelector('.element-card[data-name="' + searchParams.element + '"]');
+          var element = doc.querySelector('.page-elements .element-card[data-name="' + searchParams.element + '"]');
           element.classList.add('expanded');
           ga('send', 'event', 'Element Card', 'open-from-param', info[searchParams.element].title);
           addResourceInfo(element, resources[searchParams.element]);
@@ -512,7 +512,7 @@
         if (typeof item === 'string') {
           card = createInfoCard(info[item]);
           card.querySelector('.header').addEventListener('click', function() {
-            card.querySelector('.card-content').classList.add('added');
+            card.querySelector('.card-content .information').classList.add('added');
           });
         } else {
           if (item.type && item.type === 'manual') {
