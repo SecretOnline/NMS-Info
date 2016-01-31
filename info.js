@@ -740,7 +740,7 @@
             return arr;
           }
 
-          var infoArr = Array.prototype.slice.call(information.querySelectorAll('p'));
+          var infoArr = Array.prototype.slice.call(information.querySelectorAll('p:not(.removed)'));
           var i = infoArr.indexOf(t);
 
           if (!getSelection().toString()) {
