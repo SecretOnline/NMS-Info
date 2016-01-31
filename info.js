@@ -14,7 +14,7 @@
       'It is an open source project, and source code can be found on GitHub',
       'It was created by secret_online, but a full list of contributors can be found on GitHub',
       'If something is missing, please send me a message using one of the links below, or fork this project and add it yourself',
-      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame. This prevents the need for a lot of useless posts'
+      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame or asking questions on the Steam Community forum. This prevents the need for a lot of useless posts'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
@@ -249,6 +249,18 @@
             block: 'start',
             behavior: 'smooth'
           });
+          try {
+            if (searchParams.highlight) {
+              var indicies = searchParams.highlight.split(',');
+              indicies.forEach(function(index) {
+                ga('send', 'event', 'Info Card Highlight', 'highlight-from-param', info[searchParams.info].title, Number.parseInt(index));
+                var infoArray = infoElement.querySelectorAll('.information p');
+                infoArray[index - 1].classList.add('highlighted');
+              });
+            }
+          } catch (e) {
+            console.error('Highlighting failed. ' + e);
+          }
         } catch (err) {
           console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
         }
@@ -716,6 +728,34 @@
         var t = doc.createElement('p');
         t.textContent = text;
         information.appendChild(t);
+
+        t.addEventListener('click', function() {
+          function getHiglighted() {
+            var arr = [];
+            infoArr.forEach(function(item, index) {
+              if (item.classList.contains('highlighted')) {
+                arr[arr.length] = index + 1;
+              }
+            });
+            return arr;
+          }
+
+          var infoArr = Array.prototype.slice.call(information.querySelectorAll('p:not(.removed)'));
+          var i = infoArr.indexOf(t);
+
+          if (!getSelection().toString()) {
+            if (t.classList.contains('highlighted')) {
+              t.classList.remove('highlighted');
+              ga('send', 'event', 'Info Card Highlight', 'dehighlight', data.title, i + 1);
+            } else {
+              t.classList.add('highlighted');
+              ga('send', 'event', 'Info Card Highlight', 'highlight', data.title, i + 1);
+            }
+
+            var highlighted = getHiglighted().sort();
+            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
+          }
+        });
       });
     content.appendChild(information);
 
@@ -1483,23 +1523,6 @@
     };
     throttle("scroll", "optimizedScroll");
   })();
-
-  // Google Analytics
-  // No personal information stored, just how it's used
-  (function(i, s, o, g, r, a, m) {
-    i.GoogleAnalyticsObject = r;
-    i[r] = i[r] || function() {
-      (i[r].q = i[r].q || []).push(arguments);
-    };
-    i[r].l = 1 * new Date();
-    a = s.createElement(o);
-    m = s.getElementsByTagName(o)[0];
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m);
-  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-  ga('create', 'UA-55893575-6', 'auto');
-  ga('send', 'pageview');
 
   if (doc.readyState !== 'loading')
     initInfo();

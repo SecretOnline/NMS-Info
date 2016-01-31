@@ -5,6 +5,8 @@ This is intended to be a repository for any No Man's Sky related information.
 
 This is an open source project (duh, it's on GitHub). Feel free to contribute.
 
+There is a WIP wiki for this project, explaining some features of the repo.
+
 ## How to contribute
 1. Fork this repo
 2. (Optional, but reccomended) Create a branch. Give it a descriptive name, if you like

@@ -379,6 +379,9 @@ main {
   background-color: #ffcac9;
   color: #8e1310;
 }
+.highlighted {
+  background-color: #ffff88;
+}
 .sort-type {
   display: inline-block;
   float: right;

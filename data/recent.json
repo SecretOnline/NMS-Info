@@ -3,9 +3,10 @@
     "type": "manual",
     "title": "Misc. Changes",
     "text": [
-      "Header is now stuck at the top of the page for easier navigation",
-      "Links page added. Contains links to sources of information",
-      "Fix issues with autofocus on search box"
+      "Added highlighting. Click a piece of information to highlight it. See 'source' link for more info"
+    ],
+    "sources": [
+      "https://github.com/SecretOnline/NMS-Info/wiki/Highlighting"
     ]
   },
   "Factions",
