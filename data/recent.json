@@ -7,5 +7,42 @@
       "Links page added. Contains links to sources of information",
       "Fix issues with autofocus on search box"
     ]
+  },
+  "Factions",
+  {
+    "title": "Procedural Generation",
+    "edited": [
+      3
+    ]
+  },
+  {
+    "title": "Number of Planets",
+    "edited": [
+      2
+    ]
+  },
+  {
+    "title": "Release Date",
+    "additions": [
+      1
+    ]
+  },
+  {
+    "title": "Planet Resources",
+    "edited": [
+      0
+    ]
+  },
+  {
+    "title": "Planet Features",
+    "additions": [
+      1
+    ]
+  },
+  {
+    "title": "Dangers",
+    "removals": [
+      4
+    ]
   }
 ]
