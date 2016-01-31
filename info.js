@@ -249,6 +249,18 @@
             block: 'start',
             behavior: 'smooth'
           });
+          try {
+            if (searchParams.highlight) {
+              var indicies = searchParams.highlight.split(',');
+              indicies.forEach(function(index) {
+                ga('send', 'event', 'Info Card Highlight', 'highlight-from-param', info[searchParams.info].title, Number.parseInt(index));
+                var infoArray = infoElement.querySelectorAll('.information p');
+                infoArray[index - 1].classList.add('highlighted');
+              });
+            }
+          } catch (e) {
+            console.error('Highlighting failed. ' + e);
+          }
         } catch (err) {
           console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
         }
