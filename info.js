@@ -14,7 +14,7 @@
       'It is an open source project, and source code can be found on GitHub',
       'It was created by secret_online, but a full list of contributors can be found on GitHub',
       'If something is missing, please send me a message using one of the links below, or fork this project and add it yourself',
-      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame. This prevents the need for a lot of useless posts'
+      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame or asking questions on the Steam Community forum. This prevents the need for a lot of useless posts'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
@@ -728,6 +728,34 @@
         var t = doc.createElement('p');
         t.textContent = text;
         information.appendChild(t);
+
+        t.addEventListener('click', function() {
+          function getHiglighted() {
+            var arr = [];
+            infoArr.forEach(function(item, index) {
+              if (item.classList.contains('highlighted')) {
+                arr[arr.length] = index + 1;
+              }
+            });
+            return arr;
+          }
+
+          var infoArr = Array.prototype.slice.call(information.querySelectorAll('p'));
+          var i = infoArr.indexOf(t);
+
+          if (!getSelection().toString()) {
+            if (t.classList.contains('highlighted')) {
+              t.classList.remove('highlighted');
+              ga('send', 'event', 'Info Card Highlight', 'dehighlight', data.title, i + 1);
+            } else {
+              t.classList.add('highlighted');
+              ga('send', 'event', 'Info Card Highlight', 'highlight', data.title, i + 1);
+            }
+
+            var highlighted = getHiglighted().sort();
+            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
+          }
+        });
       });
     content.appendChild(information);
 
