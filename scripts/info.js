@@ -81,6 +81,9 @@
     Promise.all(promises).then(handleSearchParams);
   }
 
+  /**
+   * Adds event listeners to elements
+   */
   function addInitialListeners() {
     // do navbar scoll stuff
     win.addEventListener("optimizedScroll", function() {
@@ -209,6 +212,11 @@
     }
   }
 
+  /**
+   * Creates a Promise that resolves when a file is retrieved
+   * @param url URL of file to retrieve
+   * @return Promise
+   */
   function get(url) {
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
@@ -223,6 +231,9 @@
     });
   }
 
+  /**
+   * Handles creation of info cards
+   */
   function createInfo(data) {
     // Create cards for each of the pieces of information
     data.forEach(function(item) {
@@ -244,6 +255,9 @@
     distributeItems(cardArr, cardList);
   }
 
+  /**
+   * Handles creation of category cards
+   */
   function createCategories(data) {
     // Create category cards for each of the categories
     data.forEach(function(item) {
@@ -262,6 +276,9 @@
     distributeItems(cardArr, cardList);
   }
 
+  /**
+   * Handles creation of resource cards
+   */
   function createResources(data) {
     var cardArr = [];
     // Create element cards
@@ -294,6 +311,9 @@
     distributeItems(cardArr, cardList);
   }
 
+  /**
+   * Handles creation of link cards
+   */
   function createLinks(data) {
     var container = doc.querySelector('.link-list');
 
@@ -319,6 +339,9 @@
     });
   }
 
+  /**
+   * Handles creation of recently changed cards
+   */
   function createRecents(data) {
     var cardArr = [];
     data.forEach(function(item) {
@@ -564,6 +587,9 @@
     return returnArr;
   }
 
+  /**
+   * Sorts the list of categories alphabetically
+   */
   function sortCategories() {
     var catArr = [];
     var catKeyArr = Object.keys(categories);
