@@ -114,6 +114,10 @@
     getCategories();
     getResources();
     getLinks();
+
+    if (Promise) {
+      console.log('yay promises');
+    }
   }
 
   /**
