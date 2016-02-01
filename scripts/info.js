@@ -111,9 +111,12 @@
     }
 
     // Create cards for all the information
-    getCategories();
-    getResources();
-    getLinks();
+    // getCategories();
+    // getResources();
+    // getLinks();
+
+    // Get categories first
+
 
     var promises = [
       // TODO: Get list of promises that init page
@@ -200,6 +203,167 @@
       });
       xhr.open('get', url, true);
       xhr.send();
+    });
+  }
+
+  function createInfo(data) {
+    return new Promise(function(resolve, reject) {
+      // Create cards for each of the pieces of information
+      data.forEach(function(item) {
+        info[item.title] = item;
+      });
+
+      var infoArr = sortItems();
+
+      var cardArr = [];
+      infoArr.forEach(function(item) {
+        var card = createInfoCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      // Add "about" card to the top of the list
+      cardArr.unshift(createInfoCard(aboutCard));
+      var cardList = doc.querySelector('.info-list');
+      distributeItems(cardArr, cardList);
+
+      resolve();
+    });
+  }
+
+  function createCategories(data) {
+    return new Promise(function(resolve, reject) {
+      // Create category cards for each of the categories
+      data.forEach(function(item) {
+        categories[item.title] = item;
+      });
+
+      var catArr = sortCategories();
+      var cardArr = [];
+      catArr.forEach(function(item) {
+        var card = createCategoryCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.cat-list');
+      distributeItems(cardArr, cardList);
+
+      resolve();
+    });
+  }
+
+  function createResources(data) {
+    return new Promise(function(resolve, reject) {
+      var cardArr = [];
+      // Create element cards
+      data.forEach(function(item, index) {
+        resources[item.name] = item;
+
+        var card = createResourceCard(item);
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+
+      // This must be done in a second loop, otherwise some things might not have been initialise
+      var resIndexArr = Object.keys(resources);
+      resIndexArr.forEach(function(index) {
+        var item = resources[index];
+        // Add entry back to this item if this one makes the other
+        if (item.makes) {
+          item.makes.forEach(function(compound) {
+            if (resources[compound]) {
+              if (!resources[compound].madeFrom)
+                resources[compound].madeFrom = [];
+              resources[compound].madeFrom.push(index);
+            }
+          });
+        }
+      });
+
+      var cardList = doc.querySelector('.elements-list');
+      distributeItems(cardArr, cardList);
+
+      resolve();
+    });
+  }
+
+  function createLinks(data) {
+    return new Promise(function(resolve, reject) {
+      var container = doc.querySelector('.link-list');
+
+      data.forEach(function(category) {
+        // create title
+        var title = doc.createElement('h2');
+        title.textContent = category.title;
+        title.dataset.title = category.title;
+        container.appendChild(title);
+        // Add link cards
+        var cardList = doc.createElement('div');
+
+        var cardArr = [];
+        category.items.forEach(function(item) {
+          var card = createLinkCard(item);
+          if (!card)
+            return;
+          cardArr.push(card);
+        });
+        distributeItems(cardArr, cardList);
+
+        container.appendChild(cardList);
+      });
+
+      resolve();
+    });
+  }
+
+  function createRecents(data) {
+    return new Promise(function(resolve, reject) {
+      var cardArr = [];
+      data.forEach(function(item) {
+        var card;
+        if (typeof item === 'string') {
+          card = createInfoCard(info[item]);
+          card.querySelector('.header').addEventListener('click', function() {
+            card.querySelector('.card-content .information').classList.add('added');
+          });
+        } else {
+          if (item.type && item.type === 'manual') {
+            card = createInfoCard(item);
+          } else {
+            card = createInfoCard(info[item.title]);
+            card.querySelector('.header').addEventListener('click', function() {
+              var infoArray = card.querySelectorAll('.information p');
+              if (item.additions)
+                item.additions.forEach(function(added) {
+                  infoArray[added].classList.add('added');
+                });
+              if (item.edited)
+                item.edited.forEach(function(edit) {
+                  infoArray[edit].classList.add('edited');
+                });
+              if (item.removals)
+                item.removals.forEach(function(removed) {
+                  var removalBar = doc.createElement('p');
+                  removalBar.classList.add('removed');
+                  removalBar.innerHTML = '<em>Removed</em>';
+                  if (removed < infoArray.length)
+                    card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                  else
+                    card.querySelector('.information').appendChild(removalBar);
+                });
+            });
+          }
+        }
+        if (!card)
+          return;
+        cardArr.push(card);
+      });
+      var cardList = doc.querySelector('.recent-list');
+      distributeItems(cardArr, cardList);
+
+      resolve();
     });
   }
 
