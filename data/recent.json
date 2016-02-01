@@ -3,7 +3,8 @@
     "type": "manual",
     "title": "Misc. Changes",
     "text": [
-      "Added highlighting. Click a piece of information to highlight it. See 'source' link for more info"
+      "Added highlighting. Click a piece of information to highlight it. See 'source' link for more info",
+      "Under-the-hood changes to page loading. Should be more streamlined and reduce code-spaghetti"
     ],
     "sources": [
       "https://github.com/SecretOnline/NMS-Info/wiki/Highlighting"
