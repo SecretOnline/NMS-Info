@@ -35,7 +35,7 @@
         var sortType = win.localStorage.getItem('info-sort');
         if (sortType) {
           sortMethod = sortType;
-          var button = document.querySelector('.sort-type');
+          var button = doc.querySelector('.sort-type');
           if (sortMethod === 'category') {
             button.classList.remove('alpha');
             button.classList.add('category');
@@ -53,27 +53,32 @@
 
     var promises = [
       // Get categories
-      get('data/categories.json').then(JSON.parse).then(createCategories)
-      // Get info after categories are in place
-      .then(function() {
-        return get('data/info.json');
-      }).then(JSON.parse).then(createInfo),
+      get('data/categories.json')
+        .then(JSON.parse)
+        .then(createCategories)
+        // Get info after categories are in place
+        .then(function() {
+          return get('data/info.json');
+        })
+        .then(JSON.parse)
+        .then(createInfo)
+        // Get recents once info is loaded
+        .then(function() {
+          return get('data/recent.json');
+        })
+        .then(JSON.parse)
+        .then(createRecents),
       // Get elements
-      get('data/resources.json').then(JSON.parse).then(createResources),
+      get('data/resources.json')
+        .then(JSON.parse)
+        .then(createResources),
       // Get links
-      get('data/links.json').then(JSON.parse).then(createLinks)
+      get('data/links.json')
+        .then(JSON.parse)
+        .then(createLinks)
     ];
-    Promise.all(promises)
-      // Get recents
-      .then(function() {
-        return get('data/recent.json');
-      }).then(JSON.parse).then(createRecents)
-      // Do any necessary expanding/page changes
-      .then(handleSearchParams)
-      // Big overall catch
-      .then(undefined, function(err) {
-        console.error('Error starting: ' + err);
-      });
+    // Do any necessary expanding/page changes once everything else is complete
+    Promise.all(promises).then(handleSearchParams);
   }
 
   function addInitialListeners() {
@@ -219,164 +224,144 @@
   }
 
   function createInfo(data) {
-    return new Promise(function(resolve, reject) {
-      // Create cards for each of the pieces of information
-      data.forEach(function(item) {
-        info[item.title] = item;
-      });
-
-      var infoArr = sortItems();
-
-      var cardArr = [];
-      infoArr.forEach(function(item) {
-        var card = createInfoCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      // Add "about" card to the top of the list
-      cardArr.unshift(createInfoCard(aboutCard));
-      var cardList = doc.querySelector('.info-list');
-      distributeItems(cardArr, cardList);
-
-      resolve();
+    // Create cards for each of the pieces of information
+    data.forEach(function(item) {
+      info[item.title] = item;
     });
+
+    var infoArr = sortItems();
+
+    var cardArr = [];
+    infoArr.forEach(function(item) {
+      var card = createInfoCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+    // Add "about" card to the top of the list
+    cardArr.unshift(createInfoCard(aboutCard));
+    var cardList = doc.querySelector('.info-list');
+    distributeItems(cardArr, cardList);
   }
 
   function createCategories(data) {
-    return new Promise(function(resolve, reject) {
-      // Create category cards for each of the categories
-      data.forEach(function(item) {
-        categories[item.title] = item;
-      });
-
-      var catArr = sortCategories();
-      var cardArr = [];
-      catArr.forEach(function(item) {
-        var card = createCategoryCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      var cardList = doc.querySelector('.cat-list');
-      distributeItems(cardArr, cardList);
-
-      resolve();
+    // Create category cards for each of the categories
+    data.forEach(function(item) {
+      categories[item.title] = item;
     });
+
+    var catArr = sortCategories();
+    var cardArr = [];
+    catArr.forEach(function(item) {
+      var card = createCategoryCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+    var cardList = doc.querySelector('.cat-list');
+    distributeItems(cardArr, cardList);
   }
 
   function createResources(data) {
-    return new Promise(function(resolve, reject) {
-      var cardArr = [];
-      // Create element cards
-      data.forEach(function(item, index) {
-        resources[item.name] = item;
+    var cardArr = [];
+    // Create element cards
+    data.forEach(function(item, index) {
+      resources[item.name] = item;
 
-        var card = createResourceCard(item);
+      var card = createResourceCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+
+    // This must be done in a second loop, otherwise some things might not have been initialise
+    var resIndexArr = Object.keys(resources);
+    resIndexArr.forEach(function(index) {
+      var item = resources[index];
+      // Add entry back to this item if this one makes the other
+      if (item.makes) {
+        item.makes.forEach(function(compound) {
+          if (resources[compound]) {
+            if (!resources[compound].madeFrom)
+              resources[compound].madeFrom = [];
+            resources[compound].madeFrom.push(index);
+          }
+        });
+      }
+    });
+
+    var cardList = doc.querySelector('.elements-list');
+    distributeItems(cardArr, cardList);
+  }
+
+  function createLinks(data) {
+    var container = doc.querySelector('.link-list');
+
+    data.forEach(function(category) {
+      // create title
+      var title = doc.createElement('h2');
+      title.textContent = category.title;
+      title.dataset.title = category.title;
+      container.appendChild(title);
+      // Add link cards
+      var cardList = doc.createElement('div');
+
+      var cardArr = [];
+      category.items.forEach(function(item) {
+        var card = createLinkCard(item);
         if (!card)
           return;
         cardArr.push(card);
       });
-
-      // This must be done in a second loop, otherwise some things might not have been initialise
-      var resIndexArr = Object.keys(resources);
-      resIndexArr.forEach(function(index) {
-        var item = resources[index];
-        // Add entry back to this item if this one makes the other
-        if (item.makes) {
-          item.makes.forEach(function(compound) {
-            if (resources[compound]) {
-              if (!resources[compound].madeFrom)
-                resources[compound].madeFrom = [];
-              resources[compound].madeFrom.push(index);
-            }
-          });
-        }
-      });
-
-      var cardList = doc.querySelector('.elements-list');
       distributeItems(cardArr, cardList);
 
-      resolve();
-    });
-  }
-
-  function createLinks(data) {
-    return new Promise(function(resolve, reject) {
-      var container = doc.querySelector('.link-list');
-
-      data.forEach(function(category) {
-        // create title
-        var title = doc.createElement('h2');
-        title.textContent = category.title;
-        title.dataset.title = category.title;
-        container.appendChild(title);
-        // Add link cards
-        var cardList = doc.createElement('div');
-
-        var cardArr = [];
-        category.items.forEach(function(item) {
-          var card = createLinkCard(item);
-          if (!card)
-            return;
-          cardArr.push(card);
-        });
-        distributeItems(cardArr, cardList);
-
-        container.appendChild(cardList);
-      });
-
-      resolve();
+      container.appendChild(cardList);
     });
   }
 
   function createRecents(data) {
-    return new Promise(function(resolve, reject) {
-      var cardArr = [];
-      data.forEach(function(item) {
-        var card;
-        if (typeof item === 'string') {
-          card = createInfoCard(info[item]);
-          card.querySelector('.header').addEventListener('click', function() {
-            card.querySelector('.card-content .information').classList.add('added');
-          });
+    var cardArr = [];
+    data.forEach(function(item) {
+      var card;
+      if (typeof item === 'string') {
+        card = createInfoCard(info[item]);
+        card.querySelector('.header').addEventListener('click', function() {
+          card.querySelector('.card-content .information').classList.add('added');
+        });
+      } else {
+        if (item.type && item.type === 'manual') {
+          card = createInfoCard(item);
         } else {
-          if (item.type && item.type === 'manual') {
-            card = createInfoCard(item);
-          } else {
-            card = createInfoCard(info[item.title]);
-            card.querySelector('.header').addEventListener('click', function() {
-              var infoArray = card.querySelectorAll('.information p');
-              if (item.additions)
-                item.additions.forEach(function(added) {
-                  infoArray[added].classList.add('added');
-                });
-              if (item.edited)
-                item.edited.forEach(function(edit) {
-                  infoArray[edit].classList.add('edited');
-                });
-              if (item.removals)
-                item.removals.forEach(function(removed) {
-                  var removalBar = doc.createElement('p');
-                  removalBar.classList.add('removed');
-                  removalBar.innerHTML = '<em>Removed</em>';
-                  if (removed < infoArray.length)
-                    card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
-                  else
-                    card.querySelector('.information').appendChild(removalBar);
-                });
-            });
-          }
+          card = createInfoCard(info[item.title]);
+          card.querySelector('.header').addEventListener('click', function() {
+            var infoArray = card.querySelectorAll('.information p');
+            if (item.additions)
+              item.additions.forEach(function(added) {
+                infoArray[added].classList.add('added');
+              });
+            if (item.edited)
+              item.edited.forEach(function(edit) {
+                infoArray[edit].classList.add('edited');
+              });
+            if (item.removals)
+              item.removals.forEach(function(removed) {
+                var removalBar = doc.createElement('p');
+                removalBar.classList.add('removed');
+                removalBar.innerHTML = '<em>Removed</em>';
+                if (removed < infoArray.length)
+                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
+                else
+                  card.querySelector('.information').appendChild(removalBar);
+              });
+          });
         }
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      var cardList = doc.querySelector('.recent-list');
-      distributeItems(cardArr, cardList);
-
-      resolve();
+      }
+      if (!card)
+        return;
+      cardArr.push(card);
     });
+    var cardList = doc.querySelector('.recent-list');
+    distributeItems(cardArr, cardList);
   }
 
   /**
@@ -1522,8 +1507,6 @@
   if (doc.readyState !== 'loading')
     initInfo();
   else
-    win.addEventListener('load', function() {
-      initInfo();
-    });
+    win.addEventListener('load', initInfo);
 
 })(window, document);
