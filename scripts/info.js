@@ -115,9 +115,12 @@
     getResources();
     getLinks();
 
-    if (Promise) {
-      console.log('yay promises');
-    }
+    var promises = [
+      // TODO: Get list of promises that init page
+    ];
+    Promise.all(promises).then(handleSearchParams, function(err) {
+      console.error('Error starting: ' + err);
+    });
   }
 
   /**
@@ -184,6 +187,20 @@
       pageContainer.classList.remove('recent');
       win.history.replaceState(null, '', '?links');
     }
+  }
+
+  function get(url) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', function() {
+        resolve(xhr.responseText);
+      });
+      xhr.addEventListener('error', function(e) {
+        reject(e);
+      });
+      xhr.open('get', url, true);
+      xhr.send();
+    });
   }
 
   /**
