@@ -28,6 +28,55 @@
    * Create everything that is needed for normal page function
    */
   function initInfo() {
+    addInitialListeners();
+    // Retrieve sort preference
+    if (win.localStorage) {
+      try {
+        var sortType = win.localStorage.getItem('info-sort');
+        if (sortType) {
+          sortMethod = sortType;
+          var button = document.querySelector('.sort-type');
+          if (sortMethod === 'category') {
+            button.classList.remove('alpha');
+            button.classList.add('category');
+          } else if (sortMethod === 'random') {
+            button.classList.remove('alpha');
+            button.classList.add('random');
+          }
+        } else
+          win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
+    var promises = [
+      // Get categories
+      get('data/categories.json').then(JSON.parse).then(createCategories)
+      // Get info after categories are in place
+      .then(function() {
+        return get('data/info.json');
+      }).then(JSON.parse).then(createInfo),
+      // Get elements
+      get('data/resources.json').then(JSON.parse).then(createResources),
+      // Get links
+      get('data/links.json').then(JSON.parse).then(createLinks)
+    ];
+    Promise.all(promises)
+      // Get recents
+      .then(function() {
+        return get('data/recent.json');
+      }).then(JSON.parse).then(createRecents)
+      // Do any necessary expanding/page changes
+      .then(handleSearchParams)
+      // Big overall catch
+      .then(undefined, function(err) {
+        console.error('Error starting: ' + err);
+      });
+  }
+
+  function addInitialListeners() {
     // do navbar scoll stuff
     win.addEventListener("optimizedScroll", function() {
       var header = doc.querySelector('header');
@@ -87,60 +136,6 @@
         doInfoSearch();
       }
     });
-
-    // Retrieve sort preference
-    if (win.localStorage) {
-      try {
-        var sortType = win.localStorage.getItem('info-sort');
-        if (sortType) {
-          sortMethod = sortType;
-          var button = document.querySelector('.sort-type');
-          if (sortMethod === 'category') {
-            button.classList.remove('alpha');
-            button.classList.add('category');
-          } else if (sortMethod === 'random') {
-            button.classList.remove('alpha');
-            button.classList.add('random');
-          }
-        } else
-          win.localStorage.setItem('info-sort', sortMethod);
-      } catch (err) {
-        console.error('Problem trying to access local storage');
-        console.error(err);
-      }
-    }
-
-    // Create cards for all the information
-    // getCategories();
-    // getResources();
-    // getLinks();
-
-    // Get categories first
-
-
-    var promises = [
-      // Get categories
-      get('data/categories.json').then(JSON.parse).then(createCategories)
-      // Get info after categories are in place
-      .then(function() {
-        return get('data/info.json');
-      }).then(JSON.parse).then(createInfo),
-      // Get elements
-      get('data/resources.json').then(JSON.parse).then(createResources),
-      // Get links
-      get('data/links.json').then(JSON.parse).then(createLinks)
-    ];
-    Promise.all(promises)
-      // Get recents
-      .then(function() {
-        return get('data/recent.json');
-      }).then(JSON.parse).then(createRecents)
-      // Do any necessary expanding/page changes
-      .then(handleSearchParams)
-      // Big overall catch
-      .then(undefined, function(err) {
-        console.error('Error starting: ' + err);
-      });
   }
 
   /**
@@ -385,20 +380,6 @@
   }
 
   /**
-   * Quick helper function to make an HTTP GET request and call a callback with the response
-   * @param url URL of the resource to request
-   * @param callback Callback function that takes a single parameter which hold the response of the request
-   */
-  function httpGet(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', function() {
-      callback(xhr.responseText);
-    });
-    xhr.open('get', url, true);
-    xhr.send();
-  }
-
-  /**
    * Look at the parameters in the url, and do things based on them
    */
   function handleSearchParams() {
@@ -508,39 +489,6 @@
   }
 
   /**
-   * Retrieve information, and add cards to page
-   */
-  function getItems() {
-    httpGet('data/info.json', function(response) {
-
-      var responseArr = JSON.parse(response);
-
-      // Create cards for each of the pieces of information
-      responseArr.forEach(function(item) {
-        info[item.title] = item;
-      });
-
-      var infoArr = sortItems();
-
-      var cardArr = [];
-      infoArr.forEach(function(item) {
-        var card = createInfoCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      // Add "about" card to the top of the list
-      cardArr.unshift(createInfoCard(aboutCard));
-      var cardList = doc.querySelector('.info-list');
-      distributeItems(cardArr, cardList);
-
-      // Now that data is loaded, process the search parameters
-      handleSearchParams();
-      getRecentChanges();
-    });
-  }
-
-  /**
    * Change the sort method used on the main page
    */
   function changeSort() {
@@ -631,35 +579,6 @@
     return returnArr;
   }
 
-  /**
-   * Retrieve categories and create cards for them
-   */
-  function getCategories() {
-    httpGet('data/categories.json', function(response) {
-
-      var categoriesArr = JSON.parse(response);
-
-      // Create category cards for each of the categories
-      categoriesArr.forEach(function(item) {
-        categories[item.title] = item;
-      });
-
-      var catArr = sortCategories();
-      var cardArr = [];
-      catArr.forEach(function(item) {
-        var card = createCategoryCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      var cardList = doc.querySelector('.cat-list');
-      distributeItems(cardArr, cardList);
-
-      // Load in information, now that categories are loaded
-      getItems();
-    });
-  }
-
   function sortCategories() {
     var catArr = [];
     var catKeyArr = Object.keys(categories);
@@ -669,132 +588,6 @@
 
     catArr = catArr.sort(titleSort);
     return catArr;
-  }
-
-  /**
-   * Retrieve element list and create cards
-   */
-  function getResources() {
-    httpGet('data/resources.json', function(response) {
-      var cardList = doc.querySelector('.elements-list');
-
-      var resourcesArr = JSON.parse(response);
-
-      var cardArr = [];
-
-      // Create element cards
-      resourcesArr.forEach(function(item, index) {
-        resources[item.name] = item;
-
-        var card = createResourceCard(item);
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-
-      // This must be done in a second loop, otherwise some things might not have been initialise
-      var resIndexArr = Object.keys(resources);
-      resIndexArr.forEach(function(index) {
-        var item = resources[index];
-        // Add entry back to this item if this one makes the other
-        if (item.makes) {
-          item.makes.forEach(function(compound) {
-            if (resources[compound]) {
-              if (!resources[compound].madeFrom)
-                resources[compound].madeFrom = [];
-              resources[compound].madeFrom.push(index);
-            }
-          });
-        }
-      });
-
-      distributeItems(cardArr, cardList);
-    });
-  }
-
-  /**
-   * Retrieve recent changes and add to page
-   */
-  function getRecentChanges() {
-    httpGet('data/recent.json', function(response) {
-
-      var recentArr = JSON.parse(response);
-
-      var cardArr = [];
-      recentArr.forEach(function(item) {
-        var card;
-        if (typeof item === 'string') {
-          card = createInfoCard(info[item]);
-          card.querySelector('.header').addEventListener('click', function() {
-            card.querySelector('.card-content .information').classList.add('added');
-          });
-        } else {
-          if (item.type && item.type === 'manual') {
-            card = createInfoCard(item);
-          } else {
-            card = createInfoCard(info[item.title]);
-            card.querySelector('.header').addEventListener('click', function() {
-              var infoArray = card.querySelectorAll('.information p');
-              if (item.additions)
-                item.additions.forEach(function(added) {
-                  infoArray[added].classList.add('added');
-                });
-              if (item.edited)
-                item.edited.forEach(function(edit) {
-                  infoArray[edit].classList.add('edited');
-                });
-              if (item.removals)
-                item.removals.forEach(function(removed) {
-                  var removalBar = doc.createElement('p');
-                  removalBar.classList.add('removed');
-                  removalBar.innerHTML = '<em>Removed</em>';
-                  if (removed < infoArray.length)
-                    card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
-                  else
-                    card.querySelector('.information').appendChild(removalBar);
-                });
-            });
-          }
-        }
-        if (!card)
-          return;
-        cardArr.push(card);
-      });
-      var cardList = doc.querySelector('.recent-list');
-      distributeItems(cardArr, cardList);
-    });
-  }
-
-  /**
-   * Retrieve links and add to page
-   */
-  function getLinks() {
-    httpGet('data/links.json', function(response) {
-      var categoryArr = JSON.parse(response);
-      var container = doc.querySelector('.link-list');
-
-      categoryArr.forEach(function(category) {
-        // create title
-        var title = doc.createElement('h2');
-        title.textContent = category.title;
-        title.dataset.title = category.title;
-        container.appendChild(title);
-        // Add link cards
-        var cardList = doc.createElement('div');
-
-        var cardArr = [];
-        category.items.forEach(function(item) {
-          var card = createLinkCard(item);
-          if (!card)
-            return;
-          cardArr.push(card);
-        });
-        distributeItems(cardArr, cardList);
-
-        container.appendChild(cardList);
-      });
-
-    });
   }
 
   /**
