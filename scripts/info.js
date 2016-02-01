@@ -54,28 +54,28 @@
     var promises = [
       // Get categories
       get('data/categories.json')
-        .then(JSON.parse)
-        .then(createCategories)
-        // Get info after categories are in place
-        .then(function() {
-          return get('data/info.json');
-        })
-        .then(JSON.parse)
-        .then(createInfo)
-        // Get recents once info is loaded
-        .then(function() {
-          return get('data/recent.json');
-        })
-        .then(JSON.parse)
-        .then(createRecents),
+      .then(JSON.parse)
+      .then(createCategories)
+      // Get info after categories are in place
+      .then(function() {
+        return get('data/info.json');
+      })
+      .then(JSON.parse)
+      .then(createInfo)
+      // Get recents once info is loaded
+      .then(function() {
+        return get('data/recent.json');
+      })
+      .then(JSON.parse)
+      .then(createRecents),
       // Get elements
       get('data/resources.json')
-        .then(JSON.parse)
-        .then(createResources),
+      .then(JSON.parse)
+      .then(createResources),
       // Get links
       get('data/links.json')
-        .then(JSON.parse)
-        .then(createLinks)
+      .then(JSON.parse)
+      .then(createLinks)
     ];
     // Do any necessary expanding/page changes once everything else is complete
     Promise.all(promises).then(handleSearchParams);
