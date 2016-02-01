@@ -119,11 +119,28 @@
 
 
     var promises = [
-      // TODO: Get list of promises that init page
+      // Get categories
+      get('data/categories.json').then(JSON.parse).then(createCategories)
+      // Get info after categories are in place
+      .then(function() {
+        return get('data/info.json');
+      }).then(JSON.parse).then(createInfo),
+      // Get elements
+      get('data/resources.json').then(JSON.parse).then(createResources),
+      // Get links
+      get('data/links.json').then(JSON.parse).then(createLinks)
     ];
-    Promise.all(promises).then(handleSearchParams, function(err) {
-      console.error('Error starting: ' + err);
-    });
+    Promise.all(promises)
+      // Get recents
+      .then(function() {
+        return get('data/recent.json');
+      }).then(JSON.parse).then(createRecents)
+      // Do any necessary expanding/page changes
+      .then(handleSearchParams)
+      // Big overall catch
+      .then(undefined, function(err) {
+        console.error('Error starting: ' + err);
+      });
   }
 
   /**
