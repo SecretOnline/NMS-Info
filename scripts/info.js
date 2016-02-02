@@ -24,6 +24,8 @@
     categories: []
   };
 
+  /* INIT */
+
   /**
    * Create everything that is needed for normal page function
    */
@@ -150,6 +152,115 @@
   }
 
   /**
+   * Look at the parameters in the url, and do things based on them
+   */
+  function handleSearchParams() {
+    var searchParams = {};
+    try {
+      // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following block of code
+      if (win.location.search.length > 1) {
+        for (var aItKey, nKeyId = 0, aCouples = win.location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
+          aItKey = aCouples[nKeyId].split("=");
+          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+        }
+      }
+    } catch (err) {
+      console.error('Error trying to process search parameters');
+      console.error(location.search);
+      return;
+    }
+
+    if (typeof searchParams.cat !== 'undefined') {
+      // Go to the categories page
+      changeTab('categories');
+      if (searchParams.cat !== '') {
+        // Go to the search page, but fill it with all info in the specified category
+        categorySearch(searchParams.cat);
+      }
+    } else if (typeof searchParams.search !== 'undefined') {
+      // Go to the search page
+      changeTab('search');
+      if (searchParams.search) {
+        try {
+          // Perform a search with the given parameter
+          var query = decodeURIComponent(searchParams.search);
+          generalSearch(query);
+          doc.querySelector('.info-search-box').value = searchParams.search;
+        } catch (err) {
+          console.error('Error trying to search');
+          console.error(searchParams.search);
+        }
+      }
+    } else if (typeof searchParams.info !== 'undefined') {
+      collapseAllItems();
+      if (searchParams.info) {
+        // Expand card
+        try {
+          var infoElement = doc.querySelector('.page-info .info-card[data-title="' + searchParams.info + '"]');
+          infoElement.classList.add('expanded');
+          ga('send', 'event', 'Info Card', 'open-from-param', info[searchParams.info].title);
+          addCardInfo(infoElement, info[searchParams.info]);
+          infoElement.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+          try {
+            if (searchParams.highlight) {
+              var indicies = searchParams.highlight.split(',');
+              indicies.forEach(function(index) {
+                ga('send', 'event', 'Info Card Highlight', 'highlight-from-param', info[searchParams.info].title, Number.parseInt(index));
+                var infoArray = infoElement.querySelectorAll('.information p');
+                infoArray[index - 1].classList.add('highlighted');
+              });
+            }
+          } catch (e) {
+            console.error('Highlighting failed. ' + e);
+          }
+        } catch (err) {
+          console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
+        }
+      }
+    } else if (typeof searchParams.element !== 'undefined') {
+      // Go to the elements page
+      changeTab('elements');
+      if (searchParams.element) {
+        // Expand the specified element
+        try {
+          var element = doc.querySelector('.page-elements .element-card[data-name="' + searchParams.element + '"]');
+          element.classList.add('expanded');
+          ga('send', 'event', 'Element Card', 'open-from-param', info[searchParams.element].title);
+          addResourceInfo(element, resources[searchParams.element]);
+          element.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+        } catch (err) {
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
+        }
+      }
+    } else if (typeof searchParams.recent !== 'undefined') {
+      // Go to the elements page
+      changeTab('recent');
+    } else if (typeof searchParams.links !== 'undefined') {
+      // Go to the links page
+      changeTab('links');
+      if (searchParams.links) {
+        try {
+          var heading = doc.querySelector('h2[data-title="' + searchParams.links + '"]');
+          heading.scrollIntoView({
+            block: 'start',
+            behavior: 'smooth'
+          });
+        } catch (err) {
+          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
+        }
+      }
+    } else {
+      changeTab('main'); // Just go to default spot
+    }
+  }
+
+  /**
    * Change which page is currently visible
    * @param tab Name of the tab to switch to
    */
@@ -215,24 +326,7 @@
     }
   }
 
-  /**
-   * Creates a Promise that resolves when a file is retrieved
-   * @param url URL of file to retrieve
-   * @return Promise
-   */
-  function get(url) {
-    return new Promise(function(resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.addEventListener('load', function() {
-        resolve(xhr.responseText);
-      });
-      xhr.addEventListener('error', function(e) {
-        reject(e);
-      });
-      xhr.open('get', url, true);
-      xhr.send();
-    });
-  }
+  /* CARD CREATION */
 
   /**
    * Handles creation of info cards
@@ -391,220 +485,6 @@
   }
 
   /**
-   * Look at the parameters in the url, and do things based on them
-   */
-  function handleSearchParams() {
-    var searchParams = {};
-    try {
-      // Thanks to https://developer.mozilla.org/en-US/docs/Web/API/URLUtils/search for the following block of code
-      if (win.location.search.length > 1) {
-        for (var aItKey, nKeyId = 0, aCouples = win.location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
-          aItKey = aCouples[nKeyId].split("=");
-          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
-        }
-      }
-    } catch (err) {
-      console.error('Error trying to process search parameters');
-      console.error(location.search);
-      return;
-    }
-
-    if (typeof searchParams.cat !== 'undefined') {
-      // Go to the categories page
-      changeTab('categories');
-      if (searchParams.cat !== '') {
-        // Go to the search page, but fill it with all info in the specified category
-        categorySearch(searchParams.cat);
-      }
-    } else if (typeof searchParams.search !== 'undefined') {
-      // Go to the search page
-      changeTab('search');
-      if (searchParams.search) {
-        try {
-          // Perform a search with the given parameter
-          var query = decodeURIComponent(searchParams.search);
-          generalSearch(query);
-          doc.querySelector('.info-search-box').value = searchParams.search;
-        } catch (err) {
-          console.error('Error trying to search');
-          console.error(searchParams.search);
-        }
-      }
-    } else if (typeof searchParams.info !== 'undefined') {
-      collapseAllItems();
-      if (searchParams.info) {
-        // Expand card
-        try {
-          var infoElement = doc.querySelector('.page-info .info-card[data-title="' + searchParams.info + '"]');
-          infoElement.classList.add('expanded');
-          ga('send', 'event', 'Info Card', 'open-from-param', info[searchParams.info].title);
-          addCardInfo(infoElement, info[searchParams.info]);
-          infoElement.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
-          try {
-            if (searchParams.highlight) {
-              var indicies = searchParams.highlight.split(',');
-              indicies.forEach(function(index) {
-                ga('send', 'event', 'Info Card Highlight', 'highlight-from-param', info[searchParams.info].title, Number.parseInt(index));
-                var infoArray = infoElement.querySelectorAll('.information p');
-                infoArray[index - 1].classList.add('highlighted');
-              });
-            }
-          } catch (e) {
-            console.error('Highlighting failed. ' + e);
-          }
-        } catch (err) {
-          console.error('Failed to open card with title ' + searchParams.info + '. ' + err);
-        }
-      }
-    } else if (typeof searchParams.element !== 'undefined') {
-      // Go to the elements page
-      changeTab('elements');
-      if (searchParams.element) {
-        // Expand the specified element
-        try {
-          var element = doc.querySelector('.page-elements .element-card[data-name="' + searchParams.element + '"]');
-          element.classList.add('expanded');
-          ga('send', 'event', 'Element Card', 'open-from-param', info[searchParams.element].title);
-          addResourceInfo(element, resources[searchParams.element]);
-          element.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
-        } catch (err) {
-          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
-        }
-      }
-    } else if (typeof searchParams.recent !== 'undefined') {
-      // Go to the elements page
-      changeTab('recent');
-    } else if (typeof searchParams.links !== 'undefined') {
-      // Go to the links page
-      changeTab('links');
-      if (searchParams.links) {
-        try {
-          var heading = doc.querySelector('h2[data-title="' + searchParams.links + '"]');
-          heading.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth'
-          });
-        } catch (err) {
-          console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
-        }
-      }
-    } else {
-      changeTab('main'); // Just go to default spot
-    }
-  }
-
-  /**
-   * Change the sort method used on the main page
-   */
-  function changeSort() {
-    var button = document.querySelector('.sort-type');
-
-    if (button.classList.contains('category')) {
-      button.classList.remove('category');
-      button.classList.add('random');
-      sortMethod = 'random';
-    } else if (button.classList.contains('random')) {
-      button.classList.remove('random');
-      button.classList.add('alpha');
-      sortMethod = 'alphabet';
-    } else {
-      button.classList.remove('alpha');
-      button.classList.add('category');
-      sortMethod = 'category';
-    }
-
-    ga('send', 'event', 'Info Sort', 'sort', sortMethod);
-
-    // Set stored sort type
-    if (win.localStorage) {
-      try {
-        win.localStorage.setItem('info-sort', sortMethod);
-      } catch (err) {
-        console.error('Problem trying to access local storage');
-        console.error(err);
-      }
-    }
-
-    var infoArr = sortItems();
-
-    var cardArr = [];
-    infoArr.forEach(function(item) {
-      var card = createInfoCard(item);
-      if (!card)
-        return;
-      cardArr.push(card);
-    });
-    // Add "about" card to the top of the list
-    cardArr.unshift(createInfoCard(aboutCard));
-    var cardList = doc.querySelector('.info-list');
-    distributeItems(cardArr, cardList);
-  }
-
-  /**
-   * Sort items according to the current sort method
-   * @return Array containing the sorted items
-   */
-  function sortItems() {
-    var infoArr = [];
-    var returnArr = [];
-
-    // Get all info into an array
-    var infoKeyArr = Object.keys(info);
-    infoKeyArr.forEach(function(key) {
-      infoArr.push(info[key]);
-    });
-
-    if (sortMethod === 'random') {
-      returnArr = arrayRandomise(infoArr);
-    } else if (sortMethod === 'alphabet') {
-      returnArr = infoArr.sort(titleSort);
-    } else if (sortMethod === 'category') {
-      // Create object of arrays, each one corresponding to a category
-      var catObj = {};
-      Object.keys(categories).forEach(function(key) {
-        catObj[key] = [];
-      });
-
-      // Addeach piee of info to it's category's array
-      infoArr.forEach(function(item) {
-        if (item.categories)
-          if (item.categories[0])
-            catObj[item.categories[0]].push(item);
-      });
-
-      // Sort categories
-      var catKeys = Object.keys(catObj);
-      catKeys.sort();
-      // Add items to returned array
-      catKeys.forEach(function(key) {
-        catObj[key].sort(titleSort);
-        returnArr = returnArr.concat(catObj[key]);
-      });
-    }
-    return returnArr;
-  }
-
-  /**
-   * Sorts the list of categories alphabetically
-   */
-  function sortCategories() {
-    var catArr = [];
-    var catKeyArr = Object.keys(categories);
-    catKeyArr.forEach(function(key) {
-      catArr.push(categories[key]);
-    });
-
-    catArr = catArr.sort(titleSort);
-    return catArr;
-  }
-
-  /**
    * Create an information card with the given data
    * @param data Object describing the piece of information
    * @return Element to add to page
@@ -710,6 +590,190 @@
         addCardInfo(card, data);
       }
       card.classList.toggle('expanded');
+    });
+
+    return card;
+  }
+
+  /**
+   * Create a card for a category
+   * @param data Object describing this category
+   * @return Element to add to the page
+   */
+  function createCategoryCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('category-card');
+    // Store data values
+    card.dataset.title = data.title;
+    card.style.backgroundColor = data.color;
+
+    if (data.darkText)
+      card.classList.add('dark-text');
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+
+    var title = doc.createElement('h3');
+    title.textContent = data.title;
+    title.classList.add('card-title');
+    card.appendChild(title);
+
+    // Do a category search when clicked
+    card.addEventListener('click', function() {
+      categorySearch(data.title);
+    });
+
+    return card;
+  }
+
+  /**
+   * Create an element card
+   * @param data Object describing this element
+   * @return Element to add to the page
+   */
+  function createResourceCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('element-card');
+    // Store data values
+    card.dataset.name = data.name;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerSymbol = doc.createElement('h3');
+    headerSymbol.classList.add('element-symbol');
+    if (data.symbol)
+      headerSymbol.textContent = data.symbol;
+    else
+      headerSymbol.textContent = '??';
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    if (data.name)
+      headerTitle.textContent = data.name;
+    else
+      headerTitle.textContent = '???';
+    header.appendChild(headerBg);
+    header.appendChild(headerSymbol);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    // Add empty content box
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    // Expand card when clicked
+    header.addEventListener('click', function() {
+      if (card.classList.contains('expanded')) { // See whether we need to do anything special to the url
+        ga('send', 'event', 'Element Card', 'close', data.title);
+
+        try {
+          if (doc.querySelector('.page-container').classList.contains('search'))
+          // Add search to the url
+            if (doc.querySelector('.info-search-box').value)
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+            else
+              win.history.replaceState(null, '', '?search');
+          else
+            win.history.replaceState(null, '', '.');
+
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } catch (err) {
+          console.error('Error while trying to expand resource' + data.name);
+          console.error(err);
+        }
+      } else {
+        ga('send', 'event', 'Element Card', 'open', data.title);
+
+        collapseAllItems();
+        win.history.replaceState(null, '', '?element=' + card.dataset.name);
+
+        addResourceInfo(card, data);
+      }
+      card.classList.toggle('expanded');
+    });
+
+    return card;
+  }
+
+  /**
+   * Create a source card with the given data
+   * @param data Object describing the information source
+   * @return Element to add to page
+   */
+  function createLinkCard(data) {
+    // Create card element
+    var card = doc.createElement('div');
+    card.classList.add('link-card');
+
+    if (data.darkText) {
+      card.classList.add('dark-text');
+    }
+    // Store data values
+    card.dataset.title = data.title;
+
+    // Create header
+    var header = doc.createElement('div');
+    header.classList.add('header');
+    var headerBg = doc.createElement('div');
+    headerBg.classList.add('header-bg');
+    headerBg.style.backgroundColor = data.color;
+    var headerTitle = doc.createElement('h3');
+    headerTitle.classList.add('card-title');
+    headerTitle.textContent = data.title;
+    header.appendChild(headerBg);
+    header.appendChild(headerTitle);
+    card.appendChild(header);
+
+    if (data.method === 'link') {
+      var icon = doc.createElement('img');
+      icon.src = (data.darkText) ? 'res/external-dark.svg' : 'res/external.svg';
+      icon.alt = 'Open in new window / tab';
+      icon.classList.add('external');
+      header.appendChild(icon);
+    }
+
+    // Add empty content box
+    var content = doc.createElement('div');
+    content.classList.add('card-content');
+    card.appendChild(content);
+
+    // Open / close the card when the header is clicked
+    header.addEventListener('click', function() {
+      if (data.method === 'embed') {
+        if (card.classList.contains('expanded')) {
+          ga('send', 'event', 'Link Card', 'close', data.title);
+
+          // Clear content after 0.5 seconds
+          win.setTimeout(function() {
+            if (!card.classList.contains('expanded'))
+              content.innerHTML = '';
+          }, 500);
+        } else {
+          ga('send', 'event', 'Link Card', 'open', data.title);
+
+          // Expand the card
+          collapseAllItems();
+          addLinkInfo(card, data);
+        }
+        card.classList.toggle('expanded');
+      } else if (data.method === 'link') {
+        ga('send', 'event', 'Link Card', 'external', data.title);
+
+        win.open(data.src, '_blank'); // Open link in new tab/window (user's broswer preference)
+      }
     });
 
     return card;
@@ -852,119 +916,6 @@
   }
 
   /**
-   * Create a card for a category
-   * @param data Object describing this category
-   * @return Element to add to the page
-   */
-  function createCategoryCard(data) {
-    // Create card element
-    var card = doc.createElement('div');
-    card.classList.add('category-card');
-    // Store data values
-    card.dataset.title = data.title;
-    card.style.backgroundColor = data.color;
-
-    if (data.darkText)
-      card.classList.add('dark-text');
-
-    // Create header
-    var header = doc.createElement('div');
-    header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
-
-    var title = doc.createElement('h3');
-    title.textContent = data.title;
-    title.classList.add('card-title');
-    card.appendChild(title);
-
-    // Do a category search when clicked
-    card.addEventListener('click', function() {
-      categorySearch(data.title);
-    });
-
-    return card;
-  }
-
-  /**
-   * Create an element card
-   * @param data Object describing this element
-   * @return Element to add to the page
-   */
-  function createResourceCard(data) {
-    // Create card element
-    var card = doc.createElement('div');
-    card.classList.add('element-card');
-    // Store data values
-    card.dataset.name = data.name;
-
-    // Create header
-    var header = doc.createElement('div');
-    header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
-    headerBg.style.backgroundColor = data.color;
-    var headerSymbol = doc.createElement('h3');
-    headerSymbol.classList.add('element-symbol');
-    if (data.symbol)
-      headerSymbol.textContent = data.symbol;
-    else
-      headerSymbol.textContent = '??';
-    var headerTitle = doc.createElement('h3');
-    headerTitle.classList.add('card-title');
-    if (data.name)
-      headerTitle.textContent = data.name;
-    else
-      headerTitle.textContent = '???';
-    header.appendChild(headerBg);
-    header.appendChild(headerSymbol);
-    header.appendChild(headerTitle);
-    card.appendChild(header);
-
-    // Add empty content box
-    var content = doc.createElement('div');
-    content.classList.add('card-content');
-    card.appendChild(content);
-
-    // Expand card when clicked
-    header.addEventListener('click', function() {
-      if (card.classList.contains('expanded')) { // See whether we need to do anything special to the url
-        ga('send', 'event', 'Element Card', 'close', data.title);
-
-        try {
-          if (doc.querySelector('.page-container').classList.contains('search'))
-          // Add search to the url
-            if (doc.querySelector('.info-search-box').value)
-              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
-            else
-              win.history.replaceState(null, '', '?search');
-          else
-            win.history.replaceState(null, '', '.');
-
-          // Clear content after 0.5 seconds
-          win.setTimeout(function() {
-            if (!card.classList.contains('expanded'))
-              content.innerHTML = '';
-          }, 500);
-        } catch (err) {
-          console.error('Error while trying to expand resource' + data.name);
-          console.error(err);
-        }
-      } else {
-        ga('send', 'event', 'Element Card', 'open', data.title);
-
-        collapseAllItems();
-        win.history.replaceState(null, '', '?element=' + card.dataset.name);
-
-        addResourceInfo(card, data);
-      }
-      card.classList.toggle('expanded');
-    });
-
-    return card;
-  }
-
-  /**
    * Add information to resource card
    * This is so that inner elements are only present if needed
    * @param card Element to add the information to
@@ -1065,77 +1016,6 @@
   }
 
   /**
-   * Create a source card with the given data
-   * @param data Object describing the information source
-   * @return Element to add to page
-   */
-  function createLinkCard(data) {
-    // Create card element
-    var card = doc.createElement('div');
-    card.classList.add('link-card');
-
-    if (data.darkText) {
-      card.classList.add('dark-text');
-    }
-    // Store data values
-    card.dataset.title = data.title;
-
-    // Create header
-    var header = doc.createElement('div');
-    header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
-    headerBg.style.backgroundColor = data.color;
-    var headerTitle = doc.createElement('h3');
-    headerTitle.classList.add('card-title');
-    headerTitle.textContent = data.title;
-    header.appendChild(headerBg);
-    header.appendChild(headerTitle);
-    card.appendChild(header);
-
-    if (data.method === 'link') {
-      var icon = doc.createElement('img');
-      icon.src = (data.darkText) ? 'res/external-dark.svg' : 'res/external.svg';
-      icon.alt = 'Open in new window / tab';
-      icon.classList.add('external');
-      header.appendChild(icon);
-    }
-
-    // Add empty content box
-    var content = doc.createElement('div');
-    content.classList.add('card-content');
-    card.appendChild(content);
-
-    // Open / close the card when the header is clicked
-    header.addEventListener('click', function() {
-      if (data.method === 'embed') {
-        if (card.classList.contains('expanded')) {
-          ga('send', 'event', 'Link Card', 'close', data.title);
-
-          // Clear content after 0.5 seconds
-          win.setTimeout(function() {
-            if (!card.classList.contains('expanded'))
-              content.innerHTML = '';
-          }, 500);
-        } else {
-          ga('send', 'event', 'Link Card', 'open', data.title);
-
-          // Expand the card
-          collapseAllItems();
-          addLinkInfo(card, data);
-        }
-        card.classList.toggle('expanded');
-      } else if (data.method === 'link') {
-        ga('send', 'event', 'Link Card', 'external', data.title);
-
-        win.open(data.src, '_blank'); // Open link in new tab/window (user's broswer preference)
-      }
-    });
-
-    return card;
-  }
-
-  /**
    * Add content to the given card
    * This is so that inner elements are only present if needed
    * @param card Element to add the information to
@@ -1169,6 +1049,113 @@
     frame.src = data.src;
     frame.allowfullscreen = true;
     content.appendChild(frame);
+  }
+
+  /* SEARCH AND SORT */
+
+  /**
+   * Change the sort method used on the main page
+   */
+  function changeSort() {
+    var button = document.querySelector('.sort-type');
+
+    if (button.classList.contains('category')) {
+      button.classList.remove('category');
+      button.classList.add('random');
+      sortMethod = 'random';
+    } else if (button.classList.contains('random')) {
+      button.classList.remove('random');
+      button.classList.add('alpha');
+      sortMethod = 'alphabet';
+    } else {
+      button.classList.remove('alpha');
+      button.classList.add('category');
+      sortMethod = 'category';
+    }
+
+    ga('send', 'event', 'Info Sort', 'sort', sortMethod);
+
+    // Set stored sort type
+    if (win.localStorage) {
+      try {
+        win.localStorage.setItem('info-sort', sortMethod);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
+    var infoArr = sortItems();
+
+    var cardArr = [];
+    infoArr.forEach(function(item) {
+      var card = createInfoCard(item);
+      if (!card)
+        return;
+      cardArr.push(card);
+    });
+    // Add "about" card to the top of the list
+    cardArr.unshift(createInfoCard(aboutCard));
+    var cardList = doc.querySelector('.info-list');
+    distributeItems(cardArr, cardList);
+  }
+
+  /**
+   * Sort items according to the current sort method
+   * @return Array containing the sorted items
+   */
+  function sortItems() {
+    var infoArr = [];
+    var returnArr = [];
+
+    // Get all info into an array
+    var infoKeyArr = Object.keys(info);
+    infoKeyArr.forEach(function(key) {
+      infoArr.push(info[key]);
+    });
+
+    if (sortMethod === 'random') {
+      returnArr = arrayRandomise(infoArr);
+    } else if (sortMethod === 'alphabet') {
+      returnArr = infoArr.sort(titleSort);
+    } else if (sortMethod === 'category') {
+      // Create object of arrays, each one corresponding to a category
+      var catObj = {};
+      Object.keys(categories).forEach(function(key) {
+        catObj[key] = [];
+      });
+
+      // Addeach piee of info to it's category's array
+      infoArr.forEach(function(item) {
+        if (item.categories)
+          if (item.categories[0])
+            catObj[item.categories[0]].push(item);
+      });
+
+      // Sort categories
+      var catKeys = Object.keys(catObj);
+      catKeys.sort();
+      // Add items to returned array
+      catKeys.forEach(function(key) {
+        catObj[key].sort(titleSort);
+        returnArr = returnArr.concat(catObj[key]);
+      });
+    }
+    return returnArr;
+  }
+
+  /**
+   * Sorts the list of categories alphabetically
+   */
+  function sortCategories() {
+    var catArr = [];
+    var catKeyArr = Object.keys(categories);
+    catKeyArr.forEach(function(key) {
+      catArr.push(categories[key]);
+    });
+
+    catArr = catArr.sort(titleSort);
+    return catArr;
   }
 
   /**
@@ -1374,6 +1361,8 @@
     return score;
   }
 
+  /* MISC DOM INTERACTIONS */
+
   /**
    * Organise items into one or two columns depending on screen size
    * Once browser support for `display: grid;` is non-experimental, this won't be needed
@@ -1448,22 +1437,6 @@
   }
 
   /**
-   * Helper function to reorder an array in a random order
-   * @param array Array to mix up. Is not modified in this process
-   * @return New array with same data, but in a random order
-   */
-  function arrayRandomise(array) {
-    var newArr = [];
-
-    while (array.length > 0) {
-      var index = Math.floor(Math.random() * array.length);
-      newArr.push(array.splice(index, 1)[0]);
-    }
-
-    return newArr;
-  }
-
-  /**
    * Creates a link that has special hover powers
    * @param element Element to add hover box to
    * @param textArray Array of text to place in hover box
@@ -1484,6 +1457,28 @@
     });
   }
 
+
+  /* HELPER */
+
+  /**
+   * Creates a Promise that resolves when a file is retrieved
+   * @param url URL of file to retrieve
+   * @return Promise
+   */
+  function get(url) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', function() {
+        resolve(xhr.responseText);
+      });
+      xhr.addEventListener('error', function(e) {
+        reject(e);
+      });
+      xhr.open('get', url, true);
+      xhr.send();
+    });
+  }
+
   /**
    * Truncates a string if its length is greater than the maximum, otherwise returns the string
    * @param string String to Truncates
@@ -1495,6 +1490,22 @@
       return string;
     else
       return string.substr(0, maxLength - 3) + '...';
+  }
+
+  /**
+   * Helper function to reorder an array in a random order
+   * @param array Array to mix up. Is not modified in this process
+   * @return New array with same data, but in a random order
+   */
+  function arrayRandomise(array) {
+    var newArr = [];
+
+    while (array.length > 0) {
+      var index = Math.floor(Math.random() * array.length);
+      newArr.push(array.splice(index, 1)[0]);
+    }
+
+    return newArr;
   }
 
   /**
