@@ -51,34 +51,37 @@
       }
     }
 
-    var promises = [
-      // Get categories
-      get('data/categories.json')
+    // TODO: Lots of error handling
+    // Get categories and add to page
+    var catPromise = get('data/categories.json')
       .then(JSON.parse)
-      .then(createCategories)
-      // Get info after categories are in place
-      .then(function() {
-        return get('data/info.json');
+      .then(createCategories);
+    // Get elements and add to page
+    var elementPromise = get('data/resources.json')
+      .then(JSON.parse)
+      .then(createResources);
+    // Get links and add to page
+    var linkPromise = get('data/links.json')
+      .then(JSON.parse)
+      .then(createLinks);
+    // Wait for categories, get info, and add to page
+    var infoPromise = Promise.all([get('data/info.json'), catPromise])
+      .then(function(arr) {
+        console.log(this);
+        return arr[0];
       })
       .then(JSON.parse)
-      .then(createInfo)
-      // Get recents once info is loaded
-      .then(function() {
-        return get('data/recent.json');
+      .then(createInfo);
+    // Wait for categories and info, get changes, and add to page
+    var recentPromise = Promise.all([get('data/recent.json'), catPromise, infoPromise])
+      .then(function(arr) {
+        return arr[0];
       })
       .then(JSON.parse)
-      .then(createRecents),
-      // Get elements
-      get('data/resources.json')
-      .then(JSON.parse)
-      .then(createResources),
-      // Get links
-      get('data/links.json')
-      .then(JSON.parse)
-      .then(createLinks)
-    ];
-    // Do any necessary expanding/page changes once everything else is complete
-    Promise.all(promises).then(handleSearchParams);
+      .then(createRecents);
+    // Wait for all aspects of the page to be complete before handling the url search parameters
+    var initPromise = Promise.all([catPromise, elementPromise, linkPromise, infoPromise, recentPromise])
+      .then(handleSearchParams);
   }
 
   /**
