@@ -47,5 +47,20 @@
       4
     ]
   },
-  "Virtual Reality"
+  "Virtual Reality",
+  {
+    "title": "The Atlas",
+    "additions": [
+      5
+    ],
+    "removals": [
+      3
+    ]
+  },
+  {
+    "title": "Discovering",
+    "additions": [
+      6
+    ]
+  }
 ]
