@@ -69,7 +69,6 @@
     // Wait for categories, get info, and add to page
     var infoPromise = Promise.all([get('data/info.json'), catPromise])
       .then(function(arr) {
-        console.log(this);
         return arr[0];
       })
       .then(JSON.parse)
@@ -1486,6 +1485,8 @@
    * @return A string of length no more than the given maximum
    */
   function truncateString(string, maxLength) {
+    string = string.replace(/^https?:\/\/(?:www.)?/i, '');
+
     if (string.length < maxLength)
       return string;
     else
