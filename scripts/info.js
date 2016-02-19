@@ -853,7 +853,7 @@
             var anchor = doc.createElement('a');
             anchor.href = source;
             anchor.target = '_blank';
-            anchor.textContent = sIndex + 1;
+            anchor.textContent = truncateString(source, 10);
             appendHoverElement(anchor, [source]);
             sourceEl.appendChild(anchor);
             sourceList.appendChild(sourceEl);
