@@ -1485,7 +1485,7 @@
    * @return A string of length no more than the given maximum
    */
   function truncateString(string, maxLength) {
-    string = string.replace(/^https?:\/\/(?:www.)?/i, '');
+    string = string.replace(/^https?:\/\/(?:www\.)?/i, '');
 
     if (string.length < maxLength)
       return string;
