@@ -1308,6 +1308,12 @@
           score += 1;
       });
     });
+    // Keywords
+    querySplit.forEach(function(word) {
+      if (info.keywords.indexOf(word) > -1) {
+        score += 4;
+      }
+    });
 
     return score;
   }
