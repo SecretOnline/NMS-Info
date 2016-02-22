@@ -37,6 +37,13 @@
         obj.related[i] = arr[i].value;
       }
 
+      arr = document.querySelectorAll('.keywords input');
+      for (var i = 0; i < arr.length; i++) {
+        if (!obj.keywords)
+          obj.keywords = [];
+        obj.keywords[i] = arr[i].value;
+      }
+
       if (document.querySelector('.spoiler').checked)
         obj.spoiler = true;
 
@@ -72,6 +79,11 @@
       if (obj.related) {
         obj.related.forEach(function(item){
           addInput(document.querySelector('.related')).querySelector('input').value = item;
+        });
+      }
+      if (obj.keywords) {
+        obj.keywords.forEach(function(item){
+          addInput(document.querySelector('.keywords')).querySelector('input').value = item;
         });
       }
       if (obj.spoiler) {
@@ -157,6 +169,12 @@
       related - use title of card
     </p>
     <div class="inputContainer related">
+
+    </div>
+    <p>
+      keywords
+    </p>
+    <div class="inputContainer keywords">
 
     </div>
     <p>
