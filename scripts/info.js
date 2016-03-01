@@ -1308,6 +1308,14 @@
           score += 1;
       });
     });
+    // Keywords
+    if (info.keywords) {
+      querySplit.forEach(function(word) {
+        if (info.keywords.indexOf(word) > -1) {
+          score += 4;
+        }
+      });
+    }
 
     return score;
   }
@@ -1371,52 +1379,35 @@
   function distributeItems(array, container) {
     var twoColThreshold = 920; // Should match class
     var threeColThreshold = 1300; // Should match class
+    var columns = [];
+    var i, cont;
 
     container.innerHTML = '';
     if (innerWidth <= twoColThreshold) {
-      // Just add to container
-      array.forEach(function(item) {
-        container.appendChild(item);
-      });
+      // One container
+      columns.push(container);
     } else if (innerWidth <= threeColThreshold) {
-      // Create columns
-      var colOne = doc.createElement('div');
-      var colTwo = doc.createElement('div');
-      colOne.classList.add('card-column');
-      colTwo.classList.add('card-column');
-      container.appendChild(colOne);
-      container.appendChild(colTwo);
-
-      array.forEach(function(item, index) {
-        // Add to column based on index
-        if (index % 2)
-          colTwo.appendChild(item);
-        else
-          colOne.appendChild(item);
-      });
+      // Two containers
+      for (i = 0; i < 2; i++) {
+        cont = doc.createElement('div');
+        cont.classList.add('card-column');
+        container.appendChild(cont);
+        columns.push(cont);
+      }
     } else {
-      // Create columns
-      var colOne = doc.createElement('div');
-      var colTwo = doc.createElement('div');
-      var colThree = doc.createElement('div');
-      colOne.classList.add('card-column');
-      colTwo.classList.add('card-column');
-      colThree.classList.add('card-column');
-      container.appendChild(colOne);
-      container.appendChild(colTwo);
-      container.appendChild(colThree);
-
-      array.forEach(function(item, index) {
-        // Add to column based on index
-        var mod = index % 3;
-        if (mod === 0)
-          colOne.appendChild(item);
-        else if (mod === 1)
-          colTwo.appendChild(item);
-        else
-          colThree.appendChild(item);
-      });
+      // Three columns
+      for (i = 0; i < 3; i++) {
+        cont = doc.createElement('div');
+        cont.classList.add('card-column');
+        container.appendChild(cont);
+        columns.push(cont);
+      }
     }
+
+    // Add to containers
+    array.forEach(function(item, index) {
+      columns[index % columns.length].appendChild(item);
+    });
   }
 
   /**
@@ -1485,7 +1476,7 @@
    * @return A string of length no more than the given maximum
    */
   function truncateString(string, maxLength) {
-    string = string.replace(/^https?:\/\/(?:www.)?/i, '');
+    string = string.replace(/^https?:\/\/(?:www\.)?/i, '');
 
     if (string.length < maxLength)
       return string;
