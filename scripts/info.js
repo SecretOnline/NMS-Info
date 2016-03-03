@@ -351,6 +351,7 @@
     });
     // Add "about" card to the top of the list
     cardArr.unshift(createInfoCard(aboutCard));
+    info[aboutCard.title] = aboutCard;
     var cardList = doc.querySelector('.info-list');
     distributeItems(cardArr, cardList);
   }
