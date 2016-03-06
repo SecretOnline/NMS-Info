@@ -1534,6 +1534,18 @@
     return 0;
   }
 
+  function createLoadPromise() {
+    if (!win.loadPromise) {
+      win.loadPromise = new Promise(function(resolve, reject) {
+        if (doc.readyState !== 'loading')
+          resolve();
+        else
+          win.addEventListener('DOMContentLoaded', resolve);
+      });
+    }
+    return win.loadPromise;
+  }
+
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
   // For the following scroll event throtling.
   // Yay for making things go slightly slower for performance!
@@ -1556,9 +1568,20 @@
     throttle("scroll", "optimizedScroll");
   })();
 
-  if (doc.readyState !== 'loading')
-    initInfo();
-  else
-    win.addEventListener('load', initInfo);
+
+  if (typeof Promise !== 'undefined') {
+    createLoadPromise();
+    win.loadPromise
+      .then(initInfo);
+  } else {
+    var s = doc.createElement('script');
+    s.src = 'scripts/Promise.min.js';
+    s.addEventListener('load', function() {
+      createLoadPromise();
+      win.loadPromise
+        .then(initInfo);
+    });
+    doc.head.appendChild(s);
+  }
 
 })(window, document);
