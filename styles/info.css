@@ -259,9 +259,9 @@ main {
 }
 .header .external {
   position: absolute;
-  width: 32px;
-  height: 32px;
-  margin: 14px;
+  width: 15px;
+  height: 15px;
+  margin: 5px;
   top: 0;
   right: 0;
 }
