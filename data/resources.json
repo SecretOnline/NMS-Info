@@ -1,73 +1,139 @@
 [
   {
-    "name": "Ioxinite",
-    "symbol": "Ix",
-    "description": "Ioxinite is a hard, heavy meatal that is red-silver in colour. Tough and durable, it is found in a wide range of technological assemblies that need to survive in harsh conditions",
-    "color": "#5CC0B0"
-  },
-  {
-    "name": "Raegon-214",
-    "symbol": "Rg",
-    "description": "Standard high-yield fuel for small to medium spacefaring ion engines, Raegon sublimates violently with little provocation and should be handled with caution",
-    "color": "#856396"
-  },
-  {
-    "name": "Heridium",
-    "symbol": "Hr",
-    "description": "",
-    "color": "#1C91E8"
-  },
-  {
-    "name": "",
-    "symbol": "Cb",
-    "description": "",
-    "color": "#C60F10"
-  },
-  {
-    "name": "",
-    "symbol": "Vy",
-    "description": "",
-    "color": "#B86D67"
-  },
-  {
-    "name": "Oxycen",
+    "name": "Work In Progress",
     "symbol": "",
+    "description": "As some of you may know, Hello Games originally planned to use a fictional periodic table in No Man's Sky. With the new articles on 3/3 we found out that they had reversed this decision and were using the periodic table that we have in real life. I have the beginnings of that list here, but am considering a rewrite of how the elements page works. Thanks for sticking around as this place is still being worked on",
+    "color": ""
+  },
+  {
+    "name": "Hydrogen",
+    "symbol": "H",
     "description": "",
     "color": ""
   },
   {
-    "name": "Hyglese",
-    "symbol": "",
+    "name": "Helium",
+    "symbol": "He",
     "description": "",
     "color": ""
   },
   {
-    "name": "",
-    "symbol": "Fr",
+    "name": "Lithium",
+    "symbol": "Li",
     "description": "",
     "color": ""
   },
   {
-    "name": "",
-    "symbol": "Tv",
+    "name": "Berylium",
+    "symbol": "Be",
     "description": "",
     "color": ""
   },
   {
-    "name": "",
-    "symbol": "Ac",
+    "name": "Boron",
+    "symbol": "B",
     "description": "",
     "color": ""
   },
   {
-    "name": "",
-    "symbol": "Ko",
+    "name": "Carbon",
+    "symbol": "C",
     "description": "",
     "color": ""
   },
   {
-    "name": "",
-    "symbol": "Ag",
+    "name": "Nitrogen",
+    "symbol": "N",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Oxygen",
+    "symbol": "O",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Fluorine",
+    "symbol": "F",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Neon",
+    "symbol": "Ne",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Sodium",
+    "symbol": "Na",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Magnesium",
+    "symbol": "Mg",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Aluminium",
+    "symbol": "Al",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Silicon",
+    "symbol": "Si",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Phosphorus",
+    "symbol": "P",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Sulfur",
+    "symbol": "S",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Chlorine",
+    "symbol": "Cl",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Argon",
+    "symbol": "Ar",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Potassium",
+    "symbol": "K",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Calcium",
+    "symbol": "Ca",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Scandium",
+    "symbol": "Sc",
+    "description": "",
+    "color": ""
+  },
+  {
+    "name": "Titanium",
+    "symbol": "Ti",
     "description": "",
     "color": ""
   }

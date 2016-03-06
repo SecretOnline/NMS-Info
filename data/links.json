@@ -72,6 +72,35 @@
     ]
   },
   {
+    "title": "March 2016 Information Release",
+    "items": [
+      {
+        "title": "Reddit AMA with Benjamin Kratsch",
+        "color": "#FF4501",
+        "src": "https://en.reddit.com/r/NoMansSkyTheGame/comments/48t4hp/ama_with_benjamin_kratsch_thedudelino/",
+        "method": "link"
+      },
+      {
+        "title": "IGN - Hands On",
+        "color": "#B40013",
+        "src": "http://www.ign.com/articles/2016/03/03/no-mans-sky-ps4-hands-on-the-real-game-begins-to-reveal-itself",
+        "method": "link"
+      },
+      {
+        "title": "Eurogamer - Strange, slow and spectacular",
+        "color": "#AD771B",
+        "src": "http://www.eurogamer.net/articles/2016-03-03-no-mans-sky-questions-answered",
+        "method": "link"
+      },
+      {
+        "title": "PS Blog",
+        "color": "#055298",
+        "src": "http://blog.us.playstation.com/2016/03/03/no-mans-sky-a-universe-filled-with-lore-and-language/",
+        "method": "link"
+      }
+    ]
+  },
+  {
     "title": "IGN First (July 2015)",
     "items": [
       {

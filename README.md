@@ -27,6 +27,13 @@ The [info dump](http://secretonline.github.io/NMS-Info/infodump.html) can be use
 
 Changes to the information cards can be documented in `data/recent.json`. More on the format below.
 
+### Contributors
+
+Thanks to these people in addition to those who have committed straight to GitHub.
+
+[/u/Ockvil](https://reddit.com/u/Ockvil)
+
+
 ## Data formats
 
 You don't really need to worry about this, but it's here for documentation purposes. Arrays can hold no elements unless otherwise stated. If an array holds elements of different types, then either is acceptable.
