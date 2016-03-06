@@ -351,6 +351,7 @@
     });
     // Add "about" card to the top of the list
     cardArr.unshift(createInfoCard(aboutCard));
+    info[aboutCard.title] = aboutCard;
     var cardList = doc.querySelector('.info-list');
     distributeItems(cardArr, cardList);
   }
@@ -755,7 +756,7 @@
 
     // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
-      if (data.method === 'embed') {
+      if (data.method === 'embed' || data.method === 'yt') {
         if (card.classList.contains('expanded')) {
           ga('send', 'event', 'Link Card', 'close', data.title);
 
@@ -1031,15 +1032,24 @@
 
     var container = doc.createElement('div');
     var link = doc.createElement('a');
-    link.href = data.src;
+    var t;
+
+    if (data.method === 'embed') {
+      link.href = data.src;
+      t = 'Open in new window / tab';
+    } else if (data.method === 'yt') {
+      link.href = 'https://www.youtube.com/watch?v=' + data.src;
+      t = 'Open in YouTube';
+    }
+
     link.target = '_blank';
     var icon = doc.createElement('img');
     icon.src = 'res/external-dark.svg';
-    icon.alt = 'Open in new window / tab';
+    icon.alt = t;
     icon.classList.add('external');
     link.appendChild(icon);
     var text = doc.createElement('span');
-    text.textContent = 'Open in new window / tab';
+    text.textContent = t;
     link.appendChild(text);
     container.appendChild(link);
     content.appendChild(container);
@@ -1049,7 +1059,13 @@
     });
 
     var frame = doc.createElement('iframe');
-    frame.src = data.src;
+
+    if (data.method === 'embed') {
+      frame.src = data.src;
+    } else if (data.method === 'yt') {
+      frame.src = 'https://www.youtube.com/embed/' + data.src;
+    }
+
     frame.allowfullscreen = true;
     content.appendChild(frame);
   }
