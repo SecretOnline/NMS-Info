@@ -10,57 +10,14 @@
       "https://github.com/SecretOnline/NMS-Info/wiki/Highlighting"
     ]
   },
-  "Factions",
+  "I Need Help",
+  "Languages",
+  "Blueprints",
+  "Temperature",
   {
-    "title": "Procedural Generation",
-    "edited": [
-      3
-    ]
-  },
-  {
-    "title": "Number of Planets",
-    "edited": [
-      2
-    ]
-  },
-  {
-    "title": "Release Date",
-    "additions": [
-      1
-    ]
-  },
-  {
-    "title": "Planet Resources",
-    "edited": [
-      0
-    ]
-  },
-  {
-    "title": "Planet Features",
-    "additions": [
-      1
-    ]
-  },
-  {
-    "title": "Dangers",
-    "removals": [
-      4
-    ]
-  },
-  "Virtual Reality",
-  {
-    "title": "The Atlas",
+    "title": "Factions",
     "additions": [
       5
-    ],
-    "removals": [
-      3
-    ]
-  },
-  {
-    "title": "Discovering",
-    "additions": [
-      6
     ]
   }
 ]
