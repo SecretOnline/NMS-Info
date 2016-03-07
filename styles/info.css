@@ -81,6 +81,7 @@ nav ul {
   padding: 0;
   margin: 0;
   overflow-y: hidden;
+  will-change: max-height;
 }
 nav.open ul {
   max-height: 100vh;
@@ -113,7 +114,9 @@ main {
   display: flex;
   position: relative;
   right: 0;
-  transition: right 0.5s;
+  transition: transform 0.5s;
+  will-change: transform;
+  transform: translateZ(0);
 }
 .page-container > div {
   margin: 0 calc((100vw - 100%) / 4);
@@ -139,22 +142,22 @@ main {
   order: 4;
 }
 .page-container.search {
-  right: calc(((100vw - 100%) / 4));
+  transform: translateX(calc(-1 *((100vw - 100%) / 4)));
 }
 .page-container {
-  right: calc(((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))));
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))))));
 }
 .page-container.cat {
-  right: calc(((100vw - 100%) / 4) + (2 * (100% + ((100vw - 100%) / 2))));
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (2 * (100% + ((100vw - 100%) / 2))))));
 }
 .page-container.elements {
-  right: calc(((100vw - 100%) / 4) + (3 * (100% + ((100vw - 100%) / 2))));
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (3 * (100% + ((100vw - 100%) / 2))))));
 }
 .page-container.links {
-  right: calc(((100vw - 100%) / 4) + (4 * (100% + ((100vw - 100%) / 2))));
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (4 * (100% + ((100vw - 100%) / 2))))));
 }
 .page-container.recent {
-  right: calc(((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))));
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))))));
 }
 .info-list .info-card,
 .cat-list .category-card,
