@@ -110,44 +110,51 @@ main {
   margin: 0 auto;
 }
 .page-container {
+  display: flex;
   position: relative;
   right: 0;
   transition: right 0.5s;
 }
-.page-container.cat {
-  right: calc(100vw - (50vw - (100% / 2)));
-}
-.page-container.search {
-  right: calc((100vw - (50vw - (100% / 2))) * -1);
-}
-.page-container.elements {
-  right: calc((100vw - (50vw - (100% / 2))) * 2);
-}
-.page-container.links {
-  right: calc((100vw - (50vw - (100% / 2))) * 3);
-}
-.page-container.recent {
-  right: calc((100vw - (50vw - (100% / 2))) * 4);
-}
 .page-container > div {
-  margin: 0 5px;
-  position: absolute;
-  width: calc(100% - 10px);
-}
-.page-cat {
-  left: calc(100vw - (50vw - (100% / 2)));
+  margin: 0 calc((100vw - 100%) / 4);
+  /*position: absolute;*/
+  min-width: 100%;
 }
 .page-search {
-  left: calc((100vw - (50vw - (100% / 2))) * -1);
+  order: -1;
+}
+.page-info {
+  order: 0;
+}
+.page-cat {
+  order: 1;
 }
 .page-elements {
-  left: calc((100vw - (50vw - (100% / 2))) * 2);
+  order: 2;
 }
 .page-links {
-  left: calc((100vw - (50vw - (100% / 2))) * 3);
+  order: 3;
 }
 .page-recent {
-  left: calc((100vw - (50vw - (100% / 2))) * 4);
+  order: 4;
+}
+.page-container.search {
+  right: calc(((100vw - 100%) / 4));
+}
+.page-container {
+  right: calc(((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))));
+}
+.page-container.cat {
+  right: calc(((100vw - 100%) / 4) + (2 * (100% + ((100vw - 100%) / 2))));
+}
+.page-container.elements {
+  right: calc(((100vw - 100%) / 4) + (3 * (100% + ((100vw - 100%) / 2))));
+}
+.page-container.links {
+  right: calc(((100vw - 100%) / 4) + (4 * (100% + ((100vw - 100%) / 2))));
+}
+.page-container.recent {
+  right: calc(((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))));
 }
 .info-list .info-card,
 .cat-list .category-card,
@@ -259,9 +266,9 @@ main {
 }
 .header .external {
   position: absolute;
-  width: 32px;
-  height: 32px;
-  margin: 14px;
+  width: 15px;
+  height: 15px;
+  margin: 5px;
   top: 0;
   right: 0;
 }
@@ -276,7 +283,7 @@ main {
 }
 .card-content {
   max-height: 0;
-  overflow-y: hidden;
+  overflow: hidden;
   transition: max-height 0.5s, padding 0.5s;
 }
 .expanded .card-content {

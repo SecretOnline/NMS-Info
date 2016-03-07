@@ -756,7 +756,7 @@
 
     // Open / close the card when the header is clicked
     header.addEventListener('click', function() {
-      if (data.method === 'embed') {
+      if (data.method === 'embed' || data.method === 'yt') {
         if (card.classList.contains('expanded')) {
           ga('send', 'event', 'Link Card', 'close', data.title);
 
@@ -1032,15 +1032,24 @@
 
     var container = doc.createElement('div');
     var link = doc.createElement('a');
-    link.href = data.src;
+    var t;
+
+    if (data.method === 'embed') {
+      link.href = data.src;
+      t = 'Open in new window / tab';
+    } else if (data.method === 'yt') {
+      link.href = 'https://www.youtube.com/watch?v=' + data.src;
+      t = 'Open in YouTube';
+    }
+
     link.target = '_blank';
     var icon = doc.createElement('img');
     icon.src = 'res/external-dark.svg';
-    icon.alt = 'Open in new window / tab';
+    icon.alt = t;
     icon.classList.add('external');
     link.appendChild(icon);
     var text = doc.createElement('span');
-    text.textContent = 'Open in new window / tab';
+    text.textContent = t;
     link.appendChild(text);
     container.appendChild(link);
     content.appendChild(container);
@@ -1050,7 +1059,13 @@
     });
 
     var frame = doc.createElement('iframe');
-    frame.src = data.src;
+
+    if (data.method === 'embed') {
+      frame.src = data.src;
+    } else if (data.method === 'yt') {
+      frame.src = 'https://www.youtube.com/embed/' + data.src;
+    }
+
     frame.allowfullscreen = true;
     content.appendChild(frame);
   }
@@ -1519,6 +1534,18 @@
     return 0;
   }
 
+  function createLoadPromise() {
+    if (!win.loadPromise) {
+      win.loadPromise = new Promise(function(resolve, reject) {
+        if (doc.readyState !== 'loading')
+          resolve();
+        else
+          win.addEventListener('DOMContentLoaded', resolve);
+      });
+    }
+    return win.loadPromise;
+  }
+
   // Thanks to https://developer.mozilla.org/en-US/docs/Web/Events/scroll
   // For the following scroll event throtling.
   // Yay for making things go slightly slower for performance!
@@ -1541,9 +1568,20 @@
     throttle("scroll", "optimizedScroll");
   })();
 
-  if (doc.readyState !== 'loading')
-    initInfo();
-  else
-    win.addEventListener('load', initInfo);
+
+  if (typeof Promise !== 'undefined') {
+    createLoadPromise();
+    win.loadPromise
+      .then(initInfo);
+  } else {
+    var s = doc.createElement('script');
+    s.src = 'scripts/Promise.min.js';
+    s.addEventListener('load', function() {
+      createLoadPromise();
+      win.loadPromise
+        .then(initInfo);
+    });
+    doc.head.appendChild(s);
+  }
 
 })(window, document);

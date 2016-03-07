@@ -35,39 +35,39 @@
       {
         "title":"Announcement Trailer",
         "color":"#D0302C",
-        "src":"https://www.youtube.com/embed/RRpDn5qPp3s",
-        "method": "embed"
+        "src":"RRpDn5qPp3s",
+        "method": "yt"
       },
       {
         "title":"Infinite Worlds Gameplay",
         "color":"#C4314F",
-        "src":"https://www.youtube.com/embed/0APP5WcX8v8",
-        "method": "embed"
+        "src":"0APP5WcX8v8",
+        "method": "yt"
       },
       {
         "title":"E3 2014 Gameplay",
         "color":"#FA602D",
-        "src":"https://www.youtube.com/embed/MZO40WBNA60",
-        "method": "embed"
+        "src":"MZO40WBNA60",
+        "method": "yt"
       },
       {
         "title":"Portal Gameplay",
         "color":"#07147A",
-        "src":"https://www.youtube.com/embed/WQhSP82uhY4",
-        "method": "embed"
+        "src":"WQhSP82uhY4",
+        "method": "yt"
       },
       {
         "title":"Galaxy Gameplay",
         "color":"#B9FCDC",
-        "src":"https://www.youtube.com/embed/xpcoO7bTV48",
-        "method": "embed",
+        "src":"xpcoO7bTV48",
+        "method": "yt",
         "darkText": true
       },
       {
         "title":"\"I've Seen Things\"",
         "color":"#E6001A",
-        "src":"https://www.youtube.com/embed/-UVQ14JrfRI",
-        "method": "embed"
+        "src":"-UVQ14JrfRI",
+        "method": "yt"
       }
     ]
   },
@@ -106,14 +106,14 @@
       {
         "title":"18 Minutes of Gameplay",
         "color":"#59475C",
-        "src":"https://www.youtube.com/embed/CLcjvIQJns0",
-        "method": "embed"
+        "src":"CLcjvIQJns0",
+        "method": "yt"
       },
       {
         "title":"How the Economy Works",
         "color":"#56631F",
-        "src":"https://www.youtube.com/embed/BXUrOFVItgs",
-        "method": "embed"
+        "src":"BXUrOFVItgs",
+        "method": "yt"
       },
       {
         "title":"How to Leave Your Mark",
@@ -130,39 +130,39 @@
       {
         "title":"Sci-Fi Inspirations",
         "color":"#7E713F",
-        "src":"https://www.youtube.com/embed/UgFNPg9qUXI",
-        "method": "embed"
+        "src":"UgFNPg9qUXI",
+        "method": "yt"
       },
       {
         "title":"A Tour of 5 New Planets",
         "color":"#3A9169",
-        "src":"https://www.youtube.com/embed/ytPJWfrsU0g",
-        "method": "embed"
+        "src":"ytPJWfrsU0g",
+        "method": "yt"
       },
       {
         "title":"6 Minutes of Exploration Gameplay",
         "color":"#61D9BF",
-        "src":"https://www.youtube.com/embed/qfpMRoZwzpk",
-        "method": "embed",
+        "src":"qfpMRoZwzpk",
+        "method": "yt",
         "darkText": true
       },
       {
         "title":"How the Universe Actually Works",
         "color":"#7D4123",
-        "src":"https://www.youtube.com/embed/ueBCC1PCf84",
-        "method": "embed"
+        "src":"ueBCC1PCf84",
+        "method": "yt"
       },
       {
         "title":"The Otherworldly Sounds",
         "color":"#15792F",
-        "src":"https://www.youtube.com/embed/KUyQFRuXpfE",
-        "method": "embed"
+        "src":"KUyQFRuXpfE",
+        "method": "yt"
       },
       {
         "title":"Making the Soundtrack",
         "color":"#584350",
-        "src":"https://www.youtube.com/embed/ERwVR5DjlYo",
-        "method": "embed"
+        "src":"ERwVR5DjlYo",
+        "method": "yt"
       },
       {
         "title":"Sean Murray's Q/A",
@@ -185,8 +185,8 @@
       {
         "title": "Behind the Scenes of NMS",
         "color": "#DF4337",
-        "src": "https://www.youtube.com/embed/h-kifCYToAU",
-        "method": "embed"
+        "src": "h-kifCYToAU",
+        "method": "yt"
       },
       {
         "title":"Galactic Map Scale",
@@ -204,8 +204,8 @@
       {
         "title": "70 Questions and Answers",
         "color": "#235000",
-        "src": "https://www.youtube.com/embed/n0uYnwqlslU",
-        "method": "embed"
+        "src": "n0uYnwqlslU",
+        "method": "yt"
       },
       {
         "title":"The Path to the End Game",
@@ -216,8 +216,8 @@
       {
         "title": "Managing the Hype",
         "color": "#BB6022",
-        "src": "https://www.youtube.com/embed/R4zKTNLz0kQ",
-        "method": "embed"
+        "src": "R4zKTNLz0kQ",
+        "method": "yt"
       },
       {
         "title":"The Secret Story Behind NMS",
@@ -229,8 +229,8 @@
       {
         "title": "Creating the Infinite Soundtrack",
         "color": "#915472",
-        "src": "https://www.youtube.com/embed/dgRJbFQGyIE",
-        "method": "embed"
+        "src": "dgRJbFQGyIE",
+        "method": "yt"
       },
       {
         "title":"The Creatures of No Man's Sky",
@@ -259,20 +259,20 @@
       {
         "title": "PSX 2015 w/ Shuhei Yoshida",
         "color": "#650D29",
-        "src": "https://www.youtube.com/embed/-sb-clg3Tlw",
-        "method": "embed"
+        "src": "-sb-clg3Tlw",
+        "method": "yt"
       },
       {
         "title": "Late Show with Colbert",
         "color": "#8A3A24",
-        "src": "https://www.youtube.com/embed/ZqeN6hj4dZU",
-        "method": "embed"
+        "src": "ZqeN6hj4dZU",
+        "method": "yt"
       },
       {
         "title": "IGN - Story, Gameplay, Multiplayer",
         "color": "#586A6D",
-        "src": "https://www.youtube.com/embed/tYoGN2zgXQU",
-        "method": "embed"
+        "src": "tYoGN2zgXQU",
+        "method": "yt"
       },
       {
         "title":"Edge - Maths Effect",
@@ -283,8 +283,8 @@
       {
         "title": "VGX 2013 - Interview with Sean",
         "color": "#B22A19",
-        "src": "https://www.youtube.com/embed/YRFcO2XgqDw",
-        "method": "embed"
+        "src": "YRFcO2XgqDw",
+        "method": "yt"
       },
       {
         "title":"Game Informer Jan 2015 Article",
@@ -301,14 +301,14 @@
       {
         "title":"Grant Duncan at GDC 2015",
         "color":"#485568",
-        "src":"https://www.youtube.com/embed/vcEA41eBOGs",
-        "method": "embed"
+        "src":"vcEA41eBOGs",
+        "method": "yt"
       },
       {
         "title":"Hazel McKendrick at PROCJAM 2014",
         "color":"#A0277F",
-        "src":"https://www.youtube.com/embed/xJRXNesI9f4",
-        "method": "embed"
+        "src":"xJRXNesI9f4",
+        "method": "yt"
       }
     ]
   },
