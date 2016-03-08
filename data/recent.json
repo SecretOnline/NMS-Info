@@ -3,21 +3,38 @@
     "type": "manual",
     "title": "Misc. Changes",
     "text": [
-      "Added highlighting. Click a piece of information to highlight it. See 'source' link for more info",
-      "Under-the-hood changes to page loading. Should be more streamlined and reduce code-spaghetti"
+      "Added new information!",
+      "Under-the-hood changes to page loading. Should be more streamlined and reduce code-spaghetti",
+      "Slight smoother page switching. TODO: Make card opening/closing smoother too"
     ],
     "sources": [
       "https://github.com/SecretOnline/NMS-Info/wiki/Highlighting"
     ]
   },
-  "I Need Help",
   "Languages",
   "Blueprints",
   "Temperature",
+  "Hyperdrive",
+  "Resource Gathering",
   {
     "title": "Factions",
     "additions": [
       5
+    ]
+  },
+  {
+    "title": "Plants / Flora",
+    "additions": [
+      4
+    ]
+  },
+  {
+    "title": "Flying",
+    "additions": [
+      6
+    ],
+    "edited": [
+      0
     ]
   }
 ]

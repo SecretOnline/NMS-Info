@@ -8,22 +8,17 @@
   var sortMethod = 'alphabet'; // One of 'random', 'alphabet', 'category'
 
   var aboutCard = {
-    title: 'I Need Help',
+    title: 'About This Repository',
     text: [
-      'Hi repository users, secret_online here',
-      'First, thanks for using this. A lot of hard work has gone into it, so it\'s nice to see the results',
-      'I need your help. As you may know, a lot of new articles just came out. I need to get all this information onto this repository for all to share',
-      'This is no small task, as I\'m writing this, I have aroud 20 different articles up and am trying to sift through them',
-      'What I ask from you is to do the same. Maybe not to the same degree, but open an article or two, open the second source link below (it\'s a generator), and fill in the boxes',
-      'When done, please click the \'generate\' button and send me the result. I have added two source links (#4 and #5) through which you can contact me via reddit or email',
-      'Thanks for helping me keep this place up-to-date. My hope is that it will always be relevant even after the game has been released'
+      'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
+      'It is an open source project, and source code can be found on GitHub',
+      'It was created by secret_online, but a full list of contributors can be found on GitHub',
+      'If something is missing, please send me a message using one of the links below, or fork this project and add it yourself',
+      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame or asking questions on the Steam Community forum. This prevents the need for a lot of useless posts'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'https://secretonline.github.io/NMS-Info/generator.html',
-      'https://secretonline.co',
-      'https://www.reddit.com/message/compose/?to=secret_online',
-      'mailto://me+repo@secretonline.co'
+      'https://secretonline.co'
     ],
     categories: []
   };
