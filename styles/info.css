@@ -65,8 +65,25 @@ header button img {
   height: 30px;
   margin: 20px;
 }
+footer {
+  font-size: 0.7em;
+  position: relative;
+  bottom: 0;
+  width: 100vw;
+  text-align: center;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
+  background-color: #01385b;
+  color: #fff;
+}
+footer a {
+  color: #fff !important;
+  text-decoration: underline;
+}
+footer a:hover {
+  text-decoration: none;
+}
 nav {
-  position: absolute;
   top: 70px;
   width: 100vw;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .3);
@@ -98,13 +115,9 @@ nav li span {
   padding: 10px 7px;
   color: #fff !important;
 }
-nav .github {
-  height: 1.5em;
-  width: 1.5em;
-}
 main {
   position: relative;
-  height: calc(100vh - 70px);
+  padding: 5px;
 }
 .main {
   max-width: 53em;
@@ -486,9 +499,8 @@ main {
     width: 30px;
     height: 30px;
   }
-  main {
+  .floating main {
     top: 56px;
-    height: calc(100vh - 126px);
   }
   .card-column {
     display: inline-block;
