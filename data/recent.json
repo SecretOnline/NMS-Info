@@ -3,12 +3,15 @@
     "type": "manual",
     "title": "Misc. Changes",
     "text": [
+      "Now moved to new site! If you're on the github.io URL, click the first source link below",
+      "If you want to know why it's moved, check out the second source link",
       "Added new information!",
       "Under-the-hood changes to page loading. Should be more streamlined and reduce code-spaghetti",
       "Slight smoother page switching. TODO: Make card opening/closing smoother too"
     ],
     "sources": [
-      "https://github.com/SecretOnline/NMS-Info/wiki/Highlighting"
+      "https://repo.nmsdb.info",
+      "https://en.reddit.com/r/NoMansSkyTheGame/comments/4a6du3/the_no_mans_sky_information_repository_has_a_new/d0xq4wl"
     ]
   },
   "Languages",
@@ -43,6 +46,22 @@
     "title": "Blueprints",
     "edited": [
       1
+    ]
+  },
+  {
+    "title": "Utilities / Gadgets",
+    "additions": [
+      5
+    ]
+  },
+  {
+    "title": "Ship Types",
+    "additions": [
+      7
+    ],
+    "edited": [
+      0,
+      2
     ]
   }
 ]

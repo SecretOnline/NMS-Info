@@ -35,7 +35,8 @@ Thanks to these people in addition to those who have committed straight to GitHu
 [/u/teaminus](https://reddit.com/u/teaminus)
 [/u/Akatsukaii](https://reddit.com/u/Akatsukaii)
 [/u/benstor214](https://reddit.com/u/benstor214)
-
+[/u/Perfecteuphoria2](https://reddit.com/u/Perfecteuphoria2)
+[/u/OprahOfOverheals](https://reddit.com/u/OprahOfOverheals)
 
 ## Data formats
 
