@@ -6,68 +6,33 @@
     <script src="scripts/generator.js"></script>
     <link rel="stylesheet" href="styles/info.css">
     <link rel="stylesheet" href="styles/generator.css">
+    <link rel="stylesheet" href="https://static.nmsdb.info/fonts/geonms.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans' type='text/css'>
   </head>
   <body>
-    <datalist id="categories">
-      <option value="No Man's Sky Universe">
-      <option value="Star Systems">
-      <option value="Planets">
-      <option value="Other Bodies">
-      <option value="Game Mechanics">
-      <option value="The Atlas">
-      <option value="Meta">
-      <option value="Crafting">
-      <option value="News">
-      <option value="Economy">
-      <option value="Life">
-      <option value="Miscellaneous">
-    </datalist>
-    <div class="column"><p>
-      This is a page to help with formatting the json <br>
-      It's here purely for convenience
-      </p>
+    <datalist id="categories"></datalist>
+    <div class="column">
+      <p>This is a page to help with formatting the json <br>
+      It's here purely for convenience</p>
       <input type="text" name="" placeholder="title" class="title">
-      <p>
-        text
-      </p>
-      <div class="inputContainer text">
-
-      </div>
-      <p>
-        sources
-      </p>
-      <div class="inputContainer sources">
-
-      </div>
-      <p>
-        categories
-      </p>
-      <div class="inputContainer categories">
-
-      </div>
-      <p>
-        related - use title of card
-      </p>
-      <div class="inputContainer related">
-
-      </div>
-      <p>
-        keywords
-      </p>
-      <div class="inputContainer keywords">
-
-      </div>
-      <p>
-        <input type="checkbox" class="spoiler"> spoiler
-      </p>
+      <p>text</p>
+      <div class="inputContainer text"></div>
+      <p>sources</p>
+      <div class="inputContainer sources"></div>
+      <p>categories</p>
+      <div class="inputContainer categories"></div>
+      <p>related - use title of card</p>
+      <div class="inputContainer related"></div>
+      <p>keywords</p>
+      <div class="inputContainer keywords"></div>
+      <p><input type="checkbox" class="spoiler"> spoiler</p>
       <button type="button" name="generate" class="generate">generate</button>
       <button type="button" name="parse" class="parse">parse</button>
-      <p>
-        output:
-      </p>
       </div>
     <div class="column">
+      <p>output:</p>
       <textarea name="name" rows="8" cols="40" class="output"></textarea>
+      <div class="preview-container"></div>
     </div>
   </body>
 </html>
