@@ -5,6 +5,7 @@
     <title>Generator</title>
     <script src="scripts/generator.js"></script>
     <link rel="stylesheet" href="styles/info.css">
+    <link rel="stylesheet" href="styles/generator.css">
   </head>
   <body>
     <datalist id="categories">
@@ -21,49 +22,52 @@
       <option value="Life">
       <option value="Miscellaneous">
     </datalist>
-    <p>
+    <div class="column"><p>
       This is a page to help with formatting the json <br>
       It's here purely for convenience
-    </p>
-    <input type="text" name="" placeholder="title" class="title">
-    <p>
-      text
-    </p>
-    <div class="inputContainer text">
+      </p>
+      <input type="text" name="" placeholder="title" class="title">
+      <p>
+        text
+      </p>
+      <div class="inputContainer text">
 
-    </div>
-    <p>
-      sources
-    </p>
-    <div class="inputContainer sources">
+      </div>
+      <p>
+        sources
+      </p>
+      <div class="inputContainer sources">
 
-    </div>
-    <p>
-      categories
-    </p>
-    <div class="inputContainer categories">
+      </div>
+      <p>
+        categories
+      </p>
+      <div class="inputContainer categories">
 
-    </div>
-    <p>
-      related - use title of card
-    </p>
-    <div class="inputContainer related">
+      </div>
+      <p>
+        related - use title of card
+      </p>
+      <div class="inputContainer related">
 
-    </div>
-    <p>
-      keywords
-    </p>
-    <div class="inputContainer keywords">
+      </div>
+      <p>
+        keywords
+      </p>
+      <div class="inputContainer keywords">
 
+      </div>
+      <p>
+        <input type="checkbox" class="spoiler"> spoiler
+      </p>
+      <button type="button" name="generate" class="generate">generate</button>
+      <button type="button" name="parse" class="parse">parse</button>
+      <p>
+        output:
+      </p>
+      </div>
+    <div class="column">
+      <textarea name="name" rows="8" cols="40" class="output"></textarea>
     </div>
-    <p>
-      <input type="checkbox" class="spoiler"> spoiler
-    </p>
-    <button type="button" name="generate" class="generate">generate</button>
-    <button type="button" name="parse" class="parse">parse</button>
-    <p>
-      output:
-    </p>
-    <textarea name="name" rows="8" cols="40" class="output"></textarea>
   </body>
 </html>

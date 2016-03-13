@@ -3,7 +3,7 @@
 
   function generateJson() {
     var obj = {};
-    i;
+    var i;
 
     obj.title = document.querySelector('.title').value;
 
@@ -48,6 +48,9 @@
     document.querySelector('.output').value = JSON.stringify(obj);
   }
 
+  /**
+   * Parses text in the output and puts it in the editing area
+   */
   function parseJson() {
     var arr = document.querySelectorAll('.inputContainer');
     for (var i = 0; i < arr.length; i++) {
@@ -91,7 +94,7 @@
   }
 
   function addInput(parent) {
-    var newEl = document.createElement('p');
+    var newEl = document.createElement('div');
     newEl.classList.add('input');
     newEl.innerHTML = '<input type="text"' + (parent.classList.contains('categories') ? ' list="categories" ' : '') + '>';
     addRemoveButton(newEl);

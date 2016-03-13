@@ -1,0 +1,17 @@
+body {
+  max-width: 72em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: space-around;
+}
+.column {
+  /*max-width: 20em;*/
+}
+div.input {
+  display: flex;
+}
+div.input input {
+  flex-grow: 1;
+}
