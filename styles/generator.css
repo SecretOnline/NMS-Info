@@ -19,8 +19,8 @@ div.input input {
   flex-grow: 1;
 }
 textarea {
-  max-width: 30em;
-  width: 30em;
+  width: calc(100% - 6px);
+  resize: vertical;
 }
 .help {
   font-size: 0.75em;
