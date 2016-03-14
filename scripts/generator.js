@@ -99,7 +99,14 @@
   function addInput(parent) {
     var newEl = document.createElement('div');
     newEl.classList.add('input');
-    newEl.innerHTML = '<input type="text"' + (parent.classList.contains('categories') ? ' list="categories" ' : '') + '>';
+    var input = document.createElement('input');
+    input.type = 'text';
+    if (parent.classList.contains('categories')) {
+      input.list = 'categories';
+    } else if (parent.classList.contains('related')) {
+      input.setAttribute('list', 'info');
+    }
+    newEl.appendChild(input);
     addRemoveButton(newEl);
     parent.appendChild(newEl);
     return newEl;
@@ -333,16 +340,24 @@
 
     get('data/categories.json')
       .then(JSON.parse)
-      .then(function(a) {
-        console.log(a);
-        return a;
-      })
       .then(function(cats) {
         var datalist = document.querySelector('#categories');
 
         cats.forEach(function(item) {
           categories[item.title] = item;
 
+          var opt = document.createElement('option');
+          opt.value = item.title;
+          datalist.appendChild(opt);
+        });
+      });
+
+    get('data/info.json')
+      .then(JSON.parse)
+      .then(function(info) {
+        var datalist = document.querySelector('#info');
+
+        info.forEach(function(item) {
           var opt = document.createElement('option');
           opt.value = item.title;
           datalist.appendChild(opt);

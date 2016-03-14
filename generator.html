@@ -11,28 +11,35 @@
   </head>
   <body>
     <datalist id="categories"></datalist>
-    <div class="column">
-      <p>This is a page to help with formatting the json <br>
-      It's here purely for convenience</p>
-      <input type="text" name="" placeholder="title" class="title">
-      <p>text</p>
-      <div class="inputContainer text"></div>
-      <p>sources</p>
-      <div class="inputContainer sources"></div>
-      <p>categories</p>
-      <div class="inputContainer categories"></div>
-      <p>related - use title of card</p>
-      <div class="inputContainer related"></div>
-      <p>keywords</p>
-      <div class="inputContainer keywords"></div>
-      <p><input type="checkbox" class="spoiler"> spoiler</p>
-      <button type="button" name="generate" class="generate">generate</button>
-      <button type="button" name="parse" class="parse">parse</button>
+    <datalist id="info"></datalist>
+    <header>
+      <h1 class="title">NMSDB Info Repo JSON Generator</h1>
+    </header>
+    <main>
+      <div class="column">
+        <p>This is a page to help with formatting the json <br>
+        It's here purely for convenience</p>
+        <input type="text" name="" placeholder="title" class="title">
+        <p>text</p>
+        <div class="inputContainer text"></div>
+        <p>sources</p>
+        <div class="inputContainer sources"></div>
+        <p>categories</p>
+        <div class="inputContainer categories"></div>
+        <p>related - use title of card</p>
+        <div class="inputContainer related"></div>
+        <p>keywords</p>
+        <div class="inputContainer keywords"></div>
+        <p><input type="checkbox" class="spoiler"> spoiler</p>
+        </div>
+      <div class="column">
+        <button type="button" name="generate" class="generate">generate</button>
+        <button type="button" name="parse" class="parse">parse</button>
+        <p>output:</p>
+        <textarea name="name" rows="8" cols="40" class="output"></textarea>
+        <div class="preview-container"></div>
       </div>
-    <div class="column">
-      <p>output:</p>
-      <textarea name="name" rows="8" cols="40" class="output"></textarea>
-      <div class="preview-container"></div>
-    </div>
+    </main>
+
   </body>
 </html>
