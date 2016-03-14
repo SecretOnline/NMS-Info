@@ -102,7 +102,7 @@
     var input = document.createElement('input');
     input.type = 'text';
     if (parent.classList.contains('categories')) {
-      input.list = 'categories';
+      input.setAttribute('list', 'categories');
     } else if (parent.classList.contains('related')) {
       input.setAttribute('list', 'info');
     }
