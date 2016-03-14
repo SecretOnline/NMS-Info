@@ -1,4 +1,7 @@
 body {
+  margin: 0;
+}
+main {
   max-width: 72em;
   display: flex;
   flex-direction: row;
@@ -7,11 +10,15 @@ body {
   justify-content: space-around;
 }
 .column {
-  /*max-width: 20em;*/
+  max-width: 30em;
 }
 div.input {
   display: flex;
 }
 div.input input {
   flex-grow: 1;
+}
+textarea {
+  max-width: 30em;
+  width: 30em;
 }
