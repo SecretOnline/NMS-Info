@@ -115,7 +115,7 @@
   function addAddButton(parent) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.innerHTML = 'add';
+    button.textContent = 'Add';
     button.classList.add('add');
     button.addEventListener('click', function() {
       addInput(this.parentNode);
@@ -127,7 +127,7 @@
   function addRemoveButton(parent) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.innerHTML = 'remove';
+    button.textContent = 'Remove';
     button.classList.add('remove');
     button.addEventListener('click', function() {
       this.parentNode.parentNode.removeChild(this.parentNode);
@@ -162,6 +162,10 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    header.addEventListener('click', function() {
+      card.classList.toggle('expanded');
+    });
+
     // Add empty content box
     var content = document.createElement('div');
     content.classList.add('card-content');
@@ -191,11 +195,6 @@
             catEl.textContent = categories[cat].title;
             catEl.dataset.id = cat;
             catEl.style.color = category.textColor;
-
-            catEl.addEventListener('click', function() {
-              // Perform a category search on the clicked category
-              categorySearch(catEl.dataset.id);
-            });
 
             catList.appendChild(catEl);
           } catch (err) {

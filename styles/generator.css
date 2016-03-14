@@ -37,3 +37,13 @@ textarea {
 .help:active .help-list {
   max-height: 50vh;
 }
+button {
+  background-color: #01385b;
+  color: #fff;
+  border: 0;
+  padding: 4px;
+}
+.input button,
+.input input {
+  margin: 2px;
+}
