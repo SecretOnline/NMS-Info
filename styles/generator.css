@@ -22,3 +22,18 @@ textarea {
   max-width: 30em;
   width: 30em;
 }
+.help {
+  font-size: 0.75em;
+}
+.help p {
+  margin: 0.25em 0;
+}
+.help .help-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+.help:hover .help-list,
+.help:active .help-list {
+  max-height: 50vh;
+}
