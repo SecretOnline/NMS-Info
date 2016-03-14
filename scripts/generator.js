@@ -7,7 +7,7 @@
     var obj = {};
     var i;
 
-    obj.title = document.querySelector('.title').value;
+    obj.title = document.querySelector('input.title').value;
 
     var arr = document.querySelectorAll('.text input');
     for (i = 0; i < arr.length; i++) {
@@ -64,7 +64,7 @@
     var obj = JSON.parse(document.querySelector('.output').value);
 
     if (obj.title) {
-      document.querySelector('.title').value = obj.title;
+      document.querySelector('input.title').value = obj.title;
     }
     if (obj.text) {
       obj.text.forEach(function(item) {
