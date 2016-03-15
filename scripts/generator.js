@@ -7,7 +7,7 @@
     var obj = {};
     var i;
 
-    obj.title = document.querySelector('.title').value;
+    obj.title = document.querySelector('input.title').value;
 
     var arr = document.querySelectorAll('.text input');
     for (i = 0; i < arr.length; i++) {
@@ -64,7 +64,7 @@
     var obj = JSON.parse(document.querySelector('.output').value);
 
     if (obj.title) {
-      document.querySelector('.title').value = obj.title;
+      document.querySelector('input.title').value = obj.title;
     }
     if (obj.text) {
       obj.text.forEach(function(item) {
@@ -99,7 +99,14 @@
   function addInput(parent) {
     var newEl = document.createElement('div');
     newEl.classList.add('input');
-    newEl.innerHTML = '<input type="text"' + (parent.classList.contains('categories') ? ' list="categories" ' : '') + '>';
+    var input = document.createElement('input');
+    input.type = 'text';
+    if (parent.classList.contains('categories')) {
+      input.setAttribute('list', 'categories');
+    } else if (parent.classList.contains('related')) {
+      input.setAttribute('list', 'info');
+    }
+    newEl.appendChild(input);
     addRemoveButton(newEl);
     parent.appendChild(newEl);
     return newEl;
@@ -108,7 +115,7 @@
   function addAddButton(parent) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.innerHTML = 'add';
+    button.textContent = 'Add';
     button.classList.add('add');
     button.addEventListener('click', function() {
       addInput(this.parentNode);
@@ -120,7 +127,7 @@
   function addRemoveButton(parent) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.innerHTML = 'remove';
+    button.textContent = 'Remove';
     button.classList.add('remove');
     button.addEventListener('click', function() {
       this.parentNode.parentNode.removeChild(this.parentNode);
@@ -155,6 +162,10 @@
     header.appendChild(headerTitle);
     card.appendChild(header);
 
+    header.addEventListener('click', function() {
+      card.classList.toggle('expanded');
+    });
+
     // Add empty content box
     var content = document.createElement('div');
     content.classList.add('card-content');
@@ -184,11 +195,6 @@
             catEl.textContent = categories[cat].title;
             catEl.dataset.id = cat;
             catEl.style.color = category.textColor;
-
-            catEl.addEventListener('click', function() {
-              // Perform a category search on the clicked category
-              categorySearch(catEl.dataset.id);
-            });
 
             catList.appendChild(catEl);
           } catch (err) {
@@ -333,16 +339,24 @@
 
     get('data/categories.json')
       .then(JSON.parse)
-      .then(function(a) {
-        console.log(a);
-        return a;
-      })
       .then(function(cats) {
         var datalist = document.querySelector('#categories');
 
         cats.forEach(function(item) {
           categories[item.title] = item;
 
+          var opt = document.createElement('option');
+          opt.value = item.title;
+          datalist.appendChild(opt);
+        });
+      });
+
+    get('data/info.json')
+      .then(JSON.parse)
+      .then(function(info) {
+        var datalist = document.querySelector('#info');
+
+        info.forEach(function(item) {
           var opt = document.createElement('option');
           opt.value = item.title;
           datalist.appendChild(opt);

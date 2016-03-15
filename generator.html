@@ -11,28 +11,102 @@
   </head>
   <body>
     <datalist id="categories"></datalist>
-    <div class="column">
-      <p>This is a page to help with formatting the json <br>
-      It's here purely for convenience</p>
-      <input type="text" name="" placeholder="title" class="title">
-      <p>text</p>
-      <div class="inputContainer text"></div>
-      <p>sources</p>
-      <div class="inputContainer sources"></div>
-      <p>categories</p>
-      <div class="inputContainer categories"></div>
-      <p>related - use title of card</p>
-      <div class="inputContainer related"></div>
-      <p>keywords</p>
-      <div class="inputContainer keywords"></div>
-      <p><input type="checkbox" class="spoiler"> spoiler</p>
-      <button type="button" name="generate" class="generate">generate</button>
-      <button type="button" name="parse" class="parse">parse</button>
+    <datalist id="info"></datalist>
+    <header>
+      <h1 class="title">NMSDB Info Repo JSON Generator</h1>
+    </header>
+    <main>
+      <div class="column">
+        <p>This page is intended for use by people wanting to contribute to the Information Repository. If you've managed to stumble upon it some other way, you're welcome to look around, but you're unlikely to find anything useful</p> <!-- Unless you check the source for easter eggs like this one -->
+        <fieldset>
+          <legend>Title</legend>
+          <input type="text" class="title">
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>This appears at the top of a card, and is the only part visible when the card is collapsed</p>
+              <p>Don't make this too long. There are display issues with cards with long titles</p>
+              <p>If you want to reference a card that isn't in the repo yet, put the title of the card here (case sensitive)</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Text</legend>
+          <div class="inputContainer text"></div>
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>This is the text that is shown on a card when it is expanded</p>
+              <p>Each item should not be too long. If you're stating more than one point in a single entry, split it up</p>
+              <p>Do not put punctuation at the end. This keeps the style consistent with the rest of the repo</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Sources</legend>
+          <div class="inputContainer sources"></div>
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>This section adds sources to the bottom of a card</p>
+              <p>Each item should be a link, nothing else</p>
+              <p>Do not use URL shorteners</p>
+              <p>If possible, link to an original source. If such a source does not exist online (i.e. physical magazine), link to an Imgur album of a scan</p>
+              <p>For audio (podcasts, etc.), you can timestamp using <a href="https://hipolipolopigus.github.io/AudioTimestamp/">Hipo's Audio Timestamp Tool</a></p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Categories</legend>
+          <div class="inputContainer categories"></div>
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>These are the categories that cards can appear under</p>
+              <p>The first category detemines the colour of the card</p>
+              <p>Always use at least one category</p>
+              <p>There is a dropdown list of all the categories in the repo so far</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Related</legend>
+          <div class="inputContainer related"></div>
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>Related cards show up as a list at the bottom of a card</p>
+              <p>The dropdown list has all the cards currently in the repo</p>
+              <p>If you want to reference a card that isn't in the repo yet, put the title of the card here (case sensitive)</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Keywords</legend>
+          <div class="inputContainer keywords"></div>
+          <div class="help">
+            <p>Help</p>
+            <div class="help-list">
+              <p>Keywords are extra search terms that bump the card up the search result</p>
+              <p>Use single words, all lower case</p>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Misc.</legend>
+          <p><input type="checkbox" class="spoiler"> spoiler</p>
+        </fieldset>
       </div>
-    <div class="column">
-      <p>output:</p>
-      <textarea name="name" rows="8" cols="40" class="output"></textarea>
-      <div class="preview-container"></div>
-    </div>
+      <div class="column">
+        <p>Click the Generate button to create the JSON and see a preview of the final result. Note that widths change based on display size</p>
+        <p>The Parse button takes the JSON in the box below and puts it in the input area for editing. It will overwrite whatever is in there already</p>
+        <button type="button" name="generate" class="generate">Generate</button>
+        <button type="button" name="parse" class="parse">Parse</button>
+        <p>output:</p>
+        <textarea name="name" rows="8" cols="40" class="output"></textarea>
+        <div class="preview-container"></div>
+      </div>
+    </main>
+
   </body>
 </html>

@@ -117,7 +117,7 @@ nav li span {
 }
 main {
   position: relative;
-  padding: 5px;
+  padding: 5px 5px 0;
 }
 .main {
   max-width: 53em;
@@ -172,17 +172,24 @@ main {
 .page-container.recent {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))))));
 }
-.info-list .info-card,
-.cat-list .category-card,
-.elements-list .element-card,
-.link-list .link-card,
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.card-list .card,
 .search-area {
   margin-bottom: 10px;
 }
-.info-card,
-.category-card,
-.element-card,
-.link-card,
+.card {
+  display: inline-block;
+  border-radius: 2px;
+  background: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
 .search-area {
   display: inline-block;
   position: relative;
@@ -462,7 +469,7 @@ main {
     background-color: #01385b;
     z-index: 1;
   }
-  .floating + nav {
+  .floating ~ nav {
     position: fixed;
     top: 0;
   }
@@ -499,21 +506,19 @@ main {
     width: 30px;
     height: 30px;
   }
-  .floating main {
+  main {
+    /*.floating ~ main {*/
     top: 56px;
   }
-  .card-column {
-    display: inline-block;
-    width: calc(50% - 10px);
-    padding: 0 5px;
-    vertical-align: top;
+  .card {
+    max-width: calc((100% - 10px)/2);
   }
 }
 @media all and (min-width: 1300px) {
   .main {
     max-width: 72em;
   }
-  .card-column {
-    width: calc(33% - 10px);
+  .card {
+    max-width: calc((100% - 20px)/3);
   }
 }

@@ -330,52 +330,48 @@
    * Handles creation of info cards
    */
   function createInfo(data) {
+    var cardList = doc.querySelector('.info-list');
     // Create cards for each of the pieces of information
     data.forEach(function(item) {
       info[item.title] = item;
     });
 
+    cardList.appendChild(createInfoCard(aboutCard));
+
     var infoArr = sortItems();
 
-    var cardArr = [];
     infoArr.forEach(function(item) {
       var card = createInfoCard(item);
       if (!card)
         return;
-      cardArr.push(card);
+      cardList.appendChild(card);
     });
-    // Add "about" card to the top of the list
-    cardArr.unshift(createInfoCard(aboutCard));
-    info[aboutCard.title] = aboutCard;
-    var cardList = doc.querySelector('.info-list');
-    distributeItems(cardArr, cardList);
   }
 
   /**
    * Handles creation of category cards
    */
   function createCategories(data) {
+    var cardList = doc.querySelector('.cat-list');
     // Create category cards for each of the categories
     data.forEach(function(item) {
       categories[item.title] = item;
     });
 
     var catArr = sortCategories();
-    var cardArr = [];
     catArr.forEach(function(item) {
       var card = createCategoryCard(item);
       if (!card)
         return;
-      cardArr.push(card);
+      cardList.appendChild(card);
     });
-    var cardList = doc.querySelector('.cat-list');
-    distributeItems(cardArr, cardList);
   }
 
   /**
    * Handles creation of resource cards
    */
   function createResources(data) {
+    var cardList = doc.querySelector('.elements-list');
     var cardArr = [];
     // Create element cards
     data.forEach(function(item, index) {
@@ -403,8 +399,9 @@
       }
     });
 
-    var cardList = doc.querySelector('.elements-list');
-    distributeItems(cardArr, cardList);
+    cardArr.forEach(function(item) {
+      cardList.appendChild(item);
+    });
   }
 
   /**
@@ -422,14 +419,12 @@
       // Add link cards
       var cardList = doc.createElement('div');
 
-      var cardArr = [];
       category.items.forEach(function(item) {
         var card = createLinkCard(item);
         if (!card)
           return;
-        cardArr.push(card);
+        cardList.appendChild(card);
       });
-      distributeItems(cardArr, cardList);
 
       container.appendChild(cardList);
     });
@@ -439,7 +434,7 @@
    * Handles creation of recently changed cards
    */
   function createRecents(data) {
-    var cardArr = [];
+    var cardList = doc.querySelector('.recent-list');
     data.forEach(function(item) {
       var card;
       if (typeof item === 'string') {
@@ -477,10 +472,8 @@
       }
       if (!card)
         return;
-      cardArr.push(card);
+      cardList.appendChild(card);
     });
-    var cardList = doc.querySelector('.recent-list');
-    distributeItems(cardArr, cardList);
   }
 
   /**
@@ -491,6 +484,7 @@
   function createInfoCard(data) {
     // Create card element
     var card = doc.createElement('div');
+    card.classList.add('card');
     card.classList.add('info-card');
     // Store data values
     card.dataset.title = data.title;
@@ -602,6 +596,7 @@
   function createCategoryCard(data) {
     // Create card element
     var card = doc.createElement('div');
+    card.classList.add('card');
     card.classList.add('category-card');
     // Store data values
     card.dataset.title = data.title;
@@ -637,6 +632,7 @@
   function createResourceCard(data) {
     // Create card element
     var card = doc.createElement('div');
+    card.classList.add('card');
     card.classList.add('element-card');
     // Store data values
     card.dataset.name = data.name;
@@ -715,6 +711,7 @@
   function createLinkCard(data) {
     // Create card element
     var card = doc.createElement('div');
+    card.classList.add('card');
     card.classList.add('link-card');
 
     if (data.darkText) {
@@ -1101,17 +1098,15 @@
 
     var infoArr = sortItems();
 
-    var cardArr = [];
+    var cardList = doc.querySelector('.info-list');
+    cardList.appendChild(createInfoCard(aboutCard));
+
     infoArr.forEach(function(item) {
       var card = createInfoCard(item);
       if (!card)
         return;
-      cardArr.push(card);
+      cardList.appendChild(card);
     });
-    // Add "about" card to the top of the list
-    cardArr.unshift(createInfoCard(aboutCard));
-    var cardList = doc.querySelector('.info-list');
-    distributeItems(cardArr, cardList);
   }
 
   /**
@@ -1185,7 +1180,6 @@
 
     ga('send', 'event', 'Search', 'category', category.title);
 
-    var cardArr = [];
     var infoIndexArr = Object.keys(info);
 
     infoIndexArr.forEach(function(index) {
@@ -1194,11 +1188,10 @@
       if (item.categories.indexOf(id) > -1) {
         // Create card and add to list
         var card = createInfoCard(item);
-        cardArr.push(card);
+        container.appendChild(card);
       }
     });
 
-    distributeItems(cardArr, container);
     changeTab('search');
 
     win.history.replaceState(null, '', '?cat=' + id);
@@ -1281,7 +1274,9 @@
         addResourceInfo(cardArr[0], resources[cardArr[0].dataset.name]);
     }
 
-    distributeItems(cardArr, container);
+    cardArr.forEach(function(item) {
+      container.appendChild(item);
+    });
 
     win.history.replaceState(null, '', '?search=' + encodeURIComponent(query));
     win.scroll(0, 0);
@@ -1384,46 +1379,6 @@
   }
 
   /* MISC DOM INTERACTIONS */
-
-  /**
-   * Organise items into one or two columns depending on screen size
-   * Once browser support for `display: grid;` is non-experimental, this won't be needed
-   * @param array Array containin Elements that should be added
-   * @param container Element that the Elements in the array should be added to
-   */
-  function distributeItems(array, container) {
-    var twoColThreshold = 920; // Should match class
-    var threeColThreshold = 1300; // Should match class
-    var columns = [];
-    var i, cont;
-
-    container.innerHTML = '';
-    if (innerWidth <= twoColThreshold) {
-      // One container
-      columns.push(container);
-    } else if (innerWidth <= threeColThreshold) {
-      // Two containers
-      for (i = 0; i < 2; i++) {
-        cont = doc.createElement('div');
-        cont.classList.add('card-column');
-        container.appendChild(cont);
-        columns.push(cont);
-      }
-    } else {
-      // Three columns
-      for (i = 0; i < 3; i++) {
-        cont = doc.createElement('div');
-        cont.classList.add('card-column');
-        container.appendChild(cont);
-        columns.push(cont);
-      }
-    }
-
-    // Add to containers
-    array.forEach(function(item, index) {
-      columns[index % columns.length].appendChild(item);
-    });
-  }
 
   /**
    * Close any expanded items
