@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://repo.nmsdb.info/res/sitemaps/info.xml</loc>
+    <lastmod>2016-03-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://repo.nmsdb.info/res/sitemaps/categories.xml</loc>
+    <lastmod>2016-03-20</lastmod>
+  </sitemap>
+</sitemapindex>
