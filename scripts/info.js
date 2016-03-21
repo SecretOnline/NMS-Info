@@ -418,6 +418,7 @@
       container.appendChild(title);
       // Add link cards
       var cardList = doc.createElement('div');
+      cardList.classList.add('card-list');
 
       category.items.forEach(function(item) {
         var card = createLinkCard(item);
