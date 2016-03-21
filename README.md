@@ -119,8 +119,8 @@ You don't really need to worry about this, but it's here for documentation purpo
 [
   {
     "title": "String. Title of link",
-    "method": "String. One of 'link' or 'embed'. Determines click behaviour",
-    "src": "String. URL of link",
+    "method": "String. One of 'link', 'embed', or 'yt'. Determines click behaviour",
+    "src": "String. URL of link. Video ID if 'method' is 'yt'",
     "color": "String. Valid CSS Color",
     "darkText": "Boolean. Black text if true, otherwise white"
   }
