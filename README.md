@@ -31,12 +31,13 @@ Changes to the information cards can be documented in `data/recent.json`. More o
 
 Thanks to these people in addition to those who have committed straight to GitHub.
 
-[/u/Ockvil](https://reddit.com/u/Ockvil)
-[/u/teaminus](https://reddit.com/u/teaminus)
-[/u/Akatsukaii](https://reddit.com/u/Akatsukaii)
-[/u/benstor214](https://reddit.com/u/benstor214)
-[/u/Perfecteuphoria2](https://reddit.com/u/Perfecteuphoria2)
-[/u/OprahOfOverheals](https://reddit.com/u/OprahOfOverheals)
+[/u/Ockvil](https://reddit.com/u/Ockvil)  
+[/u/teaminus](https://reddit.com/u/teaminus)  
+[/u/Akatsukaii](https://reddit.com/u/Akatsukaii)  
+[/u/benstor214](https://reddit.com/u/benstor214)  
+[/u/Perfecteuphoria2](https://reddit.com/u/Perfecteuphoria2)  
+[/u/OprahOfOverheals](https://reddit.com/u/OprahOfOverheals)  
+[/u/Highmae](https://reddit.com/u/Highmae)   
 
 ## Data formats
 
