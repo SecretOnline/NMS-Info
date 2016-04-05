@@ -9,9 +9,9 @@ h4 {
   font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
   margin: 5px 0;
 }
-body,
 .info-card,
-.search-area input {
+.search-area input,
+body {
   font-family: 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
 body {
@@ -199,8 +199,8 @@ main {
   width: 100%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-.header,
-.category-card {
+.category-card,
+.header {
   position: relative;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
@@ -332,16 +332,16 @@ main {
 .separator {
   border-bottom: 2px solid #aaa;
 }
-.sources ul,
+.categories ul,
 .related ul,
-.categories ul {
+.sources ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.sources ul li,
+.categories ul li,
 .related ul li,
-.categories ul li {
+.sources ul li {
   display: inline-block;
   padding-right: 4px;
 }
@@ -414,6 +414,7 @@ main {
 }
 .sort-type {
   display: inline-block;
+  position: relative;
   float: right;
 }
 .sort-type.alpha svg:not(.sort-alpha) {
