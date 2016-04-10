@@ -15,23 +15,6 @@
     <link rel="stylesheet" href="styles/info.css">
     <link rel='stylesheet' href='https://static.nmsdb.info/fonts/geonms.css' type='text/css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans' type='text/css'>
-    <script src="scripts/info.js" async></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-55893575-6', 'auto');
-      ga('send', 'pageview');
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "url": "https://repo.nmsdb.info/"
-      }
-    </script>
   </head>
   <body>
     <header>
@@ -44,73 +27,55 @@
     </header>
     <nav>
       <ul>
-        <li class="tab-search"><span>Search</span></li>
-        <li class="tab-info"><span>Information</span></li>
-        <li class="tab-cat"><span>Categories</span></li>
-        <li class="tab-elements"><span>Elements</span></li>
-        <li class="tab-links"><span>Links</span></li>
-        <li class="tab-recent"><span>Recent Changes</span></li>
+        <li class="tab-info"><a href="https://repo.nmsdb.info"><span>New Location</span></a></li>
       </ul>
     </nav>
     <main>
       <div class="main">
         <div class="page-container">
           <div class="page-info">
-            <h2>Information
-              <div class="sort-type alpha">
-                <svg xmlns="http://www.w3.org/2000/svg" class="sort-alpha">
-                  <path d="M0 0h24v24H0V0zm0 0h24v24H0V0zm.75.75h22.5v22.5H.75z" fill="none"/>
-                  <path d="M14.94 4.66h-4.72l2.36-2.36zm-4.69 14.71h4.66l-2.33 2.33zM6.1 6.27L1.6 17.73h1.84l.92-2.45h5.11l.92 2.45h1.84L7.74 6.27H6.1zm-1.13 7.37l1.94-5.18 1.94 5.18H4.97zm10.76 2.5h6.12v1.59h-8.53v-1.29l5.92-8.56h-5.88v-1.6h8.3v1.26l-5.93 8.6z"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="sort-category">
-                  <path d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M20 13H3c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h17c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zm0-10H3c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h17c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1z"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="sort-random">
-                  <path d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
-                </svg>
-              </div>
-            </h2>
+            <h2>Information</h2>
             <div class="card-list info-list">
-              <noscript>
-                <div class="info-card spoiler" data-title="Javascript Required">
-                  <div class="header">
-                    <div class="header-bg"></div>
-                    <h3 class="card-title">Javascript Required</h3>
+              <div class="card info-card spoiler expanded" data-title="We've moved">
+                <div class="header">
+                  <div class="header-bg"></div>
+                  <h3 class="card-title">We've moved</h3>
+                </div>
+                <div class="card-content">
+                  <div class="information">
+                    <p>The NMS Information Repository has moved to <a href="https://repo.nmsdb.info">repo.nmsdb.info</a></p>
+                    <p>It's the same person, same information, just a different URL</p>
+                    <p>If you have this page bookmarked, you may wish to change it</p>
+                  </div>
+                  <div class="separator"></div>
+                  <div class="sources">
+                    <h4>Sources</h4>
+                    <ul>
+                      <li><a href="https://repo.nmsdb.info">repo.nm...</a></li>
+                      <li><a href="https://en.reddit.com/r/NoMansSkyTheGame/comments/4a6du3/the_no_mans_sky_information_repository_has_a_new/d0xq4wl">en.redd...</a></li>
+                    </ul>
                   </div>
                 </div>
-              </noscript>
+              </div>
             </div>
           </div>
           <div class="page-cat">
-            <h2>Categories</h2>
             <div class="card-list cat-list"></div>
           </div>
           <div class="page-elements">
-            <h2 class="elements-title">Elements</h2>
             <div class="card-list elements-list"></div>
           </div>
           <div class="page-links">
-            <h2 class="links-title">Links</h2>
             <div class="link-list"></div>
           </div>
           <div class="page-recent">
-            <h2 class="recent-title">Recent Changes</h2>
-            <p>Additions are highlighted in <span class="added">green</span>, while edits are highlighted in <span class="edited">yellow</span>.</p>
             <div class="card-list recent-list"></div>
           </div>
           <div class="page-search">
-            <h2 class="search-title">Search</h2>
-            <div class="search-area">
-              <input type="search" placeholder="Search the Repository" class="info-search-box" autofocus>
-              <input type="button" value="Search" class="info-search-button">
-            </div>
             <div class="card-list search-list"></div>
           </div>
         </div>
       </div>
-      <footer>Made by <a href="https://secretonline.co">secret_online</a> - Part of <a href="https://nmsdb.info">NMSDB</a> - Source code on <a href="https://github.com/SecretOnline/NMS-Info">GitHub</a></footer>
     </main>
 
   </body>
