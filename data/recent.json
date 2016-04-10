@@ -5,69 +5,21 @@
     "text": [
       "Now moved to new site! If you're on the github.io URL, click the first source link below",
       "If you want to know why it's moved, check out the second source link",
-      "Added new information!",
-      "Fixed links (in links tab) not showing"
+      "Fixed searches not being cleared",
+      "Fixed sorting button. It's working again!"
     ],
     "sources": [
       "https://repo.nmsdb.info",
       "https://en.reddit.com/r/NoMansSkyTheGame/comments/4a6du3/the_no_mans_sky_information_repository_has_a_new/d0xq4wl"
     ]
   },
-  "Languages",
-  "Blueprints",
-  "Temperature",
-  "Hyperdrive",
-  "Resource Gathering",
   {
-    "title": "Factions",
-    "additions": [
-      5
-    ]
-  },
-  {
-    "title": "Plants / Flora",
-    "additions": [
-      4
-    ]
-  },
-  {
-    "title": "Flying",
-    "additions": [
-      6
-    ],
-    "edited": [
-      0
-    ]
-  },
-  "Planetary Deformation",
-  "Photo Mode",
-  {
-    "title": "Blueprints",
-    "edited": [
-      1
-    ]
-  },
-  {
-    "title": "Utilities / Gadgets",
-    "additions": [
-      5
-    ]
-  },
-  {
-    "title": "Ship Types",
+    "title": "Multiplayer",
     "additions": [
       7
     ],
     "edited": [
-      0,
-      2
+      6
     ]
-  },
-  {
-    "title": "Hello Games",
-    "edited": [
-      3
-    ]
-  },
-  "Hacking"
+  }
 ]

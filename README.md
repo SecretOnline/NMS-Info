@@ -38,6 +38,7 @@ Thanks to these people in addition to those who have committed straight to GitHu
 [/u/Perfecteuphoria2](https://reddit.com/u/Perfecteuphoria2)  
 [/u/OprahOfOverheals](https://reddit.com/u/OprahOfOverheals)  
 [/u/Highmae](https://reddit.com/u/Highmae)   
+[/u/DarthGrabass](https://reddit.com/u/DarthGrabass)   
 
 ## Data formats
 
