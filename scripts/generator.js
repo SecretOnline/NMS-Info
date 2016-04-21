@@ -142,6 +142,7 @@
 
     // Create card element
     var card = document.createElement('div');
+    card.classList.add('card');
     card.classList.add('info-card');
     card.classList.add('expanded');
     // Store data values

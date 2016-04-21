@@ -1100,6 +1100,7 @@
     var infoArr = sortItems();
 
     var cardList = doc.querySelector('.info-list');
+    cardList.innerHTML = '';
     cardList.appendChild(createInfoCard(aboutCard));
 
     infoArr.forEach(function(item) {
@@ -1183,6 +1184,7 @@
 
     var infoIndexArr = Object.keys(info);
 
+    container.innerHTML = '';
     infoIndexArr.forEach(function(index) {
       var item = info[index];
       // If info is in the category
@@ -1275,6 +1277,7 @@
         addResourceInfo(cardArr[0], resources[cardArr[0].dataset.name]);
     }
 
+    container.innerHTML = '';
     cardArr.forEach(function(item) {
       container.appendChild(item);
     });

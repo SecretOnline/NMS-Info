@@ -72,6 +72,35 @@
     ]
   },
   {
+    "title": "IGN First (April 2016)",
+    "items": [
+      {
+        "title":"21 Minutes of New Gameplay",
+        "color":"#94233A",
+        "src":"D-uMFHoF8VA",
+        "method": "yt"
+      },
+      {
+        "title":"How I Spent 2 Hours",
+        "color":"#5B6D26",
+        "src":"http://ign.com/articles/2016/04/13/how-i-spent-two-hours-in-no-mans-sky-ign-first",
+        "method": "link"
+      },
+      {
+        "title":"Surviving in Sub-Zero",
+        "color":"#41658F",
+        "src":"cUnKJyoyIIk",
+        "method": "yt"
+      },
+      {
+        "title":"Tour of 5 Planets",
+        "color":"#C6A560",
+        "src":"CTRi2aEJrgQ",
+        "method": "yt"
+      }
+    ]
+  },
+  {
     "title": "March 2016 Information Release",
     "items": [
       {
@@ -287,6 +316,12 @@
         "method": "yt"
       },
       {
+        "title": "E3 2015 Gameplay",
+        "color": "#A22238",
+        "src": "v5sBbjckyzU",
+        "method": "yt"
+      },
+      {
         "title": "IGN - Story, Gameplay, Multiplayer",
         "color": "#586A6D",
         "src": "tYoGN2zgXQU",
@@ -323,7 +358,7 @@
         "method": "yt"
       },
       {
-        "title":"Hazel McKendrick at PROCJAM 2014",
+        "title":"Innes McKendrick at PROCJAM 2014",
         "color":"#A0277F",
         "src":"xJRXNesI9f4",
         "method": "yt"
