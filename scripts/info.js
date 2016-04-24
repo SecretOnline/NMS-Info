@@ -159,7 +159,7 @@
       if (win.location.search.length > 1) {
         for (var aItKey, nKeyId = 0, aCouples = win.location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
           aItKey = aCouples[nKeyId].split("=");
-          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]).replace("_", " ") : "";
         }
       }
     } catch (err) {
@@ -560,7 +560,7 @@
           if (doc.querySelector('.page-container').classList.contains('search'))
           // Add search to the url
             if (doc.querySelector('.info-search-box').value)
-              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.replace(/\s/g, "_").toLowerCase()));
             else
               win.history.replaceState(null, '', '?search');
           else
@@ -579,7 +579,7 @@
         ga('send', 'event', 'Info Card', 'open', data.title);
         // Expand the card
         collapseAllItems();
-        win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
+        win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title.replace(/\s/g, "_")));
 
         addCardInfo(card, data);
       }
@@ -675,7 +675,7 @@
           if (doc.querySelector('.page-container').classList.contains('search'))
           // Add search to the url
             if (doc.querySelector('.info-search-box').value)
-              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.replace(/\s/g, "_").toLowerCase()));
             else
               win.history.replaceState(null, '', '?search');
           else
@@ -823,7 +823,7 @@
             }
 
             var highlighted = getHiglighted().sort();
-            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
+            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title.replace(/\s/g, "_")) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
           }
         });
       });
@@ -885,7 +885,7 @@
                 var otherCard = doc.querySelector('.info-card[data-title="' + rItem + '"]');
                 // Expand the other card
                 collapseAllItems();
-                win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
+                win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem.replace(/\s/g, "_")));
 
                 ga('send', 'event', 'Info Card', 'open-from-related', info[rItem].title);
 
@@ -1282,7 +1282,7 @@
       container.appendChild(item);
     });
 
-    win.history.replaceState(null, '', '?search=' + encodeURIComponent(query));
+    win.history.replaceState(null, '', '?search=' + (query.replace(/\s/g, "_")));
     win.scroll(0, 0);
   }
 
