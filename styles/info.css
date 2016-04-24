@@ -136,6 +136,9 @@ main {
   /*position: absolute;*/
   min-width: 100%;
 }
+.page-ie {
+  order: -100;
+}
 .page-search {
   order: -1;
 }
@@ -154,23 +157,26 @@ main {
 .page-recent {
   order: 4;
 }
-.page-container.search {
+.page-container.ie {
   transform: translateX(calc(-1 *((100vw - 100%) / 4)));
 }
-.page-container {
+.page-container.search {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.cat {
+.page-container {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (2 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.elements {
+.page-container.cat {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (3 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.links {
+.page-container.elements {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (4 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.recent {
+.page-container.links {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))))));
+}
+.page-container.recent {
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (6 * (100% + ((100vw - 100%) / 2))))));
 }
 .card-list {
   display: flex;
