@@ -1,7 +1,7 @@
 [
   {
     "title": "No Man's Sky Universe",
-    "color": "#2B2E51"
+    "color": "#0F2F4C"
   },
   {
     "title": "Star Systems",
@@ -9,7 +9,7 @@
   },
   {
     "title": "Planets",
-    "color": "#433E70"
+    "color": "#003E70"
   },
   {
     "title": "Interactable Objects",
@@ -17,11 +17,11 @@
   },
   {
     "title": "Game Mechanics",
-    "color": "#6565B5"
+    "color": "#2365B5"
   },
   {
     "title": "The Atlas",
-    "color": "#921212"
+    "color": "#912E2E"
   },
   {
     "title": "Meta",
@@ -41,7 +41,7 @@
   },
   {
     "title": "Life",
-    "color": "#49AA14"
+    "color": "#669946"
   },
   {
     "title": "Miscellaneous",
