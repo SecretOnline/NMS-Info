@@ -5,7 +5,13 @@
   var categories = {};
   var resources = {};
 
+  var catFiles = {
+    fade: 'categories.json',
+    old: 'categories-old.json'
+  };
+
   var sortMethod = 'alphabet'; // One of 'random', 'alphabet', 'category'
+  var colourScheme = 'fade'; // One of the options in catFiles
 
   var aboutCard = {
     title: 'About This Repository',
@@ -46,6 +52,12 @@
           }
         } else
           win.localStorage.setItem('info-sort', sortMethod);
+
+        var colorType = win.localStorage.getItem('info-color');
+        if (colorType) {
+          colourScheme = colorType;
+        } else
+          win.localStorage.setItem('info-color', colourScheme);
       } catch (err) {
         console.error('Problem trying to access local storage');
         console.error(err);
@@ -54,7 +66,7 @@
 
     // TODO: Lots of error handling
     // Get categories and add to page
-    var catPromise = get('data/categories.json')
+    var catPromise = get('data/' + catFiles[colourScheme])
       .then(JSON.parse)
       .then(createCategories);
     // Get elements and add to page
@@ -122,6 +134,8 @@
     });
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
+
+    doc.querySelector('.paint-job').addEventListener('click', changePaint);
 
     var nav = doc.querySelector('nav');
 
@@ -1109,6 +1123,33 @@
         return;
       cardList.appendChild(card);
     });
+  }
+
+  /**
+   * Change the color scheme used by the repository
+   */
+  function changePaint() {
+
+    var keys = Object.keys(catFiles);
+    var i = keys.indexOf(colourScheme) + 1;
+    if (i >= keys.length) {
+      i = 0;
+    }
+    colourScheme = keys[i];
+
+    ga('send', 'event', 'Paint Job', 'sort', colourScheme);
+
+    // Set stored sort type
+    if (win.localStorage) {
+      try {
+        win.localStorage.setItem('info-color', colourScheme);
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+
+    window.location.reload();
   }
 
   /**
