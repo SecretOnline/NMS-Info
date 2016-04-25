@@ -1,12 +1,12 @@
 h1,
 h2,
 h3,
+h4,
 header,
 nav {
-  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
+  font-family: geosanslight-nmsregular, geosanslight-nms, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
 h4 {
-  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
   margin: 5px 0;
 }
 .info-card,
