@@ -3,23 +3,24 @@
     "type": "manual",
     "title": "Misc. Changes",
     "text": [
-      "Now moved to new site! If you're on the github.io URL, click the first source link below",
-      "If you want to know why it's moved, check out the second source link",
-      "Fixed searches not being cleared",
-      "Fixed sorting button. It's working again!"
+      "Changed colour scheme. If you liked the old colours click on the paintbrush on the Category page",
+      "Added error message for Internet Explorer calc/transform bug. If you're reading this then you don't have that problem",
+      "Spaces in URLs are replaced by underscores. Old links should still work (where spaces were '%20'). Yay for readability!"
     ],
     "sources": [
-      "https://repo.nmsdb.info",
-      "https://en.reddit.com/r/NoMansSkyTheGame/comments/4a6du3/the_no_mans_sky_information_repository_has_a_new/d0xq4wl"
+      "https://en.reddit.com/r/NoMansSkyTheGame/comments/4etiz5/rules_conclusion_new_mod/"
     ]
   },
   {
-    "title": "Multiplayer",
-    "additions": [
-      7
-    ],
+    "title": "Ship Combat",
     "edited": [
-      6
+      5
+    ]
+  },
+  {
+    "title": "Player Combat",
+    "edited": [
+      4
     ]
   }
 ]
