@@ -1,0 +1,36 @@
+.card.cat-universe .header {
+  background-color: #0F2F4C;
+}
+.card.cat-stars .header {
+  background-color: #DB3C34;
+}
+.card.cat-planets .header {
+  background-color: #003E70;
+}
+.card.cat-objects .header {
+  background-color: #1A6D42;
+}
+.card.cat-mechanics .header {
+  background-color: #2365B5;
+}
+.card.cat-atlas .header {
+  background-color: #912E2E;
+}
+.card.cat-meta .header {
+  background-color: #589E90;
+}
+.card.cat-crafting .header {
+  background-color: #994A23;
+}
+.card.cat-news .header {
+  background-color: #AD619E;
+}
+.card.cat-economy .header {
+  background-color: #E2C716;
+}
+.card.cat-life .header {
+  background-color: #669946;
+}
+.card.cat-misc .header {
+  background-color: #EF6A0B;
+}

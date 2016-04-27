@@ -205,7 +205,6 @@ main {
   width: 100%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-.category-card,
 .header {
   position: relative;
   border-top-left-radius: inherit;
@@ -213,17 +212,16 @@ main {
   overflow: hidden;
   cursor: pointer;
 }
-.header .header-bg {
+.header {
   background-color: #01385b;
   width: 100%;
-  pointer-events: none;
   height: 60px;
   transition: height 0.5s, background-color 0.5s;
 }
-.spoiler .header .header-bg {
+.spoiler .header {
   background-color: #e22 !important;
 }
-.expanded .header .header-bg {
+.expanded .header {
   height: 100px;
 }
 .card-title {
