@@ -177,9 +177,7 @@
       if (data.categories.length) {
         try {
           var category = categories[data.categories[0]];
-          if (category.darkText) {
-            card.classList.add('dark-text');
-          }
+          card.classList.add('cat-' + category.class);
           headerBg.style.backgroundColor = category.color;
         } catch (err) {
           console.warn('Category ' + data.categories[0] + ' might not exist. Couldn\'t set header properties');

@@ -142,21 +142,6 @@ main {
 .page-search {
   order: -1;
 }
-.page-info {
-  order: 0;
-}
-.page-cat {
-  order: 1;
-}
-.page-elements {
-  order: 2;
-}
-.page-links {
-  order: 3;
-}
-.page-recent {
-  order: 4;
-}
 .page-container.ie {
   transform: translateX(calc(-1 *((100vw - 100%) / 4)));
 }
