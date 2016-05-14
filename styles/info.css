@@ -1,12 +1,12 @@
 h1,
 h2,
 h3,
+h4,
 header,
 nav {
-  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
+  font-family: geosanslight-nmsregular, geosanslight-nms, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
 }
 h4 {
-  font-family: geosanslight-nmsregular, 'Open Sans', Helvetica, Verdana, Arial, sans-serif;
   margin: 5px 0;
 }
 .info-card,
@@ -136,41 +136,32 @@ main {
   /*position: absolute;*/
   min-width: 100%;
 }
+.page-ie {
+  order: -100;
+}
 .page-search {
   order: -1;
 }
-.page-info {
-  order: 0;
-}
-.page-cat {
-  order: 1;
-}
-.page-elements {
-  order: 2;
-}
-.page-links {
-  order: 3;
-}
-.page-recent {
-  order: 4;
-}
-.page-container.search {
+.page-container.ie {
   transform: translateX(calc(-1 *((100vw - 100%) / 4)));
 }
-.page-container {
+.page-container.search {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.cat {
+.page-container {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (2 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.elements {
+.page-container.cat {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (3 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.links {
+.page-container.elements {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (4 * (100% + ((100vw - 100%) / 2))))));
 }
-.page-container.recent {
+.page-container.links {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (5 * (100% + ((100vw - 100%) / 2))))));
+}
+.page-container.recent {
+  transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (6 * (100% + ((100vw - 100%) / 2))))));
 }
 .card-list {
   display: flex;
@@ -199,7 +190,6 @@ main {
   width: 100%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-.category-card,
 .header {
   position: relative;
   border-top-left-radius: inherit;
@@ -207,17 +197,16 @@ main {
   overflow: hidden;
   cursor: pointer;
 }
-.header .header-bg {
+.header {
   background-color: #01385b;
   width: 100%;
-  pointer-events: none;
   height: 60px;
   transition: height 0.5s, background-color 0.5s;
 }
-.spoiler .header .header-bg {
+.spoiler .header {
   background-color: #e22 !important;
 }
-.expanded .header .header-bg {
+.expanded .header {
   height: 100px;
 }
 .card-title {
@@ -412,6 +401,7 @@ main {
 .highlighted {
   background-color: #ffff88;
 }
+.paint-job,
 .sort-type {
   display: inline-block;
   position: relative;
@@ -426,6 +416,7 @@ main {
 .sort-type.random svg:not(.sort-random) {
   display: none;
 }
+.paint-job svg,
 .sort-type svg {
   fill: #000;
   position: absolute;

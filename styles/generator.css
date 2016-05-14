@@ -33,8 +33,8 @@ textarea {
   overflow: hidden;
   transition: max-height 0.5s;
 }
-.help:hover .help-list,
-.help:active .help-list {
+.help:active .help-list,
+.help:hover .help-list {
   max-height: 50vh;
 }
 button {
@@ -46,4 +46,7 @@ button {
 .input button,
 .input input {
   margin: 2px;
+}
+.preview-container .card {
+  max-width: 100% !important;
 }

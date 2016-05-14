@@ -97,6 +97,12 @@
         "color":"#C6A560",
         "src":"CTRi2aEJrgQ",
         "method": "yt"
+      },
+      {
+        "title":"Hour Long Interview w/ Sean",
+        "color":"#D05727",
+        "src":"sldaUTUAd5k",
+        "method": "yt"
       }
     ]
   },
@@ -303,6 +309,12 @@
   {
     "title": "Other Interviews / Press",
     "items": [
+      {
+        "title": "Verge - Soundtrack Interview",
+        "color": "#22211E",
+        "src": "http://www.theverge.com/2016/4/21/11474292/65daysofstatic-no-mans-sky-soundtrack-interview",
+        "method": "link"
+      },
       {
         "title": "PSX 2015 w/ Shuhei Yoshida",
         "color": "#650D29",

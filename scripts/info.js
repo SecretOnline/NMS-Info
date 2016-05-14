@@ -5,7 +5,16 @@
   var categories = {};
   var resources = {};
 
+  var themes = [{
+    title: 'Default',
+    filename: 'fade'
+  }, {
+    title: 'Original',
+    filename: 'old'
+  }];
+
   var sortMethod = 'alphabet'; // One of 'random', 'alphabet', 'category'
+  var currentTheme = themes[0]; // One of the options in themes
 
   var aboutCard = {
     title: 'About This Repository',
@@ -46,6 +55,17 @@
           }
         } else
           win.localStorage.setItem('info-sort', sortMethod);
+
+        var colorType = win.localStorage.getItem('info-color');
+        if (colorType) {
+          try {
+            currentTheme = JSON.parse(colorType);
+          } catch (e) {
+            console.error('theme is not a valid object');
+          }
+        } else
+          win.localStorage.setItem('info-color', currentTheme);
+        changePaint(currentTheme);
       } catch (err) {
         console.error('Problem trying to access local storage');
         console.error(err);
@@ -123,6 +143,14 @@
 
     doc.querySelector('.sort-type').addEventListener('click', changeSort);
 
+    doc.querySelector('.paint-job').addEventListener('click', function() {
+      var i = themes.indexOf(currentTheme) + 1;
+      if (i >= themes.length) {
+        i = 0;
+      }
+      changePaint(themes[i]);
+    });
+
     var nav = doc.querySelector('nav');
 
     function closeNav() {
@@ -159,7 +187,7 @@
       if (win.location.search.length > 1) {
         for (var aItKey, nKeyId = 0, aCouples = win.location.search.substr(1).split("&"); nKeyId < aCouples.length; nKeyId++) {
           aItKey = aCouples[nKeyId].split("=");
-          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]) : "";
+          searchParams[decodeURIComponent(aItKey[0])] = aItKey.length > 1 ? decodeURIComponent(aItKey[1]).replace(/_/g, " ") : "";
         }
       }
     } catch (err) {
@@ -496,12 +524,9 @@
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
     var headerTitle = doc.createElement('h3');
     headerTitle.classList.add('card-title');
     headerTitle.textContent = data.title;
-    header.appendChild(headerBg);
     header.appendChild(headerTitle);
     card.appendChild(header);
 
@@ -515,10 +540,7 @@
       if (data.categories.length) {
         try {
           var category = categories[data.categories[0]];
-          if (category.darkText) {
-            card.classList.add('dark-text');
-          }
-          headerBg.style.backgroundColor = category.color;
+          card.classList.add('cat-' + category.class);
         } catch (err) {
           console.warn('Category ' + data.categories[0] + ' might not exist. Couldn\'t set header properties');
         }
@@ -560,7 +582,7 @@
           if (doc.querySelector('.page-container').classList.contains('search'))
           // Add search to the url
             if (doc.querySelector('.info-search-box').value)
-              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.replace(/\s/g, "_").toLowerCase()));
             else
               win.history.replaceState(null, '', '?search');
           else
@@ -579,7 +601,7 @@
         ga('send', 'event', 'Info Card', 'open', data.title);
         // Expand the card
         collapseAllItems();
-        win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title));
+        win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title.replace(/\s/g, "_")));
 
         addCardInfo(card, data);
       }
@@ -601,7 +623,6 @@
     card.classList.add('category-card');
     // Store data values
     card.dataset.title = data.title;
-    card.style.backgroundColor = data.color;
 
     if (data.darkText)
       card.classList.add('dark-text');
@@ -609,13 +630,13 @@
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
+    card.classList.add('cat-' + data.class);
+    card.appendChild(header);
 
     var title = doc.createElement('h3');
     title.textContent = data.title;
     title.classList.add('card-title');
-    card.appendChild(title);
+    header.appendChild(title);
 
     // Do a category search when clicked
     card.addEventListener('click', function() {
@@ -675,7 +696,7 @@
           if (doc.querySelector('.page-container').classList.contains('search'))
           // Add search to the url
             if (doc.querySelector('.info-search-box').value)
-              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.toLowerCase()));
+              win.history.replaceState(null, '', '?search=' + encodeURIComponent(doc.querySelector('.info-search-box').value.replace(/\s/g, "_").toLowerCase()));
             else
               win.history.replaceState(null, '', '?search');
           else
@@ -724,13 +745,10 @@
     // Create header
     var header = doc.createElement('div');
     header.classList.add('header');
-    var headerBg = doc.createElement('div');
-    headerBg.classList.add('header-bg');
-    headerBg.style.backgroundColor = data.color;
+    header.style.backgroundColor = data.color;
     var headerTitle = doc.createElement('h3');
     headerTitle.classList.add('card-title');
     headerTitle.textContent = data.title;
-    header.appendChild(headerBg);
     header.appendChild(headerTitle);
     card.appendChild(header);
 
@@ -823,7 +841,7 @@
             }
 
             var highlighted = getHiglighted().sort();
-            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
+            win.history.replaceState(null, '', '?info=' + encodeURIComponent(card.dataset.title.replace(/\s/g, "_")) + ((highlighted.length) ? '&highlight=' + highlighted.join() : ''));
           }
         });
       });
@@ -885,7 +903,7 @@
                 var otherCard = doc.querySelector('.info-card[data-title="' + rItem + '"]');
                 // Expand the other card
                 collapseAllItems();
-                win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem));
+                win.history.replaceState(null, '', '?info=' + encodeURIComponent(rItem.replace(/\s/g, "_")));
 
                 ga('send', 'event', 'Info Card', 'open-from-related', info[rItem].title);
 
@@ -1112,6 +1130,37 @@
   }
 
   /**
+   * Change the color scheme used by the repository
+   */
+  function changePaint(theme) {
+    currentTheme = theme;
+
+    removeElement(document.head.querySelector('link[title=theme]'));
+
+    var link = document.createElement('link');
+    if (theme.custom) {
+      link.href = theme.url;
+    } else {
+      link.href = '/styles/themes/' + theme.filename + '.css';
+    }
+    link.rel = 'stylesheet';
+    link.title = 'theme';
+    document.head.appendChild(link);
+
+    ga('send', 'event', 'Paint Job', 'sort', theme);
+
+    // Set stored sort type
+    if (win.localStorage) {
+      try {
+        win.localStorage.setItem('info-color', JSON.stringify(theme));
+      } catch (err) {
+        console.error('Problem trying to access local storage');
+        console.error(err);
+      }
+    }
+  }
+
+  /**
    * Sort items according to the current sort method
    * @return Array containing the sorted items
    */
@@ -1282,7 +1331,7 @@
       container.appendChild(item);
     });
 
-    win.history.replaceState(null, '', '?search=' + encodeURIComponent(query));
+    win.history.replaceState(null, '', '?search=' + (query.replace(/\s/g, "_")));
     win.scroll(0, 0);
   }
 
@@ -1421,6 +1470,11 @@
     });
   }
 
+  function removeElement(element) {
+    if (element) {
+      element.parentNode.removeChild(element);
+    }
+  }
 
   /* HELPER */
 

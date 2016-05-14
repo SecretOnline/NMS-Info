@@ -1,55 +1,50 @@
 [
   {
     "title": "No Man's Sky Universe",
-    "color": "midnightblue"
+    "class": "universe"
   },
   {
     "title": "Star Systems",
-    "color": "#F7BF05",
-    "darkText": "true"
+    "class": "stars"
   },
   {
     "title": "Planets",
-    "color": "#21C6C6",
-    "darkText": "true"
+    "class": "planets"
   },
   {
     "title": "Interactable Objects",
-    "color": "#85D14D",
-    "darkText": "true"
+    "class": "objects"
   },
   {
     "title": "Game Mechanics",
-    "color": "#2F5AA8"
+    "class": "mechanics"
   },
   {
     "title": "The Atlas",
-    "color": "#921212"
+    "class": "atlas"
   },
   {
     "title": "Meta",
-    "color": "#7DBFB2",
-    "darkText": "true"
+    "class": "meta"
   },
   {
     "title": "Crafting",
-    "color": "#644619"
+    "class": "crafting"
   },
   {
     "title": "News",
-    "color": "#833883"
+    "class": "news"
   },
   {
     "title": "Economy",
-    "color": "#F5CA2D",
-    "darkText": "true"
+    "class": "economy"
   },
   {
     "title": "Life",
-    "color": "#277B23"
+    "class": "life"
   },
   {
     "title": "Miscellaneous",
-    "color": "#ED870E"
+    "class": "misc"
   }
 ]
