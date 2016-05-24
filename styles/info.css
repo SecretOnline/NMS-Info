@@ -143,7 +143,8 @@ main {
   order: -1;
 }
 .page-container.ie {
-  transform: translateX(calc(-1 *((100vw - 100%) / 4)));
+  /* ONLY USED FOR DEBUGGING PURPOSES */
+  transform: translateX(calc(-1 * ((100vw - 100%) / 4)));
 }
 .page-container.search {
   transform: translateX(calc(-1 * (((100vw - 100%) / 4) + (1 * (100% + ((100vw - 100%) / 2))))));
