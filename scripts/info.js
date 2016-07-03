@@ -74,33 +74,26 @@
 
     // TODO: Lots of error handling
     // Get categories and add to page
-    var catPromise = get('data/categories.json')
+    var catPromise = get('https://nmsdb-55119.firebaseio.com/categories.json')
       .then(JSON.parse)
       .then(createCategories);
     // Get elements and add to page
-    var elementPromise = get('data/resources.json')
+    var elementPromise = get('https://nmsdb-55119.firebaseio.com/resources.json')
       .then(JSON.parse)
       .then(createResources);
     // Get links and add to page
-    var linkPromise = get('data/links.json')
+    var linkPromise = get('https://nmsdb-55119.firebaseio.com/links.json')
       .then(JSON.parse)
       .then(createLinks);
     // Wait for categories, get info, and add to page
-    var infoPromise = Promise.all([get('data/info.json'), catPromise])
+    var infoPromise = Promise.all([get('https://nmsdb-55119.firebaseio.com/info.json'), catPromise])
       .then(function(arr) {
         return arr[0];
       })
       .then(JSON.parse)
       .then(createInfo);
-    // Wait for categories and info, get changes, and add to page
-    var recentPromise = Promise.all([get('data/recent.json'), catPromise, infoPromise])
-      .then(function(arr) {
-        return arr[0];
-      })
-      .then(JSON.parse)
-      .then(createRecents);
     // Wait for all aspects of the page to be complete before handling the url search parameters
-    var initPromise = Promise.all([catPromise, elementPromise, linkPromise, infoPromise, recentPromise])
+    var initPromise = Promise.all([catPromise, elementPromise, linkPromise, infoPromise])
       .then(handleSearchParams);
   }
 
@@ -133,9 +126,6 @@
     });
     doc.querySelector('.tab-elements').addEventListener('click', function() {
       changeTab('elements');
-    });
-    doc.querySelector('.tab-recent').addEventListener('click', function() {
-      changeTab('recent');
     });
     doc.querySelector('.tab-links').addEventListener('click', function() {
       changeTab('links');
@@ -264,9 +254,6 @@
           console.error('Failed to open element with name ' + searchParams.element + '. ' + err);
         }
       }
-    } else if (typeof searchParams.recent !== 'undefined') {
-      // Go to the elements page
-      changeTab('recent');
     } else if (typeof searchParams.links !== 'undefined') {
       // Go to the links page
       changeTab('links');
@@ -333,14 +320,6 @@
       pageContainer.classList.remove('recent');
       pageContainer.classList.remove('links');
       win.history.replaceState(null, '', '?element');
-    } else if (tab === 'recent') {
-      // Go to elements
-      pageContainer.classList.add('recent');
-      pageContainer.classList.remove('search');
-      pageContainer.classList.remove('cat');
-      pageContainer.classList.remove('elements');
-      pageContainer.classList.remove('links');
-      win.history.replaceState(null, '', '?recent');
     } else if (tab === 'links') {
       // Go to elements
       pageContainer.classList.add('links');
@@ -456,52 +435,6 @@
       });
 
       container.appendChild(cardList);
-    });
-  }
-
-  /**
-   * Handles creation of recently changed cards
-   */
-  function createRecents(data) {
-    var cardList = doc.querySelector('.recent-list');
-    data.forEach(function(item) {
-      var card;
-      if (typeof item === 'string') {
-        card = createInfoCard(info[item]);
-        card.querySelector('.header').addEventListener('click', function() {
-          card.querySelector('.card-content .information').classList.add('added');
-        });
-      } else {
-        if (item.type && item.type === 'manual') {
-          card = createInfoCard(item);
-        } else {
-          card = createInfoCard(info[item.title]);
-          card.querySelector('.header').addEventListener('click', function() {
-            var infoArray = card.querySelectorAll('.information p');
-            if (item.additions)
-              item.additions.forEach(function(added) {
-                infoArray[added].classList.add('added');
-              });
-            if (item.edited)
-              item.edited.forEach(function(edit) {
-                infoArray[edit].classList.add('edited');
-              });
-            if (item.removals)
-              item.removals.forEach(function(removed) {
-                var removalBar = doc.createElement('p');
-                removalBar.classList.add('removed');
-                removalBar.innerHTML = '<em>Removed</em>';
-                if (removed < infoArray.length)
-                  card.querySelector('.information').insertBefore(removalBar, infoArray[removed]);
-                else
-                  card.querySelector('.information').appendChild(removalBar);
-              });
-          });
-        }
-      }
-      if (!card)
-        return;
-      cardList.appendChild(card);
     });
   }
 
