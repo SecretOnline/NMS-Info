@@ -594,7 +594,7 @@
     card.classList.add('card');
     card.classList.add('element-card');
     // Store data values
-    card.dataset.name = data.name;
+    card.dataset.name = data.title;
 
     // Create header
     var header = doc.createElement('div');
@@ -610,8 +610,8 @@
       headerSymbol.textContent = '??';
     var headerTitle = doc.createElement('h3');
     headerTitle.classList.add('card-title');
-    if (data.name)
-      headerTitle.textContent = data.name;
+    if (data.title)
+      headerTitle.textContent = data.title;
     else
       headerTitle.textContent = '???';
     header.appendChild(headerBg);
@@ -645,7 +645,7 @@
               content.innerHTML = '';
           }, 500);
         } catch (err) {
-          console.error('Error while trying to expand resource' + data.name);
+          console.error('Error while trying to expand resource' + data.title);
           console.error(err);
         }
       } else {
@@ -883,8 +883,8 @@
     content.appendChild(information);
     var description = doc.createElement('p');
     description.classList.add('element-description');
-    if (data.description)
-      description.textContent = data.description;
+    if (data.text)
+      description.textContent = data.text[0];
     else
       description.textContent = 'No description for this element has been found yet';
     information.appendChild(description);
