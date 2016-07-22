@@ -35,6 +35,9 @@ header .title {
   margin: 0 auto;
   color: #fff;
 }
+header.header-bg {
+  height: 100%;
+}
 header .button-container {
   position: absolute;
   height: 70px;
