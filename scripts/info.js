@@ -17,17 +17,21 @@
   var currentTheme = themes[0]; // One of the options in themes
 
   var aboutCard = {
-    title: 'About This Repository',
+    title: 'Complete Repository Rewrite in Progress',
     text: [
-      'This repository of information contains things that are known about the upcoming game No Man\'s Sky',
-      'It is an open source project, and source code can be found on GitHub',
-      'It was created by secret_online, but a full list of contributors can be found on GitHub',
-      'If something is missing, please send me a message using one of the links below, or fork this project and add it yourself',
-      'It is recommended that you read through these cards before posting to /r/NoMansSkyTheGame or asking questions on the Steam Community forum. This prevents the need for a lot of useless posts'
+      'Hello everyone, just thought I\'d let you know what\'s happening here',
+      'It\'s been a long time since I first started working on the Information Repository',
+      'Over that time I\'ve learnt things, and wanted to make some improvements',
+      'Unfortunately, most of those improvements would be very difficult to do on the existing Repository',
+      'I\'ve decided to do a complete rewrite. It\'s still in development, but I wanted to announce it and show you my progress',
+      'In the sources section just below this, I\'ve added two links',
+      'The 3rd link below is a preview of what it\'ll be like. The 4th link is the new GitHub repository, should you wish to look at the code'
     ],
     sources: [
       'https://github.com/SecretOnline/NMS-Info',
-      'https://secretonline.co'
+      'https://secretonline.co',
+      'http://dev.nmsdb.info',
+      'https://github.com/SecretOnline/Info-Repo'
     ],
     categories: []
   };
