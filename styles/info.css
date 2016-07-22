@@ -35,9 +35,6 @@ header .title {
   margin: 0 auto;
   color: #fff;
 }
-header.header-bg {
-  height: 100%;
-}
 header .button-container {
   position: absolute;
   height: 70px;
@@ -229,6 +226,9 @@ main {
   position: absolute;
   bottom: 0;
   transition: color 0.5s, margin 0.5s, left 0.5s;
+}
+.header .header-bg {
+  height: 100%;
 }
 .expanded .card-title {
   margin: 24px 16px;
